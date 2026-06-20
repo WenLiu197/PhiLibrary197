@@ -1,12 +1,18 @@
 ﻿using PhigrosLibraryCSharp.Serialization;
+using System.Numerics;
 
 namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The Phigros currency.
 /// </summary>
-public class Money : IPhigrosCustomSerialization<Money>
+public class Money : IPhigrosCustomSerialization<Money>, IEquatable<Money>, IEqualityOperators<Money, Money, bool>, IComparable<Money>
 {
+	/// <summary>
+	/// Default value of <see cref="Money"/>, all counts are 0. Returns a new instance every time.
+	/// </summary>
+	public static Money Zero => new(0, 0, 0, 0, 0);
+
 	/// <summary>KiB count.</summary>
 	public short KiB { get; set; }
 
@@ -40,6 +46,19 @@ public class Money : IPhigrosCustomSerialization<Money>
 	}
 
 	/// <inheritdoc/>
+	public override bool Equals(object? obj)
+	{
+		if (obj is not Money other)
+			return false;
+
+		return this.Equals(other);
+	}
+	/// <inheritdoc/>
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(this.KiB, this.MiB, this.GiB, this.TiB, this.PiB);
+	}
+	/// <inheritdoc/>
 	public override string ToString()
 	{
 		return (this.KiB, this.MiB, this.GiB, this.TiB, this.PiB) switch
@@ -70,5 +89,42 @@ public class Money : IPhigrosCustomSerialization<Money>
 		writer.WriteVariedInteger(this.GiB);
 		writer.WriteVariedInteger(this.TiB);
 		writer.WriteVariedInteger(this.PiB);
+	}
+
+	/// <inheritdoc/>
+	public bool Equals(Money? other)
+	{
+		if (other is null) return false;
+
+		return this.KiB == other.KiB
+			&& this.MiB == other.MiB
+			&& this.GiB == other.GiB
+			&& this.TiB == other.TiB
+			&& this.PiB == other.PiB;
+	}
+	/// <inheritdoc/>
+	public int CompareTo(Money? other)
+	{
+		if (other is null) return 1;
+
+		if (this.PiB != other.PiB) return this.PiB.CompareTo(other.PiB);
+		if (this.TiB != other.TiB) return this.TiB.CompareTo(other.TiB);
+		if (this.GiB != other.GiB) return this.GiB.CompareTo(other.GiB);
+		if (this.MiB != other.MiB) return this.MiB.CompareTo(other.MiB);
+
+		return this.KiB.CompareTo(other.KiB);
+	}
+
+	/// <inheritdoc/>
+	public static bool operator ==(Money? left, Money? right)
+	{
+		if (left is null) return right is null;
+
+		return left.Equals(right);
+	}
+	/// <inheritdoc/>
+	public static bool operator !=(Money? left, Money? right)
+	{
+		return !(left == right);
 	}
 }

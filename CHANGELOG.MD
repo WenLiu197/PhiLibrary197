@@ -1,3 +1,6 @@
+# 4.4.1
+- Make `Money` implement `IEquatable<Money>`, `IComparable<Money>` and override equality related methods. Added `Money.Zero` property that returns an empty instance of `Money`.
+
 # 4.4.0
 - Added custom query parameter to `GetSaveInfoFromCloudAsync()` and `GetSaveContextAsync()` methods, allowing users to specify additional query parameters when requesting save info from the cloud. 
     - By default, it filters out save files that are not uploaded by the current user.
