@@ -1,6 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-
-namespace PhigrosLibraryCSharp.CloudSave;
+﻿namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The user's game progress.
@@ -17,7 +15,7 @@ public class GameProgress : IPhigrosCustomSerialization<GameProgress>
 		bool alreadyShowCollectionTip,
 		bool alreadyShowAutoUnlockINTip,
 		string completed,
-		short songUpdateInfo,
+		int songUpdateInfo,
 		Challenge challengeModeRank,
 		Money money,
 		DifficultyUnlockFlag unlockFlagOfSpasmodic,
@@ -63,7 +61,7 @@ public class GameProgress : IPhigrosCustomSerialization<GameProgress>
 	public string GameCompleted { get; set; }
 
 	/// <summary>Seems to save the count of song update information, <i>may be wrong.</i></summary>
-	public short SongUpdateInfo { get; set; }
+	public int SongUpdateInfo { get; set; }
 
 	/// <summary>The challenge mode rank.</summary>
 	public Challenge ChallengeModeRank { get; set; }
@@ -87,55 +85,55 @@ public class GameProgress : IPhigrosCustomSerialization<GameProgress>
 	public GameProgressNodeVersion2? Node2 { get; set; }
 
 	/// <inheritdoc/>
-	public static GameProgress FromReader(ByteReader reader)
+	public static GameProgress FromReader(BinaryReader reader, byte objectVersion)
 	{
 		return new(
-			reader.ObjectVersion,
+			objectVersion,
 			reader.ReadFromPackedBoolNoJump(0),
 			reader.ReadFromPackedBoolNoJump(1),
 			reader.ReadFromPackedBoolNoJump(2),
 			reader.ReadFromPackedBoolThenJump(3),
 			reader.ReadString(),
-			reader.ReadVariedInteger(),
-			Challenge.FromReader(reader),
-			Money.FromReader(reader),
-			reader.ReadUnmanaged<DifficultyUnlockFlag>(),
-			reader.ReadUnmanaged<DifficultyUnlockFlag>(),
-			reader.ReadUnmanaged<DifficultyUnlockFlag>(),
-			reader.ReadUnmanaged<SongRecordFlag>(),
+			reader.Read7BitEncodedInt(),
+			Challenge.FromReader(reader, objectVersion),
+			Money.FromReader(reader, objectVersion),
+			reader.ReadEnum<DifficultyUnlockFlag>(),
+			reader.ReadEnum<DifficultyUnlockFlag>(),
+			reader.ReadEnum<DifficultyUnlockFlag>(),
+			reader.ReadEnum<SongRecordFlag>(),
 			!reader.HasMore ? null :
 			new(
-				reader.ReadUnmanaged<RandomVersionFlag>(),
+				reader.ReadEnum<RandomVersionFlag>(),
 				!reader.HasMore ? null : new(
-					reader.ReadUnmanaged<Chapter8UnlockFlag>(),
-					reader.ReadUnmanaged<DifficultyUnlockFlag>(),
+					reader.ReadEnum<Chapter8UnlockFlag>(),
+					reader.ReadEnum<DifficultyUnlockFlag>(),
 					!reader.HasMore ? null : new(
-						reader.ReadUnmanaged<TakumiUnlockFlag>()))));
+						reader.ReadEnum<TakumiUnlockFlag>()))));
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.ObjectVersion = this.Version;
+		objectVersion = this.Version;
 
 		writer.WritePackedBools(this.IsFirstRun, this.LegacyChapterFinished, this.AlreadyShowCollectionTip, this.AlreadyShowAutoUnlockINTip);
-		writer.WriteString(this.GameCompleted);
-		writer.WriteVariedInteger(this.SongUpdateInfo);
-		this.ChallengeModeRank.Serialize(writer);
-		this.Money.Serialize(writer);
-		writer.WriteUnmanaged(this.UnlockFlagOfSpasmodic);
-		writer.WriteUnmanaged(this.UnlockFlagOfIgallta);
-		writer.WriteUnmanaged(this.UnlockFlagOfRrharil);
-		writer.WriteUnmanaged(this.FlagOfSongRecordKey);
+		writer.Write(this.GameCompleted);
+		writer.Write7BitEncodedInt(this.SongUpdateInfo);
+		this.ChallengeModeRank.Serialize(writer, out _);
+		this.Money.Serialize(writer, out _);
+		writer.WriteEnum(this.UnlockFlagOfSpasmodic);
+		writer.WriteEnum(this.UnlockFlagOfIgallta);
+		writer.WriteEnum(this.UnlockFlagOfRrharil);
+		writer.WriteEnum(this.FlagOfSongRecordKey);
 
 		if (this.Node2 is null) return;
-		writer.WriteUnmanaged(this.Node2.RandomVersionUnlocked);
+		writer.WriteEnum(this.Node2.RandomVersionUnlocked);
 
 		if (this.Node2.Node3 is null) return;
-		writer.WriteUnmanaged(this.Node2.Node3.Chapter8UnlockFlag);
-		writer.WriteUnmanaged(this.Node2.Node3.Chapter8SongUnlockFlag);
+		writer.WriteEnum(this.Node2.Node3.Chapter8UnlockFlag);
+		writer.WriteEnum(this.Node2.Node3.Chapter8SongUnlockFlag);
 
 		if (this.Node2.Node3.Node4 is null) return;
-		writer.WriteUnmanaged(this.Node2.Node3.Node4.FlagOfSongRecordKeyTakumi);
+		writer.WriteEnum(this.Node2.Node3.Node4.FlagOfSongRecordKeyTakumi);
 	}
 }
 

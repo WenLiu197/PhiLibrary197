@@ -1,6 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-
-namespace PhigrosLibraryCSharp.CloudSave;
+﻿namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The challenge rank of the user's save.
@@ -82,13 +80,15 @@ public struct Challenge : IPhigrosCustomSerialization<Challenge>
 	}
 
 	/// <inheritdoc/>
-	public static Challenge FromReader(ByteReader reader)
+	public static Challenge FromReader(BinaryReader reader, byte objectVersion)
 	{
-		return new(reader.ReadShort());
+		return new(reader.ReadInt16());
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public readonly void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.WriteShort(this.RawCode);
+		objectVersion = byte.MaxValue;
+
+		writer.Write(this.RawCode);
 	}
 }

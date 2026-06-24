@@ -1,4 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
+﻿using System.Buffers;
 using System.Text;
 
 namespace PhigrosLibraryCSharp.CloudSave;
@@ -48,50 +48,60 @@ public class GameKey : IPhigrosCustomSerialization<GameKey>
 	public GameKeyNodeVersion2? Node2 { get; set; }
 
 	/// <inheritdoc/>
-	public static GameKey FromReader(ByteReader reader)
+	public static GameKey FromReader(BinaryReader reader, byte objectVersion)
 	{
-		short entryCount = reader.ReadVariedInteger();
+		int entryCount = reader.Read7BitEncodedInt();
 		Dictionary<string, GameKeyFlag> dict = [];
 		for (int i = 0; i < entryCount; i++)
 		{
 			byte stringLength = reader.ReadByte();
-			string key = reader.ReadStringCustomLength(stringLength);
-			dict.Add(key, GameKeyFlag.FromReader(reader));
+
+			byte[] stringArray = ArrayPool<byte>.Shared.Rent(stringLength);
+			try
+			{
+				reader.Read(stringArray, 0, stringLength);
+				string key = Encoding.UTF8.GetString(stringArray, 0, stringLength);
+				dict.Add(key, GameKeyFlag.FromReader(reader, 0));
+			}
+			finally
+			{
+				ArrayPool<byte>.Shared.Return(stringArray);
+			}
 		}
 
 		return new(
-			reader.ObjectVersion,
+			objectVersion,
 			dict,
 			reader.ReadByte(),
 			!reader.HasMore ? null : new(
-				reader.ReadByte() != 0,
+				reader.ReadBoolean(),
 				!reader.HasMore ? null : new(
-					reader.ReadByte() != 0,
-					reader.ReadByte() != 0)));
+					reader.ReadBoolean(),
+					reader.ReadBoolean())));
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.ObjectVersion = this.Version;
+		objectVersion = this.Version;
 
-		writer.WriteVariedInteger(checked((short)this.Keys.Count));
+		writer.Write7BitEncodedInt(this.Keys.Count);
 		foreach (KeyValuePair<string, GameKeyFlag> item in this.Keys)
 		{
 			byte[] encoded = Encoding.UTF8.GetBytes(item.Key);
 
-			writer.WriteByte(checked((byte)encoded.Length));
-			writer.WriteBytes(encoded);
-			item.Value.Serialize(writer);
+			writer.Write(checked((byte)encoded.Length));
+			writer.Write(encoded);
+			item.Value.Serialize(writer, out _);
 		}
 
-		writer.WriteByte(this.LanotaReadKeys);
+		writer.Write(this.LanotaReadKeys);
 
 		if (this.Node2 is null) return;
-		writer.WriteBool(this.Node2.CamelliaReadKey);
+		writer.Write(this.Node2.CamelliaReadKey);
 
 		if (this.Node2.Node3 is null) return;
-		writer.WriteBool(this.Node2.Node3.SideStory4BeginReadKey);
-		writer.WriteBool(this.Node2.Node3.OldScoreClearedV390);
+		writer.Write(this.Node2.Node3.SideStory4BeginReadKey);
+		writer.Write(this.Node2.Node3.OldScoreClearedV390);
 	}
 }
 

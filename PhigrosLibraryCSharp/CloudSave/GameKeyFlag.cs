@@ -1,6 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-
-namespace PhigrosLibraryCSharp.CloudSave;
+﻿namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The type of the game key flag, which is used to indicate the type of the payload in the flag.
@@ -151,7 +149,7 @@ public struct GameKeyFlag : IPhigrosCustomSerialization<GameKeyFlag>
 	/// <param name="position">The position in the flag to read the payload.</param>
 	/// <returns>The value of the payload at the specified position.</returns>
 	/// <exception cref="ArgumentException">Thrown when the position has more than 1 bit set, no bit set, or no payload at the position.</exception>
-	public byte ReadPayload(GameKeyFlagType position)
+	public readonly byte ReadPayload(GameKeyFlagType position)
 	{
 		int bitPosition = ValidatePositionHasOnly1Bit(position);
 		if ((position & this.Type) == 0) throw new ArgumentException("The position has no payload.", nameof(position));
@@ -160,24 +158,26 @@ public struct GameKeyFlag : IPhigrosCustomSerialization<GameKeyFlag>
 	}
 
 	/// <inheritdoc/>
-	public static GameKeyFlag FromReader(ByteReader reader)
+	public static GameKeyFlag FromReader(BinaryReader reader, byte objectVersion)
 	{
 		byte length = reader.ReadByte();
 		byte[] rawFlags = reader.ReadBytes(length);
 		return new(rawFlags);
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public readonly void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.WriteByte((byte)(this.PayloadCount + sizeof(GameKeyFlagType)));
-		writer.WriteUnmanaged(this.Type);
+		objectVersion = byte.MaxValue;
+
+		writer.Write((byte)(this.PayloadCount + sizeof(GameKeyFlagType)));
+		writer.WriteEnum(this.Type);
 
 		for (int i = 0; i < 8; i++)
 		{
 			if (((byte)this.Type & (1 << i)) == 0) continue;
 
 			byte data = (byte)((this.Payload >> (i * 8)) & 0xFF);
-			writer.WriteByte(data);
+			writer.Write(data);
 		}
 	}
 }

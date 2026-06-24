@@ -1,6 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-
-namespace PhigrosLibraryCSharp.CloudSave;
+﻿namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The user's settings in game.
@@ -111,34 +109,34 @@ public class GameSettings : IPhigrosCustomSerialization<GameSettings>
 	}
 
 	/// <inheritdoc/>
-	public static GameSettings FromReader(ByteReader reader)
+	public static GameSettings FromReader(BinaryReader reader, byte objectVersion)
 	{
 		return new(
-			reader.ObjectVersion,
+			objectVersion,
 			reader.ReadFromPackedBoolNoJump(0),
 			reader.ReadFromPackedBoolNoJump(1),
 			reader.ReadFromPackedBoolNoJump(2),
 			reader.ReadFromPackedBoolThenJump(3),
 			reader.ReadString(),
-			reader.ReadFloat(),
-			reader.ReadFloat(),
-			reader.ReadFloat(),
-			reader.ReadFloat(),
-			reader.ReadFloat(),
-			reader.ReadFloat());
+			reader.ReadSingle(),
+			reader.ReadSingle(),
+			reader.ReadSingle(),
+			reader.ReadSingle(),
+			reader.ReadSingle(),
+			reader.ReadSingle());
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.ObjectVersion = this.Version;
+		objectVersion = this.Version;
 
 		writer.WritePackedBools(this.ChordSupport, this.FcApIndicatorOn, this.EnableHitSound, this.LowResolutionModeOn);
-		writer.WriteString(this.DeviceName);
-		writer.WriteFloat(this.BackgroundBrightness);
-		writer.WriteFloat(this.MusicVolume);
-		writer.WriteFloat(this.EffectVolume);
-		writer.WriteFloat(this.HitSoundVolume);
-		writer.WriteFloat(this.SoundOffset);
-		writer.WriteFloat(this.NoteScale);
+		writer.Write(this.DeviceName);
+		writer.Write(this.BackgroundBrightness);
+		writer.Write(this.MusicVolume);
+		writer.Write(this.EffectVolume);
+		writer.Write(this.HitSoundVolume);
+		writer.Write(this.SoundOffset);
+		writer.Write(this.NoteScale);
 	}
 }

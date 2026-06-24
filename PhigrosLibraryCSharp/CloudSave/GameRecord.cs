@@ -1,4 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
+﻿using PhigrosLibraryCSharp;
 
 namespace PhigrosLibraryCSharp.CloudSave;
 
@@ -78,7 +78,7 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 		return (scores, rks);
 	}
 
-	private static List<RawRecord> ReadEntry(ByteReader reader)
+	private static List<RawRecord> ReadEntry(BinaryReader reader)
 	{
 		// The record structure is as follows:
 		// byte: record length in bytes (excluding this byte)
@@ -90,33 +90,34 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 
 		List<RawRecord> scores = [];
 		byte recordLength = reader.ReadByte();
-		int endOffset = recordLength + reader.Offset;
 
 		byte difficultyExistFlag = reader.ReadByte();
 		byte fullComboFlag = reader.ReadByte();
 
-		for (byte i = 0; reader.Offset < endOffset; i++)
+		int readLength = sizeof(byte) * 2; // includes the two flags
+		for (byte i = 0; readLength < recordLength; i++)
 		{
-			if (!ByteReader.ReadBool(difficultyExistFlag, i) || reader.Offset + 8 > reader.Data.Length)
+			if (!difficultyExistFlag.HasBit(i))
 				continue;
 
-			int score = reader.ReadInt();
-			float acc = reader.ReadFloat();
+			int score = reader.ReadInt32();
+			float acc = reader.ReadSingle();
 
 			if (acc > 100 || acc < 0)
 				throw new InvalidDataException($"Invalid accuracy value {acc}, score {score} found");
 
-			scores.Add(new(score, acc, ByteReader.ReadBool(fullComboFlag, i), i));
+			scores.Add(new(score, acc, fullComboFlag.HasBit(i), i));
+
+			readLength += sizeof(int) + sizeof(float);
 		}
-		reader.JumpTo(endOffset);
 		return scores;
 	}
 	/// <inheritdoc/>
-	public static GameRecord FromReader(ByteReader reader)
+	public static GameRecord FromReader(BinaryReader reader, byte objectVersion)
 	{
 		List<SongScore> scores = [];
 
-		short scoreCount = reader.ReadVariedInteger();
+		int scoreCount = reader.Read7BitEncodedInt();
 		for (int i = 0; i < scoreCount; i++)
 		{
 			string id = reader.ReadString();
@@ -127,17 +128,20 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 			}
 		}
 
-		return new(scores, reader.ObjectVersion);
+		return new(scores, objectVersion);
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
+		objectVersion = this.Version;
+
 		IGrouping<string, SongScore>[] grouped = this.Records.GroupBy(x => x.Id).ToArray();
-		writer.WriteVariedInteger((short)grouped.Length);
+		writer.Write7BitEncodedInt(grouped.Length);
 		foreach (IGrouping<string, SongScore> group in grouped)
 		{
-			writer.WriteString(group.Key);
-			writer.WriteByte((byte)((sizeof(byte) * 2) + ((sizeof(int) + sizeof(float)) * group.Count())));
+			writer.Write(group.Key);
+			// difficultyExistFlag and fullComboFlag are 1 byte each, and each score consists of 4 bytes for int and 4 bytes for float
+			writer.Write((byte)((sizeof(byte) * 2) + ((sizeof(int) + sizeof(float)) * group.Count())));
 
 			byte difficultyExistFlag = 0;
 			byte fullComboFlag = 0;
@@ -147,12 +151,12 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 				if (score._isFc)
 					fullComboFlag |= (byte)(1 << (int)score.Difficulty);
 			}
-			writer.WriteByte(difficultyExistFlag);
-			writer.WriteByte(fullComboFlag);
+			writer.Write(difficultyExistFlag);
+			writer.Write(fullComboFlag);
 			foreach (SongScore score in group)
 			{
-				writer.WriteInt(score.Score);
-				writer.WriteFloat(score.Accuracy);
+				writer.Write(score.Score);
+				writer.Write(score.Accuracy);
 			}
 		}
 	}

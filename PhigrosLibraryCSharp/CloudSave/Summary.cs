@@ -1,6 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-
-namespace PhigrosLibraryCSharp.CloudSave;
+﻿namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The summary of play counts, including cleared count, full combo count and phi count.
@@ -35,16 +33,18 @@ public struct PlayCountSummary : IPhigrosCustomSerialization<PlayCountSummary>
 	}
 
 	/// <inheritdoc/>
-	public static PlayCountSummary FromReader(ByteReader reader)
+	public static PlayCountSummary FromReader(BinaryReader reader, byte objectVersion)
 	{
-		return new(reader.ReadShort(), reader.ReadShort(), reader.ReadShort());
+		return new(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16());
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public readonly void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.WriteShort(this.ClearedCount);
-		writer.WriteShort(this.FullComboCount);
-		writer.WriteShort(this.PhiCount);
+		objectVersion = byte.MaxValue;
+
+		writer.Write(this.ClearedCount);
+		writer.Write(this.FullComboCount);
+		writer.Write(this.PhiCount);
 	}
 }
 /// <summary>
@@ -65,7 +65,7 @@ public class Summary : IPhigrosCustomSerialization<Summary>
 	/// <summary>
 	/// The version of game.
 	/// </summary>
-	public short GameVersion { get; set; }
+	public int GameVersion { get; set; }
 	/// <summary>
 	/// The rks value of the player. Note: This may not be accurate, please always calculate from <see cref="GameRecord"/>.
 	/// </summary>
@@ -113,7 +113,7 @@ public class Summary : IPhigrosCustomSerialization<Summary>
 		byte saveVersion,
 		Challenge challenge,
 		float rks,
-		short gameVersion,
+		int gameVersion,
 		string avatar,
 		PlayCountSummary ez,
 		PlayCountSummary hd,
@@ -132,30 +132,32 @@ public class Summary : IPhigrosCustomSerialization<Summary>
 	}
 
 	/// <inheritdoc/>
-	public static Summary FromReader(ByteReader reader)
+	public static Summary FromReader(BinaryReader reader, byte objectVersion)
 	{
 		return new(
 			reader.ReadByte(),
-			Challenge.FromReader(reader),
-			reader.ReadFloat(),
-			reader.ReadVariedInteger(),
+			Challenge.FromReader(reader, 0),
+			reader.ReadSingle(),
+			reader.Read7BitEncodedInt(),
 			reader.ReadString(),
-			PlayCountSummary.FromReader(reader),
-			PlayCountSummary.FromReader(reader),
-			PlayCountSummary.FromReader(reader),
-			PlayCountSummary.FromReader(reader));
+			PlayCountSummary.FromReader(reader, 0),
+			PlayCountSummary.FromReader(reader, 0),
+			PlayCountSummary.FromReader(reader, 0),
+			PlayCountSummary.FromReader(reader, 0));
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.WriteByte(this.SaveVersion);
-		this.Challenge.Serialize(writer);
-		writer.WriteFloat(this.Rks);
-		writer.WriteVariedInteger(this.GameVersion);
-		writer.WriteString(this.Avatar);
-		this.EZPlayRecord.Serialize(writer);
-		this.HDPlayRecord.Serialize(writer);
-		this.INPlayRecord.Serialize(writer);
-		this.ATPlayRecord.Serialize(writer);
+		objectVersion = byte.MaxValue;
+
+		writer.Write(this.SaveVersion);
+		this.Challenge.Serialize(writer, out _);
+		writer.Write(this.Rks);
+		writer.Write7BitEncodedInt(this.GameVersion);
+		writer.Write(this.Avatar);
+		this.EZPlayRecord.Serialize(writer, out _);
+		this.HDPlayRecord.Serialize(writer, out _);
+		this.INPlayRecord.Serialize(writer, out _);
+		this.ATPlayRecord.Serialize(writer, out _);
 	}
 }

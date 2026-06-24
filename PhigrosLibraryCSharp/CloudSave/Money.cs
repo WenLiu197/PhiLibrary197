@@ -1,5 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace PhigrosLibraryCSharp.CloudSave;
 
@@ -14,19 +13,19 @@ public class Money : IPhigrosCustomSerialization<Money>, IEquatable<Money>, IEqu
 	public static Money Zero => new(0, 0, 0, 0, 0);
 
 	/// <summary>KiB count.</summary>
-	public short KiB { get; set; }
+	public int KiB { get; set; }
 
 	/// <summary>MiB count.</summary>
-	public short MiB { get; set; }
+	public int MiB { get; set; }
 
 	/// <summary>GiB count.</summary>
-	public short GiB { get; set; }
+	public int GiB { get; set; }
 
 	/// <summary>TiB count.</summary>
-	public short TiB { get; set; }
+	public int TiB { get; set; }
 
 	/// <summary>PiB count.</summary>
-	public short PiB { get; set; }
+	public int PiB { get; set; }
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Money"/> class.
@@ -36,7 +35,7 @@ public class Money : IPhigrosCustomSerialization<Money>, IEquatable<Money>, IEqu
 	/// <param name="giB">GiB count.</param>
 	/// <param name="tiB">TiB count.</param>
 	/// <param name="piB">PiB count.</param>
-	public Money(short kiB, short miB, short giB, short tiB, short piB)
+	public Money(int kiB, int miB, int giB, int tiB, int piB)
 	{
 		this.KiB = kiB;
 		this.MiB = miB;
@@ -72,23 +71,25 @@ public class Money : IPhigrosCustomSerialization<Money>, IEquatable<Money>, IEqu
 	}
 
 	/// <inheritdoc/>
-	public static Money FromReader(ByteReader reader)
+	public static Money FromReader(BinaryReader reader, byte objectVersion)
 	{
 		return new(
-			reader.ReadVariedInteger(),
-			reader.ReadVariedInteger(),
-			reader.ReadVariedInteger(),
-			reader.ReadVariedInteger(),
-			reader.ReadVariedInteger());
+			reader.Read7BitEncodedInt(),
+			reader.Read7BitEncodedInt(),
+			reader.Read7BitEncodedInt(),
+			reader.Read7BitEncodedInt(),
+			reader.Read7BitEncodedInt());
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.WriteVariedInteger(this.KiB);
-		writer.WriteVariedInteger(this.MiB);
-		writer.WriteVariedInteger(this.GiB);
-		writer.WriteVariedInteger(this.TiB);
-		writer.WriteVariedInteger(this.PiB);
+		objectVersion = byte.MaxValue;
+
+		writer.Write7BitEncodedInt(this.KiB);
+		writer.Write7BitEncodedInt(this.MiB);
+		writer.Write7BitEncodedInt(this.GiB);
+		writer.Write7BitEncodedInt(this.TiB);
+		writer.Write7BitEncodedInt(this.PiB);
 	}
 
 	/// <inheritdoc/>

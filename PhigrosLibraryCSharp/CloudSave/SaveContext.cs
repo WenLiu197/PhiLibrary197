@@ -1,5 +1,4 @@
 ﻿using PhigrosLibraryCSharp.CloudSave.HttpModels;
-using PhigrosLibraryCSharp.Serialization;
 using System.IO.Compression;
 
 namespace PhigrosLibraryCSharp.CloudSave;
@@ -166,9 +165,9 @@ public class SaveContext
 	/// <returns>The player's summary.</returns>
 	public Summary ReadSummary()
 	{
-		ByteReader reader = new(this.RawSummary);
+		using BinaryReader reader = BinaryReader.FromArray(this.RawSummary, out _);
 
-		return Summary.FromReader(reader);
+		return Summary.FromReader(reader, 0);
 	}
 	/// <summary>
 	/// Read the player's game records.
@@ -177,8 +176,8 @@ public class SaveContext
 	public GameRecord ReadGameRecord()
 	{
 		Entry entry = this.DecryptedGameRecord;
-		ByteReader reader = new(entry.Data, version: entry.ObjectVersion);
-		return GameRecord.FromReader(reader);
+		using BinaryReader reader = BinaryReader.FromArray(entry.Data, out _);
+		return GameRecord.FromReader(reader, entry.ObjectVersion);
 	}
 
 	/// <summary>
@@ -188,8 +187,8 @@ public class SaveContext
 	public GameSettings ReadGameSettings()
 	{
 		Entry entry = this.DecryptedGameSettings;
-		ByteReader reader = new(entry.Data, version: entry.ObjectVersion);
-		return GameSettings.FromReader(reader);
+		using BinaryReader reader = BinaryReader.FromArray(entry.Data, out _);
+		return GameSettings.FromReader(reader, entry.ObjectVersion);
 	}
 
 	/// <summary>
@@ -199,8 +198,8 @@ public class SaveContext
 	public GameProgress ReadGameProgress()
 	{
 		Entry entry = this.DecryptedGameProgress;
-		ByteReader reader = new(entry.Data, version: entry.ObjectVersion);
-		return GameProgress.FromReader(reader);
+		using BinaryReader reader = BinaryReader.FromArray(entry.Data, out _);
+		return GameProgress.FromReader(reader, entry.ObjectVersion);
 	}
 
 	/// <summary>
@@ -210,8 +209,8 @@ public class SaveContext
 	public GameKey ReadGameKey()
 	{
 		Entry entry = this.DecryptedGameKey;
-		ByteReader reader = new(entry.Data, version: entry.ObjectVersion);
-		return GameKey.FromReader(reader);
+		using BinaryReader reader = BinaryReader.FromArray(entry.Data, out _);
+		return GameKey.FromReader(reader, entry.ObjectVersion);
 	}
 
 	/// <summary>
@@ -221,8 +220,8 @@ public class SaveContext
 	public GameUserInfo ReadGameUserInfo()
 	{
 		Entry entry = this.DecryptedGameUserInfo;
-		ByteReader reader = new(entry.Data, version: entry.ObjectVersion);
-		return GameUserInfo.FromReader(reader);
+		using BinaryReader reader = BinaryReader.FromArray(entry.Data, out _);
+		return GameUserInfo.FromReader(reader, entry.ObjectVersion);
 	}
 	#endregion
 
@@ -234,8 +233,10 @@ public class SaveContext
 	public void SaveSummary(Summary summary)
 	{
 		using MemoryStream stream = new();
-		ByteWriter writer = new(stream);
-		summary.Serialize(writer);
+		using (BinaryWriter writer = new(stream))
+		{
+			summary.Serialize(writer, out _);
+		}
 		this.RawSummary = stream.ToArray();
 	}
 	/// <summary>
@@ -245,9 +246,13 @@ public class SaveContext
 	public void SaveGameRecord(GameRecord record)
 	{
 		using MemoryStream stream = new();
-		ByteWriter writer = new(stream);
-		record.Serialize(writer);
-		this.DecryptedGameRecord = new(record.Version, stream.ToArray());
+
+		byte version;
+		using (BinaryWriter writer = new(stream))
+		{
+			record.Serialize(writer, out version);
+		}
+		this.DecryptedGameRecord = new(version, stream.ToArray());
 	}
 	/// <summary>
 	/// Saves the player's game settings to this context.
@@ -256,9 +261,13 @@ public class SaveContext
 	public void SaveGameSettings(GameSettings settings)
 	{
 		using MemoryStream stream = new();
-		ByteWriter writer = new(stream);
-		settings.Serialize(writer);
-		this.DecryptedGameSettings = new(settings.Version, stream.ToArray());
+
+		byte version;
+		using (BinaryWriter writer = new(stream))
+		{
+			settings.Serialize(writer, out version);
+		}
+		this.DecryptedGameSettings = new(version, stream.ToArray());
 	}
 	/// <summary>
 	/// Saves the player's game progress to this context.
@@ -267,9 +276,13 @@ public class SaveContext
 	public void SaveGameProgress(GameProgress progress)
 	{
 		using MemoryStream stream = new();
-		ByteWriter writer = new(stream);
-		progress.Serialize(writer);
-		this.DecryptedGameProgress = new(progress.Version, stream.ToArray());
+
+		byte version;
+		using (BinaryWriter writer = new(stream))
+		{
+			progress.Serialize(writer, out version);
+		}
+		this.DecryptedGameProgress = new(version, stream.ToArray());
 	}
 	/// <summary>
 	/// Saves the player's game key to this context.
@@ -278,9 +291,13 @@ public class SaveContext
 	public void SaveGameKey(GameKey key)
 	{
 		using MemoryStream stream = new();
-		ByteWriter writer = new(stream);
-		key.Serialize(writer);
-		this.DecryptedGameKey = new(key.Version, stream.ToArray());
+
+		byte version;
+		using (BinaryWriter writer = new(stream))
+		{
+			key.Serialize(writer, out version);
+		}
+		this.DecryptedGameKey = new(version, stream.ToArray());
 	}
 	/// <summary>
 	/// Saves the player's game user info to this context.
@@ -289,9 +306,13 @@ public class SaveContext
 	public void SaveGameUserInfo(GameUserInfo userInfo)
 	{
 		using MemoryStream stream = new();
-		ByteWriter writer = new(stream);
-		userInfo.Serialize(writer);
-		this.DecryptedGameUserInfo = new(userInfo.Version, stream.ToArray());
+
+		byte version;
+		using (BinaryWriter writer = new(stream))
+		{
+			userInfo.Serialize(writer, out version);
+		}
+		this.DecryptedGameUserInfo = new(version, stream.ToArray());
 	}
 	#endregion
 }

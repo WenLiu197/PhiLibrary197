@@ -1,6 +1,4 @@
-﻿using PhigrosLibraryCSharp.Serialization;
-
-namespace PhigrosLibraryCSharp.CloudSave;
+﻿namespace PhigrosLibraryCSharp.CloudSave;
 
 /// <summary>
 /// The user's info in game.
@@ -50,25 +48,25 @@ public class GameUserInfo : IPhigrosCustomSerialization<GameUserInfo>
 	}
 
 	/// <inheritdoc/>
-	public static GameUserInfo FromReader(ByteReader reader)
+	public static GameUserInfo FromReader(BinaryReader reader, byte objectVersion)
 	{
 		//string tmp;
 		return new(
-			reader.ObjectVersion,
-			reader.ReadByte() != 0,
+			objectVersion,
+			reader.ReadBoolean(),
 			reader.ReadString(),
-			//string.IsNullOrWhiteSpace(tmp = reader.ReadString()) ? "Introduction" : tmp,
 			reader.ReadString(),
 			reader.ReadString());
+		//string.IsNullOrWhiteSpace(tmp = reader.ReadString()) ? "Introduction" : tmp,
 	}
 	/// <inheritdoc/>
-	public void Serialize(ByteWriter writer)
+	public void Serialize(BinaryWriter writer, out byte objectVersion)
 	{
-		writer.ObjectVersion = this.Version;
+		objectVersion = this.Version;
 
-		writer.WriteByte((byte)(this.ShowUserId ? 1 : 0));
-		writer.WriteString(this.Intro);
-		writer.WriteString(this.AvatarId);
-		writer.WriteString(this.BackgroundId);
+		writer.Write(this.ShowUserId);
+		writer.Write(this.Intro);
+		writer.Write(this.AvatarId);
+		writer.Write(this.BackgroundId);
 	}
 }
