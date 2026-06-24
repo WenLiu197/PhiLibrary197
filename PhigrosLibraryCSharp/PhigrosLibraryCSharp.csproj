@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -31,7 +31,6 @@
 			<IncludeInPackage>true</IncludeInPackage>
 			<CopyToOutput>true</CopyToOutput>
 			<BuildAction>Content</BuildAction>
-			<copyToOutput>true</copyToOutput>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			<PackagePath>.</PackagePath>
 		</Content>
@@ -47,7 +46,7 @@
 			<Code Type="Fragment" Language="cs">
 				var content = System.IO.File.ReadAllText(FilePath);
 				var idx = content.IndexOf(Delimiter);
-				Result = idx >= 0 ? content.Substring(0, idx).Trim() : content.Trim();
+				Result = idx &gt;= 0 ? content.Substring(0, idx).Trim() : content.Trim();
 			</Code>
 		</Task>
 	</UsingTask>
