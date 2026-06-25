@@ -1,3 +1,12 @@
+# 5.0.0
+- Bump to .NET 10.
+- Replace custom binary serializers with BCL `BinaryReader`/`BinaryWriter`.
+- Use short-lived `SocketsHttpHandler`s for static `HttpClient`s to avoid DNS caching/ineffective DNS changes.
+- Refactor and add `virtual`/`protected` modifiers to some methods/properties/fields to allow easier subclassing for `Save`.
+- Use singleton shared `HttpClient` for `Save` class to avoid socket exhaustion and DNS caching issues.
+
+<RELEASE_NOTE_END>
+
 # 4.4.1
 - Make `Money` implement `IEquatable<Money>`, `IComparable<Money>` and override equality related methods. Added `Money.Zero` property that returns an empty instance of `Money`.
 
@@ -5,8 +14,6 @@
 - Added custom query parameter to `GetSaveInfoFromCloudAsync()` and `GetSaveContextAsync()` methods, allowing users to specify additional query parameters when requesting save info from the cloud. 
     - By default, it filters out save files that are not uploaded by the current user.
     - Users should recompile after upgrading to prevent `MethodNotFoundException`s.
-    
-<RELEASE_NOTE_END>
 
 # 4.3.0
 - Made all async apis in `Save`, `SaveContext`, `TapTapHelper`, and `LCHelper` classes cancellable by accepting `CancellationToken` parameters. Users should recompile to prevent `MethodNotFoundException`s.
