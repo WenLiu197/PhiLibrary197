@@ -50,51 +50,11 @@ public class Save : IDisposable
 	};
 	#endregion
 
-	private string? _userObjectId = null;
-
-	/// <summary>
-	/// The user's session token.
-	/// </summary>
-	public string SessionToken { get; private set; }
-	/// <summary>
-	/// Indicates whether the save is for the international server or not.
-	/// </summary>
-	public bool IsInternational { get; private set; }
-	/// <summary>
-	/// The client used for making requests to the cloud server. You can use this to make custom requests if needed.
-	/// </summary>
-	public HttpClient Client { get; private set; } // TODO: maybe we should use HttpClientFactory in the future, to match server side more
-
-	/// <summary>
-	/// Custom request handler that can be used to intercept requests to the cloud server. 
-	/// This can be useful for platforms where <see cref="HttpClient"/> is not fully supported, such as WASM.
-	/// </summary>
-	public Func<Save, HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> RequestHandler { get; set; } = DefaultRequestHandler;
+	#region Default implementations
 	private static Task<HttpResponseMessage> DefaultRequestHandler(Save save, HttpRequestMessage request, CancellationToken ct = default)
 	{
-		return save.Client.SendAsync(request, ct);
+		return SharedClient.SendAsync(request, ct);
 	}
-
-	/// <summary>
-	/// A delegate that can be used on WASM platform or other platforms where AES is not supported.
-	/// </summary>
-	/// <param name="key">Decoded <see cref="CloudAESKey"/>.</param>
-	/// <param name="iv">Decoded <see cref="CloudAESIV"/>.</param>
-	/// <param name="data">Decoded data for decrypting or encrypting.</param>
-	/// <param name="ct">The cancellation token to cancel the operation.</param>
-	/// <returns>Decrypted or encrypted data.</returns>
-	public delegate Task<byte[]> AESCipherFunction(byte[] key, byte[] iv, byte[] data, CancellationToken ct = default);
-	/// <summary>
-	/// On WASM or other platform where AES is not supported, you can set this property to other function
-	/// that is capable to decrypt data.
-	/// </summary>
-	public AESCipherFunction Decryptor { get; init; } = DecryptDefaultImplementation;
-	/// <summary>
-	/// On WASM or other platform where AES is not supported, you can set this property to other function
-	/// that is capable to encrypt data.
-	/// </summary>
-	public AESCipherFunction Encryptor { get; init; } = EncryptDefaultImplementation;
-
 	private static async Task<byte[]> DecryptDefaultImplementation(byte[] key, byte[] iv, byte[] data, CancellationToken ct = default)
 	{
 		using Aes aes = Aes.Create();
@@ -124,6 +84,55 @@ public class Save : IDisposable
 		}
 		return ms.ToArray();
 	}
+	#endregion
+
+	/// <summary>
+	/// A delegate that can be used on WASM platform or other platforms where AES is not supported.
+	/// </summary>
+	/// <param name="key">Decoded <see cref="CloudAESKey"/>.</param>
+	/// <param name="iv">Decoded <see cref="CloudAESIV"/>.</param>
+	/// <param name="data">Decoded data for decrypting or encrypting.</param>
+	/// <param name="ct">The cancellation token to cancel the operation.</param>
+	/// <returns>Decrypted or encrypted data.</returns>
+	public delegate Task<byte[]> AESCipherFunction(byte[] key, byte[] iv, byte[] data, CancellationToken ct = default);
+
+	/// <summary>
+	/// Shared <see cref="HttpClient"/> instance that is used for making requests to the cloud server by all <see cref="Save"/> instances.
+	/// Do not dispose or replace this client unless you know what you are doing. If you need to intercept or proxy the requests, 
+	/// consider using the <see cref="RequestHandler"/> property instead.
+	/// </summary>
+	public static HttpClient SharedClient { get; set; } = new(SocketsHttpHandler.CreateFromLifeTime(TimeSpan.FromMinutes(2)));
+
+	/// <summary>
+	/// Cached user object ID, to make subsequent calls to <see cref="GetUserObjectId"/> faster.
+	/// </summary>
+	protected string? _userObjectId = null;
+
+	/// <summary>
+	/// The user's session token.
+	/// </summary>
+	public string SessionToken { get; private init; }
+	/// <summary>
+	/// Indicates whether the save is for the international server or not.
+	/// </summary>
+	public bool IsInternational { get; private init; }
+
+	/// <summary>
+	/// Custom request handler that can be used to intercept requests to the cloud server. 
+	/// This can be useful for platforms where <see cref="HttpClient"/> is not fully supported, such as WASM.
+	/// </summary>
+	public Func<Save, HttpRequestMessage, CancellationToken, Task<HttpResponseMessage>> RequestHandler { get; set; } = DefaultRequestHandler;
+
+	/// <summary>
+	/// On WASM or other platform where AES is not supported, you can set this property to other function
+	/// that is capable to decrypt data.
+	/// </summary>
+	public AESCipherFunction Decryptor { get; set; } = DecryptDefaultImplementation;
+	/// <summary>
+	/// On WASM or other platform where AES is not supported, you can set this property to other function
+	/// that is capable to encrypt data.
+	/// </summary>
+	public AESCipherFunction Encryptor { get; set; } = EncryptDefaultImplementation;
 
 	/// <summary>
 	/// Initialize the helper. Warning: Only check token semantically, does NOT do a connect test.
@@ -137,12 +146,6 @@ public class Save : IDisposable
 		sessionToken = sessionToken.Trim();
 		this.IsInternational = isInternational;
 		this.SessionToken = sessionToken;
-		this.Client = new();
-		this.Client.DefaultRequestHeaders.Add("X-LC-Id", isInternational ? LCHelper.InternationalClientId : LCHelper.ClientId);
-		this.Client.DefaultRequestHeaders.Add("X-LC-Key", isInternational ? LCHelper.InternationalAppKey : LCHelper.AppKey);
-		this.Client.DefaultRequestHeaders.Add("User-Agent", "LeanCloud-CSharp-SDK/1.0.3");
-		this.Client.DefaultRequestHeaders.Add("Accept", "application/json");
-		this.Client.DefaultRequestHeaders.Add("X-LC-Session", sessionToken);
 
 		if (!IsSemanticallyValidToken(sessionToken))
 			throw new ArgumentException("Invalid token.", nameof(sessionToken));
@@ -179,16 +182,32 @@ public class Save : IDisposable
 	}
 
 	/// <inheritdoc/>
-	public void Dispose()
+	public virtual void Dispose()
 	{
 		GC.SuppressFinalize(this);
-		this.Client.Dispose();
 	}
 
 	#region Raw operation
+	/// <summary>
+	/// Creates a default <see cref="HttpRequestMessage"/> with the necessary headers for Phigros cloud requests.
+	/// </summary>
+	/// <param name="method">The HTTP method to use for the request.</param>
+	/// <param name="address">The URL address for the request.</param>
+	/// <returns>A configured <see cref="HttpRequestMessage"/> instance.</returns>
+	protected HttpRequestMessage CreateDefaultMessage(HttpMethod method, string address)
+	{
+		HttpRequestMessage message = new(method, address);
+		message.Headers.Add("X-LC-Id", this.IsInternational ? LCHelper.InternationalClientId : LCHelper.ClientId);
+		message.Headers.Add("X-LC-Key", this.IsInternational ? LCHelper.InternationalAppKey : LCHelper.AppKey);
+		message.Headers.Add("User-Agent", "LeanCloud-CSharp-SDK/1.0.3");
+		message.Headers.Add("Accept", "application/json");
+		message.Headers.Add("X-LC-Session", this.SessionToken);
+
+		return message;
+	}
 	private Task<HttpResponseMessage> GetAsync(string address, CancellationToken ct = default)
 	{
-		return this.RequestHandler.Invoke(this, new HttpRequestMessage(HttpMethod.Get, address), ct);
+		return this.RequestHandler.Invoke(this, this.CreateDefaultMessage(HttpMethod.Get, address), ct);
 	}
 
 	/// <summary>
