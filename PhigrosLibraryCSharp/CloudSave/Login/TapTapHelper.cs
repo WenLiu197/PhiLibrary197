@@ -22,8 +22,8 @@ public static class TapTapHelper // TODO: Add callback login
 	internal static readonly string AssemblyName = (typeof(TapTapHelper).Assembly.GetName().Name ?? "unknown_dll")
 		.Replace(" ", "_", StringComparison.InvariantCultureIgnoreCase);
 
-	private static readonly HttpClient _client = new();
-	private static readonly HttpClient _internationalClient = new();
+	private static readonly HttpClient _client = new(SocketsHttpHandler.CreateFromLifeTime(TimeSpan.FromMinutes(2)));
+	private static readonly HttpClient _internationalClient = new(SocketsHttpHandler.CreateFromLifeTime(TimeSpan.FromMinutes(2)));
 
 	private static HttpClient GetClient(bool useChinaEndpoint)
 		=> useChinaEndpoint ? _client : _internationalClient;

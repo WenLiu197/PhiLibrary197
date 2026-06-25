@@ -40,6 +40,17 @@ internal static class UtilityExtension
 		return (value & (1u << index)) != 0;
 	}
 
+	extension(SocketsHttpHandler self)
+	{
+		internal static SocketsHttpHandler CreateFromLifeTime(TimeSpan pooledConnectionLifetime)
+		{
+			return new SocketsHttpHandler()
+			{
+				PooledConnectionLifetime = pooledConnectionLifetime,
+			};
+		}
+	}
+
 	extension(BinaryWriter self)
 	{
 		internal void WritePackedBools(params ReadOnlySpan<bool> values)

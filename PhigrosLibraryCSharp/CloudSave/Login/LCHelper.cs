@@ -25,11 +25,11 @@ public static class LCHelper
 
 	private static Task<string> MD5HashHexStringDefaultGetter(string input, CancellationToken ct)
 		=> Task.FromResult(MD5.HashData(Encoding.UTF8.GetBytes(input)).ToHex());
-	private static readonly HttpClient Client = new()
+	private static readonly HttpClient Client = new(SocketsHttpHandler.CreateFromLifeTime(TimeSpan.FromMinutes(2)))
 	{
 		BaseAddress = new(Save.CloudServerAddress)
 	};
-	private static readonly HttpClient InternationalClient = new()
+	private static readonly HttpClient InternationalClient = new(SocketsHttpHandler.CreateFromLifeTime(TimeSpan.FromMinutes(2)))
 	{
 		BaseAddress = new(Save.InternationalCloudServerAddress)
 	};
