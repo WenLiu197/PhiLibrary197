@@ -145,7 +145,7 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 
 			byte difficultyExistFlag = 0;
 			byte fullComboFlag = 0;
-			foreach (SongScore score in group)
+			foreach (SongScore score in group.OrderBy(x => x.Difficulty))
 			{
 				difficultyExistFlag |= (byte)(1 << (int)score.Difficulty);
 				if (score._isFc)
