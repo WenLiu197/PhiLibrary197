@@ -246,10 +246,10 @@ public static class TapTapHelper // TODO: Add callback login
 		string port,
 		int timestamp)
 	{
-		string nonce = new Random().Next().ToString();
+		string nonce = Random.Shared.Next().ToString();
 
 		string normalizedString = $"{timestamp}\n{nonce}\n{method}\n{uri}\n{host}\n{port}\n\n";
-		HashAlgorithm hashGenerator = macAlgorithm switch
+		using HashAlgorithm hashGenerator = macAlgorithm switch
 		{
 			"hmac-sha-256" => new HMACSHA256(Encoding.ASCII.GetBytes(macKey)),
 			"hmac-sha-1" => new HMACSHA1(Encoding.ASCII.GetBytes(macKey)),
