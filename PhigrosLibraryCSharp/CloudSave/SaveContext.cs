@@ -82,7 +82,7 @@ public class SaveContext
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="SaveContext"/> class. Recommend to use
-	/// static factory methods like <see cref="FromZipAsync(byte[], SaveInfo, CipherFunction)"/> to 
+	/// static factory methods like <see cref="FromZipAsync(byte[], SaveInfo, CipherFunction, CancellationToken)"/> to 
 	/// construct the object instead of calling this constructor directly.
 	/// </summary>
 	/// <param name="decryptedEntries">The decrypted entries.</param>
@@ -99,9 +99,10 @@ public class SaveContext
 	/// <param name="rawZip">Zip buffer containing encrypted entries.</param>
 	/// <param name="originalData">The original save info object.</param>
 	/// <param name="decryptor">A function to decrypt the raw data entries.</param>
+	/// <param name="ct">The cancellation token to cancel the operation.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the created <see cref="SaveContext"/> instance.</returns>
-	public static async Task<SaveContext> FromZipAsync(byte[] rawZip, SaveInfo originalData, CipherFunction decryptor) =>
-		await FromZipAsync(new MemoryStream(rawZip), originalData, decryptor);
+	public static async Task<SaveContext> FromZipAsync(byte[] rawZip, SaveInfo originalData, CipherFunction decryptor, CancellationToken ct = default) =>
+		await FromZipAsync(new MemoryStream(rawZip), originalData, decryptor, ct);
 	/// <summary>
 	/// Creates a new instance of the <see cref="SaveContext"/> class by reading and decrypting the provided zip data. 
 	/// </summary>
