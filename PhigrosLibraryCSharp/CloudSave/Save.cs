@@ -176,7 +176,11 @@ public class Save : IDisposable
 			sb.Append(Uri.EscapeDataString(item.Key));
 			sb.Append('=');
 			sb.Append(Uri.EscapeDataString(item.Value));
+			sb.Append('&');
 		}
+
+		if (sb[^1] == '&')
+			sb.Length--;
 
 		return sb.ToString();
 	}
