@@ -1,11 +1,19 @@
+# 5.0.1
+- Add cancellation token for `FromZipAsync` `byte[]` overload.
+- Reduce allocation and dispose some types properly in `TapTapHelper`.
+- Fix scores serialization relying on order.
+- Fix `BuildQueryString` not appending ampersand for custom `GetSaveInfoFromCloudAsync` filters.
+- Improve exception messages for internal null checks, now they throw `DebugArgumentNullException` with an option to include additional debug data.
+    - Note: Only print the `DebugArgumentNullException` with additional message to the backend or log, never to user. As they may contain sensitive information.
+
+<RELEASE_NOTE_END>
+
 # 5.0.0
 - Bump to .NET 10.
 - Replace custom binary serializers with BCL `BinaryReader`/`BinaryWriter`.
 - Use short-lived `SocketsHttpHandler`s for static `HttpClient`s to avoid DNS caching/ineffective DNS changes.
 - Refactor and add `virtual`/`protected` modifiers to some methods/properties/fields to allow easier subclassing for `Save`.
 - Use singleton shared `HttpClient` for `Save` class to avoid socket exhaustion and DNS caching issues.
-
-<RELEASE_NOTE_END>
 
 # 4.4.1
 - Make `Money` implement `IEquatable<Money>`, `IComparable<Money>` and override equality related methods. Added `Money.Zero` property that returns an empty instance of `Money`.
