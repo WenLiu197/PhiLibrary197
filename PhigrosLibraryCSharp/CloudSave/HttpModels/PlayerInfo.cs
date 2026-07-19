@@ -7,9 +7,10 @@
 public class PlayerInfo
 {
 	/// <summary>
-	/// The player's nickname, <see cref="string.Empty"/> if not present in returned data. (The name shown in game)
+	/// The player's nickname, <see langword="null"/> if not present in serialized data.
+	/// If this is null, the game displays <c>guest</c> instead.
 	/// </summary>
-	public string NickName { get; set; } = "";
+	public string? NickName { get; set; }
 	/// <summary>
 	/// The player's username.
 	/// </summary>
