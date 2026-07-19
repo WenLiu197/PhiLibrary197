@@ -32,8 +32,12 @@ public class SaveInfo
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 	[JsonPropertyName("createdAt")]
 	public required DateTime CreatedAt { get; set; }
+
+	/// <summary>
+	/// In some edge cases, this property may be null. It's really rare (1 out of 1800 in my case), but it can happen.
+	/// </summary>
 	[JsonPropertyName("gameFile")]
-	public required GameFile GameFile { get; set; }
+	public GameFile? GameFile { get; set; }
 	[JsonPropertyName("modifiedAt")]
 	public required TapTapSaveTime ModifiedAt { get; set; }
 	[JsonPropertyName("name")]
@@ -58,7 +62,7 @@ public class SaveInfo
 		{
 			GameSave = new PhiCloudObj()
 			{
-				Url = this.GameFile.Url
+				Url = this.GameFile?.Url
 			},
 			CreationDate = this.CreatedAt,
 			ModificationTime = this.UpdatedAt,

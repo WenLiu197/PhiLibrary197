@@ -265,7 +265,7 @@ public class Save : IDisposable
 	/// <param name="ct">The cancellation token to cancel the operation.</param>
 	/// <returns>An array of <see cref="byte"/> of zip's raw data.</returns>
 	public Task<byte[]> GetSaveZipAsync(PhiCloudObj obj, CancellationToken ct = default)
-		=> this.GetRawAddressAsync(obj.Url, ct);
+		=> this.GetRawAddressAsync(obj.Url.EnsureNotNull(), ct);
 	/// <summary>
 	/// Get encrypted save zip from cloud.
 	/// </summary>
@@ -273,7 +273,7 @@ public class Save : IDisposable
 	/// <param name="ct">The cancellation token to cancel the operation.</param>
 	/// <returns>An array of <see cref="byte"/> of zip's raw data.</returns>
 	public Task<byte[]> GetSaveZipAsync(SimplifiedSaveInfo obj, CancellationToken ct = default)
-		=> this.GetRawAddressAsync(obj.GameSave.Url, ct);
+		=> this.GetRawAddressAsync(obj.GameSave.Url.EnsureNotNull(obj.ToString()), ct);
 	/// <summary>
 	/// Decrypt using Phigros' key and iv.
 	/// </summary>

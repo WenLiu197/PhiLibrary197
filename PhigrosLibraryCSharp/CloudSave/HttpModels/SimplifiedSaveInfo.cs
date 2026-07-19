@@ -31,5 +31,5 @@ public struct PhiCloudObj
 	/// <summary>
 	/// The URL of object.
 	/// </summary>
-	public required string Url { get; set; }
+	public required string? Url { get; set; }
 }
