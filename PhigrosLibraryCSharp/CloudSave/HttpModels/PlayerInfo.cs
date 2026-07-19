@@ -7,7 +7,7 @@
 public class PlayerInfo
 {
 	/// <summary>
-	/// The player's nickname. (The name shown in game)
+	/// The player's nickname, <see cref="string.Empty"/> if not present in returned data. (The name shown in game)
 	/// </summary>
 	public string NickName { get; set; } = "";
 	/// <summary>

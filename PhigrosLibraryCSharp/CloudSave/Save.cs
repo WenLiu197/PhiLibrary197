@@ -327,7 +327,7 @@ public class Save : IDisposable
 
 		return new PlayerInfo()
 		{
-			NickName = node["nickname"].EnsureNotNull(content).GetValue<string>(),
+			NickName = node["nickname"]?.GetValue<string>() ?? "",
 			UserName = node["username"].EnsureNotNull(content).GetValue<string>(),
 			CreationTime = node["createdAt"].EnsureNotNull(content).GetValue<DateTime>(),
 			ModificationTime = node["updatedAt"].EnsureNotNull(content).GetValue<DateTime>(),
