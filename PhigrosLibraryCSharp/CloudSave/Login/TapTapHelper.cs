@@ -307,11 +307,11 @@ public static class TapTapHelper // TODO: Add callback login
 
 		if (response.IsSuccessStatusCode)
 		{
-			T ret = JsonSerializer.Deserialize<T>(resultString).EnsureNotNull();
+			T ret = JsonSerializer.Deserialize<T>(resultString).EnsureNotNull(resultString);
 			return ret;
 		}
-		JsonNode parsed = JsonNode.Parse(resultString).EnsureNotNull();
-		FailingType type = parsed["data"].EnsureNotNull()["error"].EnsureNotNull().GetValue<string>() switch
+		JsonNode parsed = JsonNode.Parse(resultString).EnsureNotNull(resultString);
+		FailingType type = parsed["data"].EnsureNotNull(resultString)["error"].EnsureNotNull(resultString).GetValue<string>() switch
 		{
 			"authorization_pending" => FailingType.Pending,
 			"authorization_waiting" => FailingType.Waiting,

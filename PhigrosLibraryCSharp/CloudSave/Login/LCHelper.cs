@@ -91,7 +91,12 @@ public static class LCHelper
 	/// <param name="ct">The cancellation token to cancel the operation.</param>
 	/// <returns>The session token of the user.</returns>
 	public static async Task<string> LoginAndGetToken(LCCombinedAuthData data, bool useChinaEndpoint = true, bool failOnNotExist = false, CancellationToken ct = default)
-		=> (await LoginWithAuthData(data, useChinaEndpoint, failOnNotExist, ct))["sessionToken"].EnsureNotNull().GetValue<string>();
+	{
+		JsonNode authData = await LoginWithAuthData(data, useChinaEndpoint, failOnNotExist, ct);
+		string authDataDebugInfo = authData.ToJsonString();
+
+		return authData["sessionToken"].EnsureNotNull(authDataDebugInfo).GetValue<string>();
+	}
 
 	internal static async Task<T> Request<T>(
 		string path,
@@ -140,7 +145,7 @@ public static class LCHelper
 
 		if (response.IsSuccessStatusCode)
 		{
-			T ret = JsonSerializer.Deserialize<T>(resultString, Save.SerializerSettings).EnsureNotNull();
+			T ret = JsonSerializer.Deserialize<T>(resultString, Save.SerializerSettings).EnsureNotNull(resultString);
 			return ret;
 		}
 		throw new HttpRequestException(resultString, null, statusCode);

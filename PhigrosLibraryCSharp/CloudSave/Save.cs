@@ -320,17 +320,17 @@ public class Save : IDisposable
 		using HttpResponseMessage response = await this.GetAsync(this.GetAddress(CloudMeAddress), ct);
 		string content = await response.Content.ReadAsStringAsync(ct);
 		if (!response.IsSuccessStatusCode) throw new HttpRequestException($"Failed to fetch: {content}", null, response.StatusCode);
-		JsonNode node = JsonNode.Parse(content).EnsureNotNull();
+		JsonNode node = JsonNode.Parse(content).EnsureNotNull(content);
 
-		string objectId = node["objectId"].EnsureNotNull().GetValue<string>();
+		string objectId = node["objectId"].EnsureNotNull(content).GetValue<string>();
 		this._userObjectId = objectId;
 
 		return new PlayerInfo()
 		{
-			NickName = node["nickname"].EnsureNotNull().GetValue<string>(),
-			UserName = node["username"].EnsureNotNull().GetValue<string>(),
-			CreationTime = node["createdAt"].EnsureNotNull().GetValue<DateTime>(),
-			ModificationTime = node["updatedAt"].EnsureNotNull().GetValue<DateTime>(),
+			NickName = node["nickname"].EnsureNotNull(content).GetValue<string>(),
+			UserName = node["username"].EnsureNotNull(content).GetValue<string>(),
+			CreationTime = node["createdAt"].EnsureNotNull(content).GetValue<DateTime>(),
+			ModificationTime = node["updatedAt"].EnsureNotNull(content).GetValue<DateTime>(),
 			ObjectId = objectId,
 		};
 	}
