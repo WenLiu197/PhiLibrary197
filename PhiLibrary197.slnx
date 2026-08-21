@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="PhiLibrary197/PhiLibrary197.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="CHANGELOG.MD" />
+    <File Path="LICENSE" />
+    <File Path="LICENSE.MIT" />
+    <File Path="README.md" />
+  </Folder>
+</Solution>
