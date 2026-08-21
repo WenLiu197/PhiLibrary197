@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>preview</LangVersion>
+
+		<AssemblyVersion>0.1.0</AssemblyVersion>
+		
+		<PackageId>$(AssemblyName)</PackageId>
+		<Version>$(AssemblyVersion)</Version>
+		<Authors>WenLiu197</Authors>
+		<Description>
+			本NuGet包是 yt6983138/PhigrosLibraryCSharp 的派生作品。 版权归 原作者 所有
+		</Description>
+		<Copyright>Copyright © 2026 yt6983138 aka static_void</Copyright>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/WenLiu197/PhiLibrary197</RepositoryUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageTags>client;web;api;rest;http;c#;.net;.netcore;library;phigros</PackageTags>
+
+		<BaseOutputPath>..\output\bin</BaseOutputPath>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="../README.md;../LICENSE;../LICENSE.MIT;../CHANGELOG.MD" copyToOutput="true">
+			<IncludeInPackage>true</IncludeInPackage>
+			<CopyToOutput>true</CopyToOutput>
+			<BuildAction>Content</BuildAction>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<PackagePath>.</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<UsingTask TaskName="ReadReleaseNotes" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<FilePath ParameterType="System.String" Required="true" />
+			<Delimiter ParameterType="System.String" Required="true" />
+			<Result ParameterType="System.String" Output="true" />
+		</ParameterGroup>
+		<Task>
+			<Code Type="Fragment" Language="cs">
+				var content = System.IO.File.ReadAllText(FilePath);
+				var idx = content.IndexOf(Delimiter);
+				Result = idx &gt;= 0 ? content.Substring(0, idx).Trim() : content.Trim();
+			</Code>
+		</Task>
+	</UsingTask>
+
+	<Target Name="SetReleaseNotes" BeforeTargets="GenerateNuspec;Pack">
+		<ReadReleaseNotes FilePath="$(SolutionDir)/CHANGELOG.MD" Delimiter="&lt;RELEASE_NOTE_END&gt;">
+			<Output TaskParameter="Result" PropertyName="PackageReleaseNotes" />
+		</ReadReleaseNotes>
+	</Target>
+</Project>
