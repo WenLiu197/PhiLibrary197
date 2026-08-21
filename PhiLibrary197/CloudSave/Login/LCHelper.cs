@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization.Metadata;
 
 namespace PhiLibrary197.CloudSave.Login;
 /// <summary>
@@ -58,9 +59,9 @@ public static class LCHelper
 	/// <returns>A <see cref="Dictionary{TKey, TValue}"/> containing the logged user information.</returns>
 	public static async Task<JsonNode> LoginWithAuthData(LCCombinedAuthData data, bool useChinaEndpoint = true, bool failOnNotExist = false, CancellationToken ct = default)
 	{
-		Dictionary<string, object> authData = new()
+		JsonObject authData = new()
 		{
-			{ "taptap", data }
+			["taptap"] = JsonSerializer.SerializeToNode(data, PhiLibrary197JsonSerializerContext.Default.LCCombinedAuthData)
 		};
 		string path = failOnNotExist ? "users?failOnNotExist=true" : "users";
 		JsonNode response = await Request<JsonNode>(
@@ -68,8 +69,8 @@ public static class LCHelper
 			HttpMethod.Post,
 			useChinaEndpoint,
 			headers: new() { ["X-LC-Id"] = useChinaEndpoint ? ClientId : InternationalClientId },
-			data: new Dictionary<string, object> {
-				{ "authData", authData }
+			data: new JsonObject {
+				["authData"] = authData
 			},
 			ct: ct
 		);
@@ -102,8 +103,8 @@ public static class LCHelper
 		string path,
 		HttpMethod method,
 		bool useChinaEndpoint,
-		Dictionary<string, object>? headers = null,
-		object? data = null,
+		Dictionary<string, string>? headers = null,
+		JsonObject? data = null,
 		Dictionary<string, object>? queryParams = null,
 		bool withAPIVersion = true,
 		CancellationToken ct = default)
@@ -121,7 +122,7 @@ public static class LCHelper
 		string? content = null;
 		if (data != null)
 		{
-			content = JsonSerializer.Serialize(data, Save.SerializerSettings);
+			content = data.ToJsonString();
 			StringContent requestContent = new(content);
 			requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 			request.Content = requestContent;
@@ -145,7 +146,7 @@ public static class LCHelper
 
 		if (response.IsSuccessStatusCode)
 		{
-			T ret = JsonSerializer.Deserialize<T>(resultString, Save.SerializerSettings).EnsureNotNull(resultString);
+			T ret = JsonSerializer.Deserialize(resultString, PhiLibrary197JsonSerializerContext.Default.GetTypeInfo(typeof(T)) as JsonTypeInfo<T> ?? throw new InvalidOperationException($"No source-generated JsonTypeInfo registered for {typeof(T)}")).EnsureNotNull(resultString);
 			return ret;
 		}
 		throw new HttpRequestException(resultString, null, statusCode);
@@ -167,14 +168,14 @@ public static class LCHelper
 		}
 		return url;
 	}
-	private static async Task FillHeaders(HttpRequestHeaders headers, bool useChinaEndpoint, Dictionary<string, object>? reqHeaders = null, CancellationToken ct = default)
+	private static async Task FillHeaders(HttpRequestHeaders headers, bool useChinaEndpoint, Dictionary<string, string>? reqHeaders = null, CancellationToken ct = default)
 	{
 		// 额外 headers
 		if (reqHeaders != null)
 		{
-			foreach (KeyValuePair<string, object> kv in reqHeaders)
+			foreach (KeyValuePair<string, string> kv in reqHeaders)
 			{
-				headers.Add(kv.Key, kv.Value.ToString());
+				headers.Add(kv.Key, kv.Value);
 			}
 		}
 		// 签名

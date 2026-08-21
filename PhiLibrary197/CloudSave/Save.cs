@@ -42,12 +42,6 @@ public class Save : IDisposable
 	internal string GetAddress(string address)
 		=> GetAddress(address, this.IsInternational);
 
-	internal static readonly JsonSerializerOptions SerializerSettings = new()
-	{
-		AllowTrailingCommas = true,
-		PropertyNameCaseInsensitive = true,
-		IncludeFields = true,
-	};
 	#endregion
 
 	#region Default implementations
@@ -241,7 +235,7 @@ public class Save : IDisposable
 		using HttpResponseMessage response = await this.GetAsync(address, ct);
 		string content = await response.Content.ReadAsStringAsync(ct);
 		if (!response.IsSuccessStatusCode) throw new HttpRequestException($"Failed to fetch: {content}", null, response.StatusCode);
-		SaveInfoContainer container = JsonSerializer.Deserialize<SaveInfoContainer>(content, SerializerSettings);
+		SaveInfoContainer container = JsonSerializer.Deserialize(content, PhiLibrary197JsonSerializerContext.Default.SaveInfoContainer);
 		return container;
 	}
 	/// <summary>

@@ -1,13 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace PhiLibrary197.CloudSave.Login;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-internal class PartialTapTapQRCodeData
+public class PartialTapTapQRCodeData
 {
 	[JsonInclude]
 	[JsonPropertyName("data")]
 	public QRCodeData Data { get; set; }
-	internal class QRCodeData
+	public class QRCodeData
 	{
 		[JsonInclude]
 		[JsonPropertyName("device_code")]
@@ -26,4 +27,5 @@ internal class PartialTapTapQRCodeData
 		public int Interval { get; set; }
 	}
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

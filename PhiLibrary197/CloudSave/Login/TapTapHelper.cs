@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization.Metadata;
 using System.Web;
 using static PhiLibrary197.CloudSave.Login.RequestException;
 
@@ -154,7 +155,7 @@ public static class TapTapHelper // TODO: Add callback login
 	public static async Task<CompleteQRCodeData> RequestLoginQrCode(string[]? permissions = null, bool useChinaEndpoint = true, CancellationToken ct = default)
 	{
 		string deviceId = GenerateDeviceId();
-		Dictionary<string, object> parameters = new()
+		Dictionary<string, string> parameters = new()
 		{
 			{ "client_id", LCHelper.GetClientId(useChinaEndpoint) },
 			{ "response_type", "device_code" },
@@ -230,7 +231,7 @@ public static class TapTapHelper // TODO: Add callback login
 			"443",
 			ts
 		);
-		Dictionary<string, object> headers = new()
+		Dictionary<string, string> headers = new()
 		{
 			{ "Authorization", sign }
 		};
@@ -266,8 +267,8 @@ public static class TapTapHelper // TODO: Add callback login
 	internal static async Task<T> Request<T>(string url, // why do we have 2 same helper doing this bruh
 			HttpMethod method,
 			bool useChinaEndpoint,
-			Dictionary<string, object>? headers = null,
-			object? data = null,
+			Dictionary<string, string>? headers = null,
+			Dictionary<string, string>? data = null,
 			Dictionary<string, object>? queryParams = null,
 			CancellationToken ct = default)
 	{
@@ -281,13 +282,9 @@ public static class TapTapHelper // TODO: Add callback login
 		// request.SetNoCors();
 		await FillHeaders(request.Headers, headers, ct);
 
-		string? content = null;
 		if (data != null)
 		{
-			content = JsonSerializer.Serialize(data, Save.SerializerSettings);
-			Dictionary<string, string> formData = JsonSerializer.Deserialize<Dictionary<string, object>>(content, Save.SerializerSettings)!
-				.ToDictionary(item => item.Key, item => item.Value.ToString()!);
-			FormUrlEncodedContent requestContent = new(formData);
+			FormUrlEncodedContent requestContent = new(data);
 			request.Content = requestContent;
 		}
 		HttpResponseMessage response;
@@ -307,7 +304,7 @@ public static class TapTapHelper // TODO: Add callback login
 
 		if (response.IsSuccessStatusCode)
 		{
-			T ret = JsonSerializer.Deserialize<T>(resultString).EnsureNotNull(resultString);
+			T ret = JsonSerializer.Deserialize(resultString, PhiLibrary197JsonSerializerContext.Default.GetTypeInfo(typeof(T)) as JsonTypeInfo<T> ?? throw new InvalidOperationException($"No source-generated JsonTypeInfo registered for {typeof(T)}")).EnsureNotNull(resultString);
 			return ret;
 		}
 		JsonNode parsed = JsonNode.Parse(resultString).EnsureNotNull(resultString);
@@ -337,14 +334,14 @@ public static class TapTapHelper // TODO: Add callback login
 		return url;
 	}
 
-	private static async Task FillHeaders(HttpRequestHeaders headers, Dictionary<string, object>? reqHeaders = null, CancellationToken ct = default)
+	private static async Task FillHeaders(HttpRequestHeaders headers, Dictionary<string, string>? reqHeaders = null, CancellationToken ct = default)
 	{
 		// 额外 headers
 		if (reqHeaders != null)
 		{
-			foreach (KeyValuePair<string, object> kv in reqHeaders)
+			foreach (KeyValuePair<string, string> kv in reqHeaders)
 			{
-				headers.Add(kv.Key, kv.Value.ToString());
+				headers.Add(kv.Key, kv.Value);
 			}
 		}
 

@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
+		<IsAotCompatible>true</IsAotCompatible>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -23,7 +24,7 @@
 		<PackageTags>client;web;api;rest;http;c#;.net;.netcore;library;phigros</PackageTags>
 
 		<BaseOutputPath>..\output\bin</BaseOutputPath>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GeneratePackageOnBuild Condition="'$(PublishAot)' != 'true'">true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -52,7 +53,7 @@
 	</UsingTask>
 
 	<Target Name="SetReleaseNotes" BeforeTargets="GenerateNuspec;Pack">
-		<ReadReleaseNotes FilePath="$(SolutionDir)/CHANGELOG.MD" Delimiter="&lt;RELEASE_NOTE_END&gt;">
+		<ReadReleaseNotes FilePath="$(MSBuildThisFileDirectory)..\CHANGELOG.MD" Delimiter="&lt;RELEASE_NOTE_END&gt;">
 			<Output TaskParameter="Result" PropertyName="PackageReleaseNotes" />
 		</ReadReleaseNotes>
 	</Target>
