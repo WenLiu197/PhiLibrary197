@@ -12,13 +12,13 @@
 		
 		<PackageId>$(AssemblyName)</PackageId>
 		<Version>$(AssemblyVersion)</Version>
-		<Authors>yt6983138</Authors>
+		<Authors>WenLiu197</Authors>
 		<Description>
 			A C# implementation of PhigrosLibrary, allowing you to integrate Phigros login workflow and process your scores nicely.
 		</Description>
 		<Copyright>Copyright © 2026 yt6983138 aka static_void</Copyright>
-		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-		<RepositoryUrl>https://github.com/yt6983138/PhigrosLibraryCSharp</RepositoryUrl>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/WenLiu197/PhiLibrary197</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>client;web;api;rest;http;c#;.net;.netcore;library;phigros</PackageTags>
 
@@ -27,7 +27,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="../README.md;../LICENSE.txt;../CHANGELOG.MD" copyToOutput="true">
+		<Content Include="../README.md;../LICENSE;../LICENSE.MIT;../CHANGELOG.MD" copyToOutput="true">
 			<IncludeInPackage>true</IncludeInPackage>
 			<CopyToOutput>true</CopyToOutput>
 			<BuildAction>Content</BuildAction>
