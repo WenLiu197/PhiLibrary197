@@ -9,7 +9,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>preview</LangVersion>
 
-		<AssemblyVersion>0.1.0</AssemblyVersion>
+		<AssemblyVersion>0.2.0</AssemblyVersion>
 		
 		<PackageId>$(AssemblyName)</PackageId>
 		<Version>$(AssemblyVersion)</Version>

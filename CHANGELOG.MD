@@ -1,3 +1,17 @@
+# 0.2.0
+- 新增 `SongDatabase`：合并 difficulty.tsv（定数）与 info.tsv（歌名/曲师/画师/谱师）的曲目数据库
+- 新增 `ScoreHelper.LoadConstantTable`：difficulty.tsv 定数表加载（容错解析）
+- 新增 `ScoreHelper.LoadSongInfo`：info.tsv 歌名表加载
+- `GetSortedListForRks` 系列自动跳过定数表缺失的成绩（不再抛 `KeyNotFoundException`）
+
+# 0.1.0
+- 基于上游 PhigrosLibraryCSharp v5 的独立衍生版
+- Native AOT 友好：全部 JSON 序列化走源生成器（`PhiLibrary197JsonSerializerContext`）
+- 单项目结构（slnx）+ net10.0
+- GPL-3.0 发布，保留上游 MIT 许可声明
+
+<RELEASE_NOTE_END>
+
 # 5.0.1
 - Add cancellation token for `FromZipAsync` `byte[]` overload.
 - Reduce allocation and dispose some types properly in `TapTapHelper`.
