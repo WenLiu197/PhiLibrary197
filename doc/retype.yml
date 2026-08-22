@@ -1,0 +1,19 @@
+input: .
+output: .retype
+
+url: https://wenliu197.github.io/PhiLibrary197/
+
+start:
+  # Uncomment the next line to try Retype Pro features
+  # pro: true
+
+branding:
+  title: PhiLibrary197
+  label: Docs
+
+links:
+- text: GitHub Repo
+  link: https://github.com/WenLiu197/PhiLibrary197
+
+footer:
+  copyright: "&copy; Copyright {{ year }} WenLiu197. All rights reserved."
