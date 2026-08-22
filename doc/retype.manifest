@@ -1,6 +1,6 @@
 {
   "version": "4.6.0",
-  "created": "2026-08-22T06:48:07Z",
+  "created": "2026-08-22T07:01:07Z",
   "files": [
     {
       "path": ".nojekyll"
@@ -60,7 +60,277 @@
       "path": "09-许可证与发布\\index.html"
     },
     {
+      "path": "10-api参考.md"
+    },
+    {
+      "path": "10-api参考\\index.html"
+    },
+    {
       "path": "404.html"
+    },
+    {
+      "path": "api\\cloudsave\\challenge.md"
+    },
+    {
+      "path": "api\\cloudsave\\challenge\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\chartconstantkey.md"
+    },
+    {
+      "path": "api\\cloudsave\\chartconstantkey\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\completescore.md"
+    },
+    {
+      "path": "api\\cloudsave\\completescore\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\enums.md"
+    },
+    {
+      "path": "api\\cloudsave\\enums\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\exportscore.md"
+    },
+    {
+      "path": "api\\cloudsave\\exportscore\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\gamekey.md"
+    },
+    {
+      "path": "api\\cloudsave\\gamekey\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\gamekeyflag.md"
+    },
+    {
+      "path": "api\\cloudsave\\gamekeyflag\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\gameprogress.md"
+    },
+    {
+      "path": "api\\cloudsave\\gameprogress\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\gamerecord.md"
+    },
+    {
+      "path": "api\\cloudsave\\gamerecord\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\gamesettings.md"
+    },
+    {
+      "path": "api\\cloudsave\\gamesettings\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\gameuserinfo.md"
+    },
+    {
+      "path": "api\\cloudsave\\gameuserinfo\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\gamefile.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\gamefile\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\gamefilemetadata.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\gamefilemetadata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\phicloudobj.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\phicloudobj\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\playerinfo.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\playerinfo\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\saveinfo.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\saveinfo\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\saveinfocontainer.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\saveinfocontainer\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\simplifiedsaveinfo.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\simplifiedsaveinfo\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\taptapsavetime.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\taptapsavetime\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\taptapuserinfo.md"
+    },
+    {
+      "path": "api\\cloudsave\\httpmodels\\taptapuserinfo\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\callbacklogindata.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\callbacklogindata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\completeqrcodedata.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\completeqrcodedata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\lccombinedauthdata.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\lccombinedauthdata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\lchelper.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\lchelper\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\partialtaptapqrcodedata.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\partialtaptapqrcodedata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\requestexception.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\requestexception\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\taptaphelper.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\taptaphelper\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\taptapprofiledata.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\taptapprofiledata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\login\\taptaptokendata.md"
+    },
+    {
+      "path": "api\\cloudsave\\login\\taptaptokendata\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\money.md"
+    },
+    {
+      "path": "api\\cloudsave\\money\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\playcountsummary.md"
+    },
+    {
+      "path": "api\\cloudsave\\playcountsummary\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\save.md"
+    },
+    {
+      "path": "api\\cloudsave\\save\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\savecontext.md"
+    },
+    {
+      "path": "api\\cloudsave\\savecontext\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\songdatabase.md"
+    },
+    {
+      "path": "api\\cloudsave\\songdatabase\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\songentry.md"
+    },
+    {
+      "path": "api\\cloudsave\\songentry\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\songscore.md"
+    },
+    {
+      "path": "api\\cloudsave\\songscore\\index.html"
+    },
+    {
+      "path": "api\\cloudsave\\summary.md"
+    },
+    {
+      "path": "api\\cloudsave\\summary\\index.html"
+    },
+    {
+      "path": "api\\localsave\\index.html"
+    },
+    {
+      "path": "api\\localsave\\localsave.md"
+    },
+    {
+      "path": "api\\localsave\\rawscore.md"
+    },
+    {
+      "path": "api\\localsave\\rawscore\\index.html"
+    },
+    {
+      "path": "api\\philibrary197\\debugargumentnullexception.md"
+    },
+    {
+      "path": "api\\philibrary197\\debugargumentnullexception\\index.html"
+    },
+    {
+      "path": "api\\philibrary197\\iphigroscustomserialization.md"
+    },
+    {
+      "path": "api\\philibrary197\\iphigroscustomserialization\\index.html"
+    },
+    {
+      "path": "api\\philibrary197\\maxvalueargumentoutofrangeexception.md"
+    },
+    {
+      "path": "api\\philibrary197\\maxvalueargumentoutofrangeexception\\index.html"
+    },
+    {
+      "path": "api\\philibrary197\\philibrary197jsonserializercontext.md"
+    },
+    {
+      "path": "api\\philibrary197\\philibrary197jsonserializercontext\\index.html"
+    },
+    {
+      "path": "api\\philibrary197\\scorehelper.md"
+    },
+    {
+      "path": "api\\philibrary197\\scorehelper\\index.html"
     },
     {
       "path": "home.md"
