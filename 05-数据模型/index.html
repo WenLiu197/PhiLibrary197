@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <meta name="turbo-root" content="/PhiLibrary197">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.840697722449">
+
+    <!-- See retype.com -->
+    <meta name="generator" content="Retype 4.6.0">
+
+    <!-- Primary Meta Tags -->
+    <title>数据模型</title>
+    <meta name="title" content="数据模型">
+    <meta name="description" content="本库全部类型位于 PhiLibrary197.CloudSave（数据模型）与 PhiLibrary197.LocalSave（本地存档）命名空间。">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://wenliu197.github.io/PhiLibrary197/05-数据模型/">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://wenliu197.github.io/PhiLibrary197/sitemap.xml">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wenliu197.github.io/PhiLibrary197/05-数据模型/">
+    <meta property="og:title" content="数据模型">
+    <meta property="og:description" content="本库全部类型位于 PhiLibrary197.CloudSave（数据模型）与 PhiLibrary197.LocalSave（本地存档）命名空间。">
+    <meta property="og:site_name" content="PhiLibrary197">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://wenliu197.github.io/PhiLibrary197/05-数据模型/">
+    <meta name="twitter:title" content="数据模型">
+    <meta name="twitter:description" content="本库全部类型位于 PhiLibrary197.CloudSave（数据模型）与 PhiLibrary197.LocalSave（本地存档）命名空间。">
+
+    <!-- Alternate Markdown -->
+    <link rel="alternate" type="text/markdown" href="https://wenliu197.github.io/PhiLibrary197/05-数据模型.md">
+
+    <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
+
+    <link href="../resources/css/retype.css?v=4.6.0.840697722449" rel="stylesheet">
+
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.840697722449" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.840697722449" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.840697722449" defer></script>
+</head>
+<body>
+    <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
+    <div class="absolute bottom-0 left-0" style="top: 5rem; right: 50%"></div>
+
+    <header id="retype-header" class="sticky top-0 z-30 flex w-full h-16 bg-header-bg border-b border-header-border md:h-20">
+        <div class="container relative flex items-center justify-between pr-6 grow md:justify-start">
+            <!-- Mobile menu button skeleton -->
+            <button v-cloak class="skeleton retype-mobile-menu-button flex items-center justify-center shrink-0 overflow-hidden dark:text-white focus:outline-hidden rounded-full w-10 h-10 ml-3.5 md:hidden"><svg xmlns="http://www.w3.org/2000/svg" class="mb-px shrink-0" width="24" height="24" viewBox="0 0 24 24" role="presentation" style="margin-bottom: 0px;"><g fill="currentColor"><path d="M2 4h20v2H2zM2 11h20v2H2zM2 18h20v2H2z"></path></g></svg></button>
+            <div v-cloak id="retype-sidebar-left-toggle-button"></div>
+    
+            <!-- Logo -->
+            <div class="flex items-center justify-between h-full py-2 md:w-75">
+                <div class="flex items-center px-2 md:px-6">
+                    <a id="retype-branding-logo" href="https://wenliu197.github.io/PhiLibrary197/" class="flex items-center leading-snug text-xl">
+                        <span class="dark:text-white font-bold line-clamp-1 md:line-clamp-2">PhiLibrary197</span>
+                    </a><span id="retype-branding-label" class="inline-flex mt-1 px-2 py-1 ml-4 text-xs font-medium leading-none items-center rounded-md bg-branding-label-bg text-branding-label-text ring-1 ring-branding-label-border ring-inset md:inline-block">Docs</span>
+                </div>
+    
+                <span class="hidden h-8 border-r md:inline-block border-base-border"></span>
+            </div>
+    
+            <div class="flex justify-between md:grow">
+                <!-- Top Nav -->
+                <nav id="retype-header-nav" class="hidden md:flex">
+                    <ul class="flex flex-col mb-4 md:pl-16 md:mb-0 md:flex-row md:items-center">
+                        <li class="mr-6">
+                            <a class="py-2 md:mb-0 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="https://github.com/WenLiu197/PhiLibrary197">GitHub Repo</a>
+                        </li>
+    
+                    </ul>
+                </nav>
+    
+                <div v-cloak class="flex justify-end grow">
+                    <div id="retype-mobile-search-button"></div>
+                    <doc-search-desktop></doc-search-desktop>
+    
+                    <doc-theme-switch class="lg:ml-2"></doc-theme-switch>
+                    <doc-history></doc-history>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div id="retype-container" class="container relative flex bg-white">
+        <!-- Sidebar Skeleton -->
+        <div v-cloak class="fixed flex flex-col shrink-0 duration-300 ease-in-out bg-sidebar-left-bg border-sidebar-left-border sidebar top-20 w-75 border-r h-screen md:sticky transition-transform skeleton">
+        
+            <div class="flex items-center h-16 px-6">
+                <input id="retype-filter-input-mock" class="w-full h-10 pl-8 px-3 py-2 transition-colors duration-200 ease-linear bg-filter-bg border border-filter-border rounded-lg shadow-none md:text-sm hover:border-filter-border-hover focus:outline-hidden focus:border-filter-border-focus placeholder-filter-placeholder" type="text">
+            </div>
+        
+            <div class="pl-6 mt-1 mb-4">
+                <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+                <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+            </div>
+        
+            <div class="shrink-0 mt-auto bg-transparent dark:border-base-border">
+                <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                    <span class="text-xs whitespace-nowrap">Powered by</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Sidebar component -->
+        <doc-sidebar v-cloak>
+            <template #sidebar-footer>
+                <div class="shrink-0 mt-auto border-t md:bg-transparent md:border-none dark:border-base-border">
+        
+                    <div class="py-3 px-6 md:hidden border-b dark:border-base-border">
+                        <nav>
+                            <ul class="flex flex-wrap justify-center items-center">
+                                <li class="mr-6">
+                                    <a class="block py-1 inline-flex items-center text-sm whitespace-nowrap transition-colors duration-200 ease-linear md:text-header-text font-header-text hover:text-header-text-hover" href="https://github.com/WenLiu197/PhiLibrary197">GitHub Repo</a>
+                                </li>
+        
+                            </ul>
+                        </nav>
+                    </div>
+        
+                    <a class="flex items-center justify-center flex-nowrap h-16 text-gray-350 dark:text-dark-400 hover:text-gray-600 dark:hover:text-dark-300 transition-colors duration-150 ease-in docs-powered-by" target="_blank" href="https://retype.com/" rel="noopener">
+                        <span class="text-xs whitespace-nowrap">Powered by</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2" fill="currentColor" width="96" height="20" overflow="visible"><path d="M0 0v20h13.59V0H0zm11.15 17.54H2.44V2.46h8.71v15.08zM15.8 20h2.44V4.67L15.8 2.22zM20.45 6.89V20h2.44V9.34z"/><g><path d="M40.16 8.44c0 1.49-.59 2.45-1.75 2.88l2.34 3.32h-2.53l-2.04-2.96h-1.43v2.96h-2.06V5.36h3.5c1.43 0 2.46.24 3.07.73s.9 1.27.9 2.35zm-2.48 1.1c.26-.23.38-.59.38-1.09 0-.5-.13-.84-.4-1.03s-.73-.28-1.39-.28h-1.54v2.75h1.5c.72 0 1.2-.12 1.45-.35zM51.56 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92h4.74v1.83h-6.79V5.36h6.64zM60.09 7.15v7.48h-2.06V7.15h-2.61V5.36h7.28v1.79h-2.61zM70.81 14.64h-2.06v-3.66l-3.19-5.61h2.23l1.99 3.45 1.99-3.45H74l-3.19 5.61v3.66zM83.99 6.19c.65.55.97 1.4.97 2.55s-.33 1.98-1 2.51-1.68.8-3.04.8h-1.23v2.59h-2.06V5.36h3.26c1.42 0 2.45.28 3.1.83zm-1.51 3.65c.25-.28.37-.69.37-1.22s-.16-.92-.48-1.14c-.32-.23-.82-.34-1.5-.34H79.7v3.12h1.38c.68 0 1.15-.14 1.4-.42zM95.85 5.36V7.2h-4.59v1.91h4.13v1.76h-4.13v1.92H96v1.83h-6.79V5.36h6.64z"/></g></svg>
+                    </a>
+                </div>
+            </template>
+        </doc-sidebar>
+
+        <div class="grow min-w-0 bg-body-bg">
+            <!-- Render "toolbar" template here on api pages --><!-- Render page content -->
+<div class="flex">
+    <div id="retype-main" class="min-w-0 p-4 grow md:px-16">
+        <main class="relative pb-12 lg:pt-2">
+            <div class="relative retype-markdown" id="retype-content">
+                <!-- Rendered if sidebar right is enabled -->
+                <div id="retype-sidebar-right-toggle"></div>
+                <doc-page-actions></doc-page-actions>
+
+                <!-- Page content  -->
+<h1 id="数据模型">数据模型</h1>
+<p>本库全部类型位于 <code translate="no" v-pre>PhiLibrary197.CloudSave</code>（数据模型）与 <code translate="no" v-pre>PhiLibrary197.LocalSave</code>（本地存档）命名空间。</p>
+<h2 id="枚举">枚举</h2>
+<h3 id="difficulty难度">Difficulty（难度）</h3>
+<retype-table copy-text="| 值 | 名称 | 说明 |
+| --- | --- | --- |
+| 0 | `EZ` | 简单 |
+| 1 | `HD` | 困难 |
+| 2 | `IN` | 疯狂（Insane） |
+| 3 | `AT` | 另一种（Another） |
+| 4 | `Legacy` | 旧谱遗留，仅序列化 |
+| 5 | `SP` | 特殊谱（愚人节等），仅序列化 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>值</th>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code translate="no" v-pre>EZ</code></td>
+<td>简单</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code translate="no" v-pre>HD</code></td>
+<td>困难</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code translate="no" v-pre>IN</code></td>
+<td>疯狂（Insane）</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code translate="no" v-pre>AT</code></td>
+<td>另一种（Another）</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code translate="no" v-pre>Legacy</code></td>
+<td>旧谱遗留，仅序列化</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code translate="no" v-pre>SP</code></td>
+<td>特殊谱（愚人节等），仅序列化</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="scorestatus成绩状态">ScoreStatus（成绩状态）</h3>
+<retype-table copy-text="| 值 | 名称 | 判定 |
+| --- | --- | --- |
+| -1 | `Bugged` | 异常成绩（acc=100 但非满分等） |
+| 0 | `NotFc` | 未 FC（仅原始解析用） |
+| 1 | `Fc` | Full Combo |
+| 2 | `Phi` | 全 P（acc=100 且分数=1,000,000） |
+| 3 | `Vu` | 分数 ≥ 960,000 |
+| 4 | `S` | 分数 ≥ 920,000 |
+| 5 | `A` | 分数 ≥ 880,000 |
+| 6 | `B` | 分数 ≥ 820,000 |
+| 7 | `C` | 分数 ≥ 700,000 |
+| 8 | `False` | 分数 &lt; 700,000 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>值</th>
+<th>名称</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-1</td>
+<td><code translate="no" v-pre>Bugged</code></td>
+<td>异常成绩（acc=100 但非满分等）</td>
+</tr>
+<tr>
+<td>0</td>
+<td><code translate="no" v-pre>NotFc</code></td>
+<td>未 FC（仅原始解析用）</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code translate="no" v-pre>Fc</code></td>
+<td>Full Combo</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code translate="no" v-pre>Phi</code></td>
+<td>全 P（acc=100 且分数=1,000,000）</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code translate="no" v-pre>Vu</code></td>
+<td>分数 ≥ 960,000</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code translate="no" v-pre>S</code></td>
+<td>分数 ≥ 920,000</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code translate="no" v-pre>A</code></td>
+<td>分数 ≥ 880,000</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code translate="no" v-pre>B</code></td>
+<td>分数 ≥ 820,000</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code translate="no" v-pre>C</code></td>
+<td>分数 ≥ 700,000</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code translate="no" v-pre>False</code></td>
+<td>分数 &lt; 700,000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="challengerank挑战等级">ChallengeRank（挑战等级）</h3>
+<retype-table copy-text="| 值 | 名称 | 平均分要求 |
+| --- | --- | --- |
+| 0 | `WhiteOrNone` | 白（无挑战码） |
+| 1 | `Green` | ≥ 820,000 |
+| 2 | `Blue` | ≥ 900,000 |
+| 3 | `Red` | ≥ 950,000 |
+| 4 | `Gold` | ≥ 980,000 |
+| 5 | `Rainbow` | = 1,000,000 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>值</th>
+<th>名称</th>
+<th>平均分要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><code translate="no" v-pre>WhiteOrNone</code></td>
+<td>白（无挑战码）</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code translate="no" v-pre>Green</code></td>
+<td>≥ 820,000</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code translate="no" v-pre>Blue</code></td>
+<td>≥ 900,000</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code translate="no" v-pre>Red</code></td>
+<td>≥ 950,000</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code translate="no" v-pre>Gold</code></td>
+<td>≥ 980,000</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code translate="no" v-pre>Rainbow</code></td>
+<td>= 1,000,000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="flags-枚举按位组合">Flags 枚举（按位组合）</h3>
+<retype-table copy-text="| 枚举 | 位含义 |
+| --- | --- |
+| `DifficultyUnlockFlag` | EZ/HD/IN/AT 各一位 |
+| `GameKeyFlagType` | 收藏阅读数 / 单曲解锁 / 收藏解锁数 / 插图 / 头像 |
+| `RandomVersionFlag` | Random 各版本（Normal/R/A/N/D/O/M） |
+| `SongRecordFlag` | 各曲目 IN 难度 S 评价记录 |
+| `Chapter8UnlockFlag` | 第八章解锁阶段 |
+| `TakumiUnlockFlag` | Takumi 曲目 IN S 评价记录 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>枚举</th>
+<th>位含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>DifficultyUnlockFlag</code></td>
+<td>EZ/HD/IN/AT 各一位</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GameKeyFlagType</code></td>
+<td>收藏阅读数 / 单曲解锁 / 收藏解锁数 / 插图 / 头像</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>RandomVersionFlag</code></td>
+<td>Random 各版本（Normal/R/A/N/D/O/M）</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SongRecordFlag</code></td>
+<td>各曲目 IN 难度 S 评价记录</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Chapter8UnlockFlag</code></td>
+<td>第八章解锁阶段</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TakumiUnlockFlag</code></td>
+<td>Takumi 曲目 IN S 评价记录</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h2 id="核心数据类">核心数据类</h2>
+<h3 id="songscore单曲成绩">SongScore（单曲成绩）</h3>
+<div id="songscore单曲成绩-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">public class SongScore
+{
+    public int Score { get; set; }          // 0 ~ 1,000,000
+    public float Accuracy { get; set; }     // 0 ~ 100
+    public string Id { get; set; }          // 曲目 id，如 &quot;Stasis.Maozon.0&quot;
+    public Difficulty Difficulty { get; set; }
+    public ScoreStatus Status { get; set; } // 由 Score/Accuracy/FC 自动推导
+}</code></pre>
+</doc-codeblock></div>
+<h3 id="completescore完整成绩">CompleteScore（完整成绩）</h3>
+<p>见 <a href="../06-%E5%AE%9A%E6%95%B0%E8%A1%A8%E4%B8%8Erks/">定数表与 RKS</a>。核心成员：<code translate="no" v-pre>Score</code>、<code translate="no" v-pre>Name</code> / <code translate="no" v-pre>NameOrDefault</code>、<code translate="no" v-pre>ChartConstant</code>、<code translate="no" v-pre>Rks</code>、<code translate="no" v-pre>Default</code>（占位用）。</p>
+<h3 id="rawscore本地存档原始成绩">RawScore（本地存档原始成绩）</h3>
+<div id="rawscore本地存档原始成绩-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">public struct RawScore { int Score; float Accuracy; ScoreStatus Status; }
+static RawScore FromJson(string json);
+SongScore ToSongScore(string songId, Difficulty difficulty);</code></pre>
+</doc-codeblock></div>
+<h3 id="gamerecord成绩容器">GameRecord（成绩容器）</h3>
+<div id="gamerecord成绩容器-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">public class GameRecord
+{
+    byte Version;            // 最新 1
+    List&lt;SongScore&gt; Records; // 全部成绩
+}</code></pre>
+</doc-codeblock></div>
+<p>RKS 相关方法见 <a href="../06-%E5%AE%9A%E6%95%B0%E8%A1%A8%E4%B8%8Erks/">定数表与 RKS</a>。</p>
+<h3 id="summary游玩统计">Summary（游玩统计）</h3>
+<div id="summary游玩统计-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">public class Summary
+{
+    byte SaveVersion;
+    int GameVersion;
+    float Rks;              // 游戏内显示值（可能不准，建议自行计算）
+    Challenge Challenge;    // 挑战码
+    string Avatar;          // 头像 id
+    PlayCountSummary EZPlayRecord, HDPlayRecord, INPlayRecord, ATPlayRecord;
+}</code></pre>
+</doc-codeblock></div>
+<p><code translate="no" v-pre>PlayCountSummary</code>：<code translate="no" v-pre>ClearedCount</code>（通关数）、<code translate="no" v-pre>FullComboCount</code>（FC 数）、<code translate="no" v-pre>PhiCount</code>（Phi 数）。</p>
+<h3 id="challenge挑战码">Challenge（挑战码）</h3>
+<div id="challenge挑战码-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">public struct Challenge
+{
+    short RawCode;          // 原始码，如 548
+    ChallengeRank Rank;     // 码 / 100
+    byte Level;             // 码 % 100
+    bool HasEverDone;       // 是否做过挑战
+}</code></pre>
+</doc-codeblock></div>
+<h3 id="money货币">Money（货币）</h3>
+<p>KiB/MiB/GiB/TiB/PiB 五级计数，<code translate="no" v-pre>Money.Zero</code> 空值，支持相等/比较/格式化。</p>
+<h3 id="gameprogress解锁进度">GameProgress（解锁进度）</h3>
+<p><code translate="no" v-pre>Version</code>（最新 4）、<code translate="no" v-pre>IsFirstRun</code>、<code translate="no" v-pre>LegacyChapterFinished</code>、<code translate="no" v-pre>GameCompleted</code>、<code translate="no" v-pre>Money</code>、<code translate="no" v-pre>ChallengeModeRank</code>、三魔王曲解锁旗标、<code translate="no" v-pre>Node2 → Node3 → Node4</code> 链式结构（Random 版本、第八章、Takumi 解锁）。</p>
+<h3 id="gamesettings--gameuserinfo--gamekey">GameSettings / GameUserInfo / GameKey</h3>
+<ul>
+<li><code translate="no" v-pre>GameSettings</code>：<code translate="no" v-pre>byte Version</code> + 设置字段（详见源码注释）</li>
+<li><code translate="no" v-pre>GameUserInfo</code>：<code translate="no" v-pre>byte Version</code> + 用户信息字段</li>
+<li><code translate="no" v-pre>GameKey</code>：<code translate="no" v-pre>IList&lt;GameKeyFlag&gt; Flags</code>——用 <code translate="no" v-pre>GameKeyFlag.ReadPayload</code> / <code translate="no" v-pre>WritePayload</code> / <code translate="no" v-pre>RemovePayload</code> 读写各类型载荷</li>
+</ul>
+<h2 id="网络模型httpmodels">网络模型（HttpModels）</h2>
+<retype-table copy-text="| 类型 | 字段（JSON 键名） |
+| --- | --- |
+| `SaveInfoContainer` | `Results`（`results`）、`GetParsedSaves()` |
+| `SaveInfo` | `CreatedAt`、`GameFile`（**可为 null**）、`ModifiedAt`、`Name`、`ObjectId`、`Summary`、`UpdatedAt`、`User` |
+| `GameFile` | `Type`（`__type`）、`Bucket`、`Key`、`MetaData`、`MimeType`、`Url` 等 |
+| `PlayerInfo` | `NickName`（可空）、`UserName`、`CreationTime`、`ModificationTime`、`ObjectId` |
+| `SimplifiedSaveInfo` | `GameSave`、`CreationDate`、`ModificationTime`、`Summary` |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>字段（JSON 键名）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>SaveInfoContainer</code></td>
+<td><code translate="no" v-pre>Results</code>（<code translate="no" v-pre>results</code>）、<code translate="no" v-pre>GetParsedSaves()</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SaveInfo</code></td>
+<td><code translate="no" v-pre>CreatedAt</code>、<code translate="no" v-pre>GameFile</code>（<strong>可为 null</strong>）、<code translate="no" v-pre>ModifiedAt</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>ObjectId</code>、<code translate="no" v-pre>Summary</code>、<code translate="no" v-pre>UpdatedAt</code>、<code translate="no" v-pre>User</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GameFile</code></td>
+<td><code translate="no" v-pre>Type</code>（<code translate="no" v-pre>__type</code>）、<code translate="no" v-pre>Bucket</code>、<code translate="no" v-pre>Key</code>、<code translate="no" v-pre>MetaData</code>、<code translate="no" v-pre>MimeType</code>、<code translate="no" v-pre>Url</code> 等</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PlayerInfo</code></td>
+<td><code translate="no" v-pre>NickName</code>（可空）、<code translate="no" v-pre>UserName</code>、<code translate="no" v-pre>CreationTime</code>、<code translate="no" v-pre>ModificationTime</code>、<code translate="no" v-pre>ObjectId</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SimplifiedSaveInfo</code></td>
+<td><code translate="no" v-pre>GameSave</code>、<code translate="no" v-pre>CreationDate</code>、<code translate="no" v-pre>ModificationTime</code>、<code translate="no" v-pre>Summary</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h2 id="登录模型login">登录模型（Login）</h2>
+<retype-table copy-text="| 类型 | 关键成员 |
+| --- | --- |
+| `LCCombinedAuthData` | `Kid`、`Token`、`TokenType`、`MacKey`、`MacAlgorithm`、`OpenID`、`Name`、`Avatar`、`UnionID` |
+| `TapTapTokenData` | `Data.TokenData`：`Kid`、`Token`、`TokenType`、`MacKey`、`MacAlgorithm`、`Scope` |
+| `TapTapProfileData` | `Data.ProfileData`：`OpenId`、`UnionId`、`Name`、`Gender`、`Avatar` |
+| `PartialTapTapQRCodeData` | `Data.QRCodeData`：`DeviceCode`、`ExpiresIn`、`Url`、`Interval` |
+| `CompleteQRCodeData` | `DeviceID`、`DeviceCode`、`ExpiresInSeconds`、`Url`、`Interval` |
+| `CallbackLoginData` | `BeginUrl`、`CodeVerifier`、`RedirectUrl`、`State`、`CodeChallenge`、`Scope` |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>关键成员</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>LCCombinedAuthData</code></td>
+<td><code translate="no" v-pre>Kid</code>、<code translate="no" v-pre>Token</code>、<code translate="no" v-pre>TokenType</code>、<code translate="no" v-pre>MacKey</code>、<code translate="no" v-pre>MacAlgorithm</code>、<code translate="no" v-pre>OpenID</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>Avatar</code>、<code translate="no" v-pre>UnionID</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TapTapTokenData</code></td>
+<td><code translate="no" v-pre>Data.TokenData</code>：<code translate="no" v-pre>Kid</code>、<code translate="no" v-pre>Token</code>、<code translate="no" v-pre>TokenType</code>、<code translate="no" v-pre>MacKey</code>、<code translate="no" v-pre>MacAlgorithm</code>、<code translate="no" v-pre>Scope</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TapTapProfileData</code></td>
+<td><code translate="no" v-pre>Data.ProfileData</code>：<code translate="no" v-pre>OpenId</code>、<code translate="no" v-pre>UnionId</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>Gender</code>、<code translate="no" v-pre>Avatar</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PartialTapTapQRCodeData</code></td>
+<td><code translate="no" v-pre>Data.QRCodeData</code>：<code translate="no" v-pre>DeviceCode</code>、<code translate="no" v-pre>ExpiresIn</code>、<code translate="no" v-pre>Url</code>、<code translate="no" v-pre>Interval</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>CompleteQRCodeData</code></td>
+<td><code translate="no" v-pre>DeviceID</code>、<code translate="no" v-pre>DeviceCode</code>、<code translate="no" v-pre>ExpiresInSeconds</code>、<code translate="no" v-pre>Url</code>、<code translate="no" v-pre>Interval</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>CallbackLoginData</code></td>
+<td><code translate="no" v-pre>BeginUrl</code>、<code translate="no" v-pre>CodeVerifier</code>、<code translate="no" v-pre>RedirectUrl</code>、<code translate="no" v-pre>State</code>、<code translate="no" v-pre>CodeChallenge</code>、<code translate="no" v-pre>Scope</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h2 id="输出模型">输出模型</h2>
+<p><code translate="no" v-pre>ExportScore</code>（Excel 友好）：<code translate="no" v-pre>ID</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>Difficulty</code>、<code translate="no" v-pre>ChartConstant</code>、<code translate="no" v-pre>Score</code>、<code translate="no" v-pre>Acc</code>、<code translate="no" v-pre>RksGiven</code>、<code translate="no" v-pre>Status</code>。</p>
+<h2 id="异常">异常</h2>
+<retype-table copy-text="| 类型 | 触发场景 |
+| --- | --- |
+| `MaxValueArgumentOutOfRangeException` | 索引越界（如存档索引超范围） |
+| `DebugArgumentNullException` | 内部空引用，`ToStringDetailed()` 输出完整信息 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>触发场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>MaxValueArgumentOutOfRangeException</code></td>
+<td>索引越界（如存档索引超范围）</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>DebugArgumentNullException</code></td>
+<td>内部空引用，<code translate="no" v-pre>ToStringDetailed()</code> 输出完整信息</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-warning"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-warning" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Warning</h5>
+<p><code translate="no" v-pre>DebugArgumentNullException</code> 的详细消息可能含敏感数据，只用于后端/日志排查，<strong>不要直接展示给玩家</strong>。</p>
+        </div>
+    </div>
+</div>
+<h2 id="工具类">工具类</h2>
+<p><code translate="no" v-pre>ScoreHelper</code>（<code translate="no" v-pre>PhiLibrary197</code> 命名空间）：</p>
+<div id="工具类-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">ScoreStatus ParseStatus(RawScore record);
+ScoreStatus ParseStatus(int score, double accuracy, bool isFc);
+byte DifficultyStringToIndex(string diff);           // &quot;EZ&quot;/&quot;HD&quot;/&quot;IN&quot;/&quot;AT&quot; → 索引
+Dictionary&lt;ChartConstantKey, float&gt; LoadConstantTable(string tsvPath);  // 定数表
+Dictionary&lt;string, string&gt; LoadSongInfo(string tsvPath);                // 歌名表</code></pre>
+</doc-codeblock></div>
+
+                
+                <!-- Required only on API pages -->
+                <doc-toolbar-member-filter-no-results></doc-toolbar-member-filter-no-results>
+            </div>
+            <footer id="retype-content-footer" class="clear-both">
+            
+                <nav id="retype-nextprev" class="print:hidden flex mt-14">
+                    <div class="w-1/2">
+                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../04-登录认证/">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                            <span>
+                                <span class="block text-xs font-normal text-base-text-muted">Previous</span>
+                                <span class="block mt-1">登录认证</span>
+                            </span>
+                        </a>
+                    </div>
+            
+                    <div class="w-1/2">
+                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../06-定数表与rks/">
+                            <span>
+                                <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
+                                <span class="block mt-1">定数表与 RKS</span>
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
+                        </a>
+                    </div>
+                </nav>
+            </footer>
+        </main>
+
+        <div id="retype-page-footer" class="print:border-none border-t border-base-border pt-6 mb-8">
+            <footer class="flex flex-wrap items-center justify-between print:justify-center">
+                <div id="retype-footer-links" class="print:hidden">
+                    <ul class="flex flex-wrap items-center text-sm">
+                    </ul>
+                </div>
+                <div id="retype-copyright" class="print:justify-center py-2 text-footer-text font-footer-link text-sm leading-relaxed"><p>© Copyright 2026 WenLiu197. All rights reserved.</p></div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Rendered if sidebar right is enabled -->
+    <!-- Sidebar right skeleton-->
+    <div v-cloak class="fixed top-0 bottom-0 right-0 translate-x-full bg-sidebar-right-bg border-sidebar-right-border lg:sticky lg:border-l lg:shrink-0 lg:pt-6 lg:translate-x-0 sm:w-1/2 lg:w-64 lg:z-0 md:w-104 sidebar-right skeleton">
+        <div class="pl-5">
+            <div class="w-32 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+            <div class="w-48 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+            <div class="w-40 h-3 mb-4 bg-skeleton-bg rounded-full loading"></div>
+        </div>
+    </div>
+
+    <!-- User should be able to hide sidebar right -->
+    <doc-sidebar-right v-cloak></doc-sidebar-right>
+</div>
+
+        </div>
+    </div>
+
+    <doc-search-mobile></doc-search-mobile>
+    <doc-back-to-top></doc-back-to-top>
+</div>
+
+
+    <div id="retype-overlay-target"></div>
+
+        <script data-cfasync="false">window.__DOCS__ = { "title": "数据模型", level: 1, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/05-数据模型.md" }</script>
+</body>
+</html>

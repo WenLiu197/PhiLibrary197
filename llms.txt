@@ -1,0 +1,75 @@
+﻿# 欢迎使用 PhiLibrary197！
+
+> 本项目是 yt6983138/PhigrosLibraryCSharp 的派生作品。 原项目版权归 原作者 所有，原 MIT 许可全文见 LICENSE.MIT。 本项目的修改部分版权归 WenLiu197 所有，整体以 GPL-3.0 许可证发布（LICENSE）。
+
+- [欢迎使用 PhiLibrary197！](https://wenliu197.github.io/PhiLibrary197/home.md): 欢迎使用 PhiLibrary197！
+- [安装与配置](https://wenliu197.github.io/PhiLibrary197/01-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE.md): 包 ID 为 PhiLibrary197，可通过以下任一方式引用：
+- [本地存档](https://wenliu197.github.io/PhiLibrary197/02-%E6%9C%AC%E5%9C%B0%E5%AD%98%E6%A1%A3.md): Phigros 本地存档位于 playerPrefsV2.xml，成绩以 键 = 密文值 的键值对存储。
+- [云存档](https://wenliu197.github.io/PhiLibrary197/03-%E4%BA%91%E5%AD%98%E6%A1%A3.md): Save 类封装了 Phigros 云存档（LeanCloud）的完整访问流程。
+- [登录认证](https://wenliu197.github.io/PhiLibrary197/04-%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81.md): Phigros 云存档使用 TapTap 账号体系（后端为 LeanCloud）。登录流程：
+- [数据模型](https://wenliu197.github.io/PhiLibrary197/05-%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B.md): 本库全部类型位于 PhiLibrary197.CloudSave（数据模型）与 PhiLibrary197.LocalSave（本地存档）命名空间。
+- [定数表与 RKS](https://wenliu197.github.io/PhiLibrary197/06-%E5%AE%9A%E6%95%B0%E8%A1%A8%E4%B8%8Erks.md): Phigros 每张谱面（歌曲 id + 难度）有一个社区标定的定数（Chart Constant），如 Credits.Frums.0 的 IN 为 14.0。
+- [SongDatabase 曲目数据库](https://wenliu197.github.io/PhiLibrary197/07-songdatabase.md): SongDatabase 将 difficulty.tsv（定数）与 info.tsv（歌名/曲师/画师/谱师）按曲目 id 前缀合并为统一数据库，用于曲目信息查询与 RKS 计算。
+- [序列化与 AOT](https://wenliu197.github.io/PhiLibrary197/08-%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8Eaot.md): 本库全部 JSON 序列化使用 System.Text.Json 源生成器，不依赖反射，Native AOT 下可直接使用。
+- [许可证与发布](https://wenliu197.github.io/PhiLibrary197/09-%E8%AE%B8%E5%8F%AF%E8%AF%81%E4%B8%8E%E5%8F%91%E5%B8%83.md): 文件
+- [API 参考](https://wenliu197.github.io/PhiLibrary197/10-api%E5%8F%82%E8%80%83.md): 按命名空间分类的完整 API 参考（微软 .NET 文档风格，每个类独立页面）。
+
+## Api
+
+### CloudSave
+
+#### HttpModels
+
+- [GameFile](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/gamefile.md): 存档文件信息（LeanCloud File 对象）。
+- [GameFileMetaData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/gamefilemetadata.md): 存档文件元数据。
+- [PhiCloudObj](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/phicloudobj.md): 对象下载链接容器。
+- [PlayerInfo](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/playerinfo.md): 玩家信息（云存档用户）。
+- [SaveInfo](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/saveinfo.md): 云端存档信息（LeanCloud 对象模型）。
+- [SaveInfoContainer](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/saveinfocontainer.md): 存档列表容器（LeanCloud 查询响应）。
+- [SimplifiedSaveInfo](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/simplifiedsaveinfo.md): 简化存档信息（只保留常用字段）。
+- [TapTapSaveTime](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/taptapsavetime.md): LeanCloud Date 类型（__type + iso）。
+- [TapTapUserInfo](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/httpmodels/taptapuserinfo.md): LeanCloud Pointer 类型（上传用户引用）。
+
+#### Login
+
+- [CallbackLoginData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/callbacklogindata.md): 回调登录数据（GenerateCallbackLoginUrl 的返回值）。
+- [CompleteQRCodeData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/completeqrcodedata.md): 完整的扫码登录数据（RequestLoginQrCode 的返回值）。
+- [LCCombinedAuthData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/lccombinedauthdata.md): LeanCloud 登录的组合数据：TapTap token + 用户资料。
+- [LCHelper](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/lchelper.md): LeanCloud 登录辅助类（Phigros 存档后端）。
+- [PartialTapTapQRCodeData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/partialtaptapqrcodedata.md): TapTap 扫码登录的原始响应数据（内部中间类型）。
+- [RequestException](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/requestexception.md): TapTap 登录请求返回未知响应时抛出的异常。
+- [TapTapHelper](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/taptaphelper.md): TapTap 登录辅助类（扫码 / 回调登录）。
+- [TapTapProfileData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/taptapprofiledata.md): TapTap 用户资料数据。
+- [TapTapTokenData](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/login/taptaptokendata.md): TapTap 登录 token 数据。
+- [Challenge](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/challenge.md): 挑战码：等级与关卡号的编码。
+- [ChartConstantKey](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/chartconstantkey.md): 定数查找键：曲目 id + 难度的组合。
+- [CompleteScore](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/completescore.md): 完整成绩：在 SongScore 基础上附加定数与歌名，用于 RKS 计算与展示。
+- [ExportScore](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/exportscore.md): Excel 友好的成绩导出模型。
+- [GameKey](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/gamekey.md): 玩家的 Key 数据：插图、头像、收藏解锁状态等，含链式扩展节点。
+- [GameKeyFlag](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/gamekeyflag.md): Key 旗标：类型 + 打包载荷，用于存储插图/头像/收藏的解锁状态。
+- [GameProgress](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/gameprogress.md): 玩家的解锁进度，含链式扩展节点（Node2 → Node3 → Node4）。
+- [GameRecord](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/gamerecord.md): 成绩容器，提供 RKS 计算与排序。
+- [GameSettings](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/gamesettings.md): 玩家的游戏设置。
+- [GameUserInfo](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/gameuserinfo.md): 游戏内用户信息。
+- [Money](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/money.md): 游戏货币：KiB / MiB / GiB / TiB / PiB 五级计数。
+- [PlayCountSummary](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/playcountsummary.md): 单难度的通关计数统计。
+- [Save](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/save.md): Phigros 云存档访问的入口类，封装了 LeanCloud 请求、存档查询、下载与解密。
+- [SaveContext](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/savecontext.md): 解密后的存档上下文：包含各数据条目，支持读取、修改与加密回写。
+- [SongDatabase](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/songdatabase.md): 曲目数据库：合并 difficulty.tsv（定数）与 info.tsv（歌名/曲师/画师/谱师）。
+- [SongEntry](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/songentry.md): 单曲完整信息（SongDatabase 的元素）。
+- [SongScore](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/songscore.md): 单曲成绩，版本无关的基础成绩数据（不含定数与 RKS）。
+- [Summary](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/summary.md): 玩家的游玩统计摘要（含挑战码与各难度通关计数）。
+- [枚举](https://wenliu197.github.io/PhiLibrary197/api/cloudsave/enums.md): PhiLibrary197.CloudSave 命名空间的全部枚举。
+
+### LocalSave
+
+- [LocalSave](https://wenliu197.github.io/PhiLibrary197/api/localsave/localsave.md): 本地存档解密（playerPrefsV2.xml 键值对）。
+- [RawScore](https://wenliu197.github.io/PhiLibrary197/api/localsave/rawscore.md): 本地存档的原始成绩（JSON 格式）。
+
+### PhiLibrary197
+
+- [DebugArgumentNullException](https://wenliu197.github.io/PhiLibrary197/api/philibrary197/debugargumentnullexception.md): 带调试附加信息的 ArgumentNullException。
+- [IPhigrosCustomSerialization<TSelf>](https://wenliu197.github.io/PhiLibrary197/api/philibrary197/iphigroscustomserialization.md): 复杂对象的自定义二进制序列化接口。存档二进制序列化类型共同实现的契约。
+- [MaxValueArgumentOutOfRangeException](https://wenliu197.github.io/PhiLibrary197/api/philibrary197/maxvalueargumentoutofrangeexception.md): 参数越界时抛出的异常，用于"最大可用值"可确定的场景。
+- [PhiLibrary197JsonSerializerContext](https://wenliu197.github.io/PhiLibrary197/api/philibrary197/philibrary197jsonserializercontext.md): 本库全部 JSON 序列化的源生成上下文，Native AOT 友好。
+- [ScoreHelper](https://wenliu197.github.io/PhiLibrary197/api/philibrary197/scorehelper.md): 成绩状态判定与数据表加载的静态工具类。
