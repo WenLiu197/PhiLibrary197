@@ -1,5 +1,6 @@
 ﻿using PhiLibrary197.CloudSave;
 using PhiLibrary197.LocalSave;
+using System.Globalization;
 
 namespace PhiLibrary197;
 
@@ -46,5 +47,45 @@ public static class ScoreHelper
 	public static byte DifficultyStringToIndex(string diff)
 	{
 		return (byte)(int)Enum.GetValues<Difficulty>().First(x => x.ToString().Equals(diff, StringComparison.OrdinalIgnoreCase));
+	}
+
+	/// <summary>
+	/// Loads a chart constant table from a <c>difficulty.tsv</c> file.
+	/// </summary>
+	/// <remarks>
+	/// The tsv format is <c>songName\tEZ\tHD\tIN\tAT</c>, one line per song. Columns may be omitted
+	/// (a song without an AT chart simply has no AT column) and the table stays sparse — missing keys
+	/// are only an issue if the save actually contains a score for that (song, difficulty) pair.
+	/// <para>
+	/// Line handling: empty lines, <c>#</c>/<c>//</c> comments and lines without at least one constant
+	/// column are skipped; unparsable numeric cells are skipped. The song name gets the conventional
+	/// <c>.0</c> suffix appended to form the full song id (e.g. <c>Glaciaxion.SunsetRay</c> →
+	/// <c>Glaciaxion.SunsetRay.0</c>).
+	/// </para>
+	/// </remarks>
+	/// <param name="tsvPath">Path to the difficulty.tsv file.</param>
+	/// <returns>A mapping from <see cref="ChartConstantKey"/> to chart constant.</returns>
+	public static Dictionary<ChartConstantKey, float> LoadConstantTable(string tsvPath)
+	{
+		Dictionary<ChartConstantKey, float> map = [];
+		Difficulty[] difficulties = [Difficulty.EZ, Difficulty.HD, Difficulty.IN, Difficulty.AT];
+
+		foreach (string rawLine in File.ReadLines(tsvPath))
+		{
+			string line = rawLine.Trim();
+			if (line.Length == 0 || line.StartsWith('#') || line.StartsWith("//")) continue;
+
+			string[] cols = line.Split('\t');
+			if (cols.Length < 2) continue; // no constant column, skip
+
+			string id = cols[0] + ".0";
+			for (int i = 1; i < cols.Length && i <= difficulties.Length; i++)
+			{
+				if (float.TryParse(cols[i], NumberStyles.Float, CultureInfo.InvariantCulture, out float constant))
+					map[new ChartConstantKey(id, difficulties[i - 1])] = constant;
+			}
+		}
+
+		return map;
 	}
 }
