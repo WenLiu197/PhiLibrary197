@@ -1,0 +1,123 @@
+{
+  "version": "4.6.0",
+  "created": "2026-08-22T06:48:07Z",
+  "files": [
+    {
+      "path": ".nojekyll"
+    },
+    {
+      "path": "01-安装与配置.md"
+    },
+    {
+      "path": "01-安装与配置\\index.html"
+    },
+    {
+      "path": "02-本地存档.md"
+    },
+    {
+      "path": "02-本地存档\\index.html"
+    },
+    {
+      "path": "03-云存档.md"
+    },
+    {
+      "path": "03-云存档\\index.html"
+    },
+    {
+      "path": "04-登录认证.md"
+    },
+    {
+      "path": "04-登录认证\\index.html"
+    },
+    {
+      "path": "05-数据模型.md"
+    },
+    {
+      "path": "05-数据模型\\index.html"
+    },
+    {
+      "path": "06-定数表与rks.md"
+    },
+    {
+      "path": "06-定数表与rks\\index.html"
+    },
+    {
+      "path": "07-songdatabase.md"
+    },
+    {
+      "path": "07-songdatabase\\index.html"
+    },
+    {
+      "path": "08-序列化与aot.md"
+    },
+    {
+      "path": "08-序列化与aot\\index.html"
+    },
+    {
+      "path": "09-许可证与发布.md"
+    },
+    {
+      "path": "09-许可证与发布\\index.html"
+    },
+    {
+      "path": "404.html"
+    },
+    {
+      "path": "home.md"
+    },
+    {
+      "path": "index.html"
+    },
+    {
+      "path": "llms.txt"
+    },
+    {
+      "path": "resources\\css\\retype.css"
+    },
+    {
+      "path": "resources\\fonts\\Inter-italic-latin-var.woff2"
+    },
+    {
+      "path": "resources\\fonts\\Inter-roman-latin-var.woff2"
+    },
+    {
+      "path": "resources\\js\\config.js"
+    },
+    {
+      "path": "resources\\js\\instagram.js"
+    },
+    {
+      "path": "resources\\js\\lunr.js"
+    },
+    {
+      "path": "resources\\js\\prism.js"
+    },
+    {
+      "path": "resources\\js\\retype.js"
+    },
+    {
+      "path": "resources\\js\\search.json"
+    },
+    {
+      "path": "resources\\lunr.js.LICENSE.txt"
+    },
+    {
+      "path": "resources\\mermaid.js.LICENSE.txt"
+    },
+    {
+      "path": "resources\\prism.js.LICENSE.txt"
+    },
+    {
+      "path": "resources\\retype.js.LICENSE.txt"
+    },
+    {
+      "path": "resources\\retype.LICENSE.txt"
+    },
+    {
+      "path": "robots.txt"
+    },
+    {
+      "path": "sitemap.xml"
+    }
+  ]
+}
