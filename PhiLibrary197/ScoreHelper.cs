@@ -88,4 +88,33 @@ public static class ScoreHelper
 
 		return map;
 	}
+
+	/// <summary>
+	/// 从 info.tsv 加载歌名表（完整曲目 id → 显示名）。
+	/// </summary>
+	/// <remarks>
+	/// info.tsv 每行第一列是曲目 id 前缀（如 <c>Glaciaxion.SunsetRay</c>），第二列是显示名
+	/// （如 <c>Glaciaxion</c>）；其余列（曲师/画师/谱师等元数据）本方法忽略。
+	/// 曲目名自动补 <c>.0</c> 后缀形成完整 id，与 <see cref="LoadConstantTable"/> 的键对齐。
+	/// 空行、<c>#</c>/<c>//</c> 注释行、以及不足两列的行会被跳过。
+	/// </remarks>
+	/// <param name="tsvPath">info.tsv 文件路径。</param>
+	/// <returns>完整曲目 id 到显示名的映射。</returns>
+	public static Dictionary<string, string> LoadSongInfo(string tsvPath)
+	{
+		Dictionary<string, string> map = [];
+
+		foreach (string rawLine in File.ReadLines(tsvPath))
+		{
+			string line = rawLine.Trim();
+			if (line.Length == 0 || line.StartsWith('#') || line.StartsWith("//")) continue;
+
+			string[] cols = line.Split('\t');
+			if (cols.Length < 2) continue; // 没有显示名列，跳过
+
+			map[cols[0] + ".0"] = cols[1];
+		}
+
+		return map;
+	}
 }
