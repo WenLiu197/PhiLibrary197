@@ -32,12 +32,19 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 	/// <summary>
 	/// Builds the complete scores with the help of the constant map and name map.
 	/// </summary>
+	/// <remarks>
+	/// Scores whose (song id, difficulty) pair is not present in <paramref name="constantMap"/>
+	/// (e.g. <see cref="Difficulty.Legacy"/>/<see cref="Difficulty.SP"/> charts, or charts missing from the table)
+	/// are skipped, as their RKS cannot be computed.
+	/// </remarks>
 	/// <param name="constantMap">Map to get chart constant from.</param>
 	/// <param name="nameMap">Map to get name from.</param>
 	/// <returns></returns>
 	public IEnumerable<CompleteScore> GetCompleteScores(IReadOnlyDictionary<ChartConstantKey, float> constantMap, IReadOnlyDictionary<string, string> nameMap)
 	{
-		return this.Records.Select(x => new CompleteScore(x, constantMap, nameMap));
+		return this.Records
+			.Where(x => constantMap.ContainsKey(new(x.Id, x.Difficulty)))
+			.Select(x => new CompleteScore(x, constantMap, nameMap));
 	}
 	/// <summary>
 	/// Sorts the records and returns the phis and the RKS.
