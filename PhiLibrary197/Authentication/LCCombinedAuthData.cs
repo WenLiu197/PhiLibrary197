@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace PhiLibrary197.CloudSave.Login;
+namespace PhiLibrary197.Authentication;
 /// <summary>
 /// A combined collection of <see cref="TapTapProfileData.ProfileData"/> and <see cref="TapTapTokenData.TokenData"/>.
 /// </summary>

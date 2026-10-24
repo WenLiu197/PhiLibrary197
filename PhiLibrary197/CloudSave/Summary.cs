@@ -1,4 +1,6 @@
-﻿namespace PhiLibrary197.CloudSave;
+using PhiLibrary197.Scores;
+
+namespace PhiLibrary197.CloudSave;
 
 /// <summary>
 /// The summary of play counts, including cleared count, full combo count and phi count.

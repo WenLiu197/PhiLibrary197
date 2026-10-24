@@ -1,12 +1,13 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization.Metadata;
+using PhiLibrary197.CloudSave;
 
-namespace PhiLibrary197.CloudSave.Login;
+namespace PhiLibrary197.Authentication;
 /// <summary>
 /// A helper to assist you login at LeanCloud service (for Phigros).
 /// </summary>
@@ -141,10 +142,11 @@ public static class LCHelper
 
 		string resultString = await response.Content.ReadAsStringAsync(ct);
 		HttpStatusCode statusCode = response.StatusCode;
+		bool success = response.IsSuccessStatusCode;
 		response.Dispose();
 		// LCHttpUtils.PrintResponse(response, resultString);
 
-		if (response.IsSuccessStatusCode)
+		if (success)
 		{
 			T ret = JsonSerializer.Deserialize(resultString, PhiLibrary197JsonSerializerContext.Default.GetTypeInfo(typeof(T)) as JsonTypeInfo<T> ?? throw new InvalidOperationException($"No source-generated JsonTypeInfo registered for {typeof(T)}")).EnsureNotNull(resultString);
 			return ret;

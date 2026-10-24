@@ -1,4 +1,4 @@
-﻿namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Scores;
 
 /// <summary>
 /// The Phigros difficulties.

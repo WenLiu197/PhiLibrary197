@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace PhiLibrary197.LocalSave;
 
@@ -102,10 +102,6 @@ public static class LocalSave
 			for (int j = 0; j < 16; j++) block[j] ^= state[j];
 			for (int t = 0; t < 16; t++) state[t] = decodedCipherText[e + t];
 			for (int n = 0; n < 16; n++) decodedCipherText[e + n] = block[n];
-			for (int m = e; m < e + 16; m++)
-			{
-				decodedCipherText[m] = block[m - e];
-			}
 		}
 		byte[] computed = decodedCipherText[0..^decodedCipherText[^1]];
 		return Encoding.UTF8.GetString(computed);

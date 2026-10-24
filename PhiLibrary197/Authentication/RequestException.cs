@@ -1,6 +1,6 @@
-﻿using System.Net;
+using System.Net;
 
-namespace PhiLibrary197.CloudSave.Login;
+namespace PhiLibrary197.Authentication;
 /// <summary>
 /// An exception that will be thrown to user if server sent unknown response.
 /// </summary>
