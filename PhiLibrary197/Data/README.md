@@ -20,8 +20,10 @@
 | APK SHA-256 | `F59A041F5BC02D0F3EB51A67739EC0271590AC412E68CF6CC6B43621CDF08985` |
 | Unity 版本 | `2022.3.62f2` |
 | 提取日期 | `2026-10-24` |
-| 曲目数量 | `326` |
+| 曲目数量 | `327` |
 | 数据版本 | `2026.10.24`（见 `SongDatabase.BuiltInDataVersion`） |
+
+> 其中 `WhatdoyouwantmorethanaHappyending...` 的 EZ 定数为 `0.5`，低于普通曲目的最低定数；已按原值保留，解析时不能假设所有定数都 `>= 1.0`。
 
 ## 提取方式
 
@@ -57,3 +59,4 @@
 - 内置数据随 NuGet 包版本发布，更新游戏版本时重新生成并更新 `BuiltInDataVersion`。
 - 调用方仍可用 `SongDatabase.LoadFromFile(difficultyTsvPath, infoTsvPath)` 提供自己的表，优先级由调用方决定。
 - 与旧社区表的差异（例如 48 首定数变化）以本目录的最新 APK 数据为准。
+
