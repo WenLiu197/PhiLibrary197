@@ -40,6 +40,7 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Data\info.tsv" LogicalName="PhiLibrary197.Data.info.tsv" />
 		<EmbeddedResource Include="Data\difficulty.tsv" LogicalName="PhiLibrary197.Data.difficulty.tsv" />
+		<EmbeddedResource Include="Data\tips.tsv" LogicalName="PhiLibrary197.Data.tips.tsv" />
 		<None Update="Data\README.md" Pack="true" PackagePath="Data\README.md" />
 	</ItemGroup>
 
