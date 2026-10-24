@@ -26,7 +26,7 @@ public sealed record SongEntry(
 
 | 名称 | 类型 | 说明 |
 | --- | --- | --- |
-| `Id` | `string` | 完整曲目 id（如 `Glaciaxion.SunsetRay.0`） |
+| `Id` | `string` | 完整曲目 id（如 `Glaciaxion.SunsetRay.0`）；变体查询时为请求的变体 id |
 | `Name` | `string?` | 显示名（info 第 2 列），缺失为 `null` |
 | `Composer` | `string?` | 曲师（info 第 3 列） |
 | `Illustrator` | `string?` | 曲绘画师（info 第 4 列） |
@@ -34,7 +34,9 @@ public sealed record SongEntry(
 | `HdCharter` | `string?` | HD 谱师（info 第 6 列） |
 | `InCharter` | `string?` | IN 谱师（info 第 7 列） |
 | `AtCharter` | `string?` | AT 谱师（info 第 8 列），无 AT 谱为 `null` |
-| `Constants` | `IReadOnlyDictionary<Difficulty, float>` | 各难度定数（仅收录表中存在的难度） |
+| `LegacyCharter` | `string?` | Legacy 谱师（info 第 9 列），无 Legacy 谱为 `null` |
+| `SpCharter` | `string?` | SP 谱师（info 第 10 列），无 SP 谱为 `null` |
+| `Constants` | `IReadOnlyDictionary<Difficulty, float>` | 各难度定数（仅收录表中存在的难度，不含 Legacy/SP） |
 
 ## 方法
 
@@ -44,7 +46,7 @@ public sealed record SongEntry(
 public float? GetConstant(Difficulty difficulty)
 ```
 
-取指定难度定数，表中不存在返回 `null`。
+取指定难度定数，表中不存在返回 `null`。`Difficulty.Legacy` 与 `Difficulty.SP` 没有定数，始终返回 `null`。
 
 ## 示例
 

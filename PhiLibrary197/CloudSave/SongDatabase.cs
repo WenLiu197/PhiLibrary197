@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.Reflection;
+using System.Text;
 
 namespace PhiLibrary197.CloudSave;
 
@@ -26,7 +28,20 @@ public sealed record SongEntry(
 	IReadOnlyDictionary<Difficulty, float> Constants)
 {
 	/// <summary>
+	/// Legacy 谱师（info.tsv 第 9 列），无 Legacy 谱的曲目为 <see langword="null"/>。
+	/// Legacy 难度不参与 RKS 计算，也没有定数。
+	/// </summary>
+	public string? LegacyCharter { get; init; }
+
+	/// <summary>
+	/// SP 谱师（info.tsv 第 10 列），无 SP 谱的曲目为 <see langword="null"/>。
+	/// SP 难度不参与 RKS 计算，也没有定数。
+	/// </summary>
+	public string? SpCharter { get; init; }
+
+	/// <summary>
 	/// 取指定难度的定数，表中不存在该难度时返回 <see langword="null"/>。
+	/// <see cref="Difficulty.Legacy"/> 与 <see cref="Difficulty.SP"/> 没有定数，始终返回 <see langword="null"/>。
 	/// </summary>
 	public float? GetConstant(Difficulty difficulty)
 		=> this.Constants.TryGetValue(difficulty, out float c) ? c : null;
@@ -38,6 +53,14 @@ public sealed record SongEntry(
 /// </summary>
 public sealed class SongDatabase
 {
+	/// <summary>
+	/// 内置数据的版本标记，对应本库打包时的曲目信息快照。
+	/// </summary>
+	public const string BuiltInDataVersion = "2026.10.24";
+
+	private const string InfoResourceName = "PhiLibrary197.Data.info.tsv";
+	private const string DifficultyResourceName = "PhiLibrary197.Data.difficulty.tsv";
+
 	private readonly Dictionary<string, SongEntry> _byId;
 
 	private SongDatabase(Dictionary<string, SongEntry> byId)
@@ -46,22 +69,59 @@ public sealed class SongDatabase
 	}
 
 	/// <summary>
-	/// 加载曲目数据库。
+	/// 从两个 TSV 文件加载曲目数据库。
 	/// </summary>
 	/// <remarks>
 	/// <para>difficulty.tsv 每行：<c>曲目id前缀\tEZ\tHD\tIN\tAT</c>（定数列按存在情况可选）。</para>
-	/// <para>info.tsv 每行：<c>曲目id前缀\t显示名\t曲师\t画师\tEZ谱师\tHD谱师\tIN谱师\tAT谱师</c>（后列可选）。</para>
+	/// <para>info.tsv 每行：<c>曲目id前缀\t显示名\t曲师\t画师\tEZ谱师\tHD谱师\tIN谱师\tAT谱师\tLegacy谱师\tSP谱师</c>（后列可选）。</para>
 	/// 两表的容错规则一致：空行、<c>#</c>/<c>//</c> 注释行跳过；列不足的字段留 <see langword="null"/>；
 	/// 数值解析失败跳过该列；曲目前缀自动补 <c>.0</c> 后缀形成完整 id。
 	/// </remarks>
 	/// <param name="difficultyTsvPath">difficulty.tsv 路径。</param>
 	/// <param name="infoTsvPath">info.tsv 路径。</param>
 	/// <returns>构建好的 <see cref="SongDatabase"/>。</returns>
-	public static SongDatabase Load(string difficultyTsvPath, string infoTsvPath)
+	public static SongDatabase LoadFromFile(string difficultyTsvPath, string infoTsvPath)
 	{
-		string[] difficultyLines = File.ReadAllLines(difficultyTsvPath);
-		string[] infoLines = File.ReadAllLines(infoTsvPath);
+		return BuildFromLines(
+			File.ReadLines(difficultyTsvPath),
+			File.ReadLines(infoTsvPath));
+	}
 
+	/// <summary>
+	/// 从本库内嵌的曲目数据加载曲目数据库。
+	/// </summary>
+	/// <remarks>
+	/// 数据随程序集一起打包，不读写任何文件，也不依赖当前工作目录；
+	/// 因此适用于 Native AOT、单文件发布和只读环境。
+	/// 数据版本见 <see cref="BuiltInDataVersion"/>。
+	/// </remarks>
+	/// <returns>构建好的 <see cref="SongDatabase"/>。</returns>
+	/// <exception cref="InvalidOperationException">程序集内缺少内嵌的曲目数据资源。</exception>
+	public static SongDatabase LoadFromBuiltIn()
+	{
+		Assembly assembly = typeof(SongDatabase).Assembly;
+		using Stream difficultyStream = OpenResource(assembly, DifficultyResourceName);
+		using Stream infoStream = OpenResource(assembly, InfoResourceName);
+
+		return BuildFromLines(
+			ReadLines(difficultyStream),
+			ReadLines(infoStream));
+	}
+
+	/// <summary>
+	/// 从两个 TSV 文件加载曲目数据库。
+	/// </summary>
+	/// <param name="difficultyTsvPath">difficulty.tsv 路径。</param>
+	/// <param name="infoTsvPath">info.tsv 路径。</param>
+	/// <returns>构建好的 <see cref="SongDatabase"/>。</returns>
+	[Obsolete("Use LoadFromFile instead.")]
+	public static SongDatabase Load(string difficultyTsvPath, string infoTsvPath)
+		=> LoadFromFile(difficultyTsvPath, infoTsvPath);
+
+	private static SongDatabase BuildFromLines(
+		IEnumerable<string> difficultyLines,
+		IEnumerable<string> infoLines)
+	{
 		Dictionary<string, SongInfoRow> infos = ParseInfoRows(infoLines);
 		Dictionary<string, Dictionary<Difficulty, float>> constants = ParseConstantRows(difficultyLines);
 
@@ -79,10 +139,26 @@ public sealed class SongDatabase
 				info.HdCharter,
 				info.InCharter,
 				info.AtCharter,
-				constants.GetValueOrDefault(prefix) ?? []);
+				constants.GetValueOrDefault(prefix) ?? [])
+			{
+				LegacyCharter = info.LegacyCharter,
+				SpCharter = info.SpCharter,
+			};
 		}
 
 		return new SongDatabase(byId);
+	}
+
+	private static Stream OpenResource(Assembly assembly, string name)
+		=> assembly.GetManifestResourceStream(name)
+			?? throw new InvalidOperationException($"Embedded resource '{name}' was not found in '{assembly.GetName().Name}'.");
+
+	private static IEnumerable<string> ReadLines(Stream stream)
+	{
+		using StreamReader reader = new(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+		string? line;
+		while ((line = reader.ReadLine()) is not null)
+			yield return line;
 	}
 
 	private readonly record struct SongInfoRow(
@@ -92,9 +168,11 @@ public sealed class SongDatabase
 		string? EzCharter,
 		string? HdCharter,
 		string? InCharter,
-		string? AtCharter);
+		string? AtCharter,
+		string? LegacyCharter,
+		string? SpCharter);
 
-	private static Dictionary<string, SongInfoRow> ParseInfoRows(string[] lines)
+	private static Dictionary<string, SongInfoRow> ParseInfoRows(IEnumerable<string> lines)
 	{
 		Dictionary<string, SongInfoRow> rows = [];
 		foreach (string rawLine in lines)
@@ -112,12 +190,14 @@ public sealed class SongDatabase
 				cols.Length > 4 ? cols[4] : null,
 				cols.Length > 5 ? cols[5] : null,
 				cols.Length > 6 ? cols[6] : null,
-				cols.Length > 7 ? cols[7] : null);
+				cols.Length > 7 ? cols[7] : null,
+				cols.Length > 8 ? cols[8] : null,
+				cols.Length > 9 ? cols[9] : null);
 		}
 		return rows;
 	}
 
-	private static Dictionary<string, Dictionary<Difficulty, float>> ParseConstantRows(string[] lines)
+	private static Dictionary<string, Dictionary<Difficulty, float>> ParseConstantRows(IEnumerable<string> lines)
 	{
 		Dictionary<string, Dictionary<Difficulty, float>> rows = [];
 		Difficulty[] difficulties = [Difficulty.EZ, Difficulty.HD, Difficulty.IN, Difficulty.AT];
@@ -142,27 +222,44 @@ public sealed class SongDatabase
 	}
 
 	/// <summary>
-	/// 全部曲目，按完整 id 排序。
+	/// 全部曲目，按完整 id 排序。这里只包含基础曲目（<c>.0</c>），不包含 Random 等数字版本变体。
 	/// </summary>
 	public IReadOnlyList<SongEntry> Songs => this._byId.Values.OrderBy(x => x.Id).ToArray();
 
 	/// <summary>
-	/// 曲目数量。
+	/// 曲目数量（只计基础曲目）。
 	/// </summary>
 	public int Count => this._byId.Count;
 
 	/// <summary>
-	/// 按完整曲目 id 查询（也接受不带 <c>.0</c> 后缀的前缀形式）。
+	/// 按曲目 id 查询。
 	/// </summary>
-	/// <param name="id">完整 id 或 id 前缀。</param>
+	/// <remarks>
+	/// 接受完整 id、不带 <c>.0</c> 后缀的前缀，以及带数字版本后缀的变体 id。
+	/// 变体 id（如 <c>Random.SobremSilentroom.3</c>）会回退到同曲目的基础条目，
+	/// 返回的 <see cref="SongEntry.Id"/> 为请求的变体 id，其余字段与基础条目一致。
+	/// </remarks>
+	/// <param name="id">完整 id、id 前缀或变体 id。</param>
 	/// <returns>匹配的曲目，不存在返回 <see langword="null"/>。</returns>
 	public SongEntry? GetSong(string id)
-		=> this._byId.TryGetValue(id, out SongEntry? entry)
-			? entry
-			: this._byId.GetValueOrDefault(id + ".0");
+	{
+		if (this._byId.TryGetValue(id, out SongEntry? entry))
+			return entry;
+
+		if (this._byId.TryGetValue(id + ".0", out entry))
+			return entry;
+
+		if (SongIdUtility.TryGetBaseId(id, out string baseId)
+			&& this._byId.TryGetValue(baseId + ".0", out entry))
+		{
+			return entry with { Id = id };
+		}
+
+		return null;
+	}
 
 	/// <summary>
-	/// 按显示名搜索（不区分大小写），返回所有显示名匹配的曲目。
+	/// 按显示名搜索（不区分大小写），返回所有显示名匹配的基础曲目。
 	/// </summary>
 	/// <param name="name">显示名关键字。</param>
 	/// <returns>匹配的曲目集合（可能为空）。</returns>
@@ -171,6 +268,7 @@ public sealed class SongDatabase
 
 	/// <summary>
 	/// 导出定数表（与 <see cref="ScoreHelper.LoadConstantTable"/> 同构），供 <see cref="GameRecord.GetSortedListForRks(IReadOnlyDictionary{ChartConstantKey, float}, IReadOnlyDictionary{string, string})"/> 使用。
+	/// 只包含基础曲目的定数；带数字版本后缀的成绩由 <see cref="GameRecord"/> 在计算时回退到基础 id。
 	/// </summary>
 	public Dictionary<ChartConstantKey, float> ToConstantMap()
 	{
@@ -186,6 +284,7 @@ public sealed class SongDatabase
 	/// <summary>
 	/// 导出歌名表（与 <see cref="ScoreHelper.LoadSongInfo"/> 同构），供 <see cref="GameRecord.GetSortedListForRks(IReadOnlyDictionary{ChartConstantKey, float}, IReadOnlyDictionary{string, string})"/> 使用。
 	/// 显示名为 <see langword="null"/> 的曲目不纳入（RKS 输出会回退显示 id）。
+	/// 只包含基础曲目的名称；带数字版本后缀的成绩由 <see cref="GameRecord"/> 在计算时回退到基础 id。
 	/// </summary>
 	public Dictionary<string, string> ToNameMap()
 	{

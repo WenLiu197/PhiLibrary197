@@ -44,6 +44,7 @@ Dictionary<string, string> nameMap = ScoreHelper.LoadSongInfo(@"info.tsv");
 
 > [!TIP]
 > 两个表都建议用 [SongDatabase](07-SongDatabase.md) 统一加载——`db.ToConstantMap()` / `db.ToNameMap()` 直接产出上面两个字典，还能查曲目百科。
+> 也可以直接用 `SongDatabase.LoadFromBuiltIn()`，用包内数据省去外部表。
 
 ## 计算 RKS
 

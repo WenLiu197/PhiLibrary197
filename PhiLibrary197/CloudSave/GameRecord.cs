@@ -1,4 +1,4 @@
-﻿using PhiLibrary197;
+using PhiLibrary197;
 
 namespace PhiLibrary197.CloudSave;
 
@@ -33,28 +33,45 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 	/// Builds the complete scores with the help of the constant map and name map.
 	/// </summary>
 	/// <remarks>
+	/// <para>
 	/// Scores whose (song id, difficulty) pair is not present in <paramref name="constantMap"/>
 	/// (e.g. <see cref="Difficulty.Legacy"/>/<see cref="Difficulty.SP"/> charts, or charts missing from the table)
 	/// are skipped, as their RKS cannot be computed.
+	/// </para>
+	/// <para>
+	/// 对于带数字版本后缀的曲目（例如 <c>Random.SobremSilentroom.1</c>），如果表中只有基础 id
+	/// （<c>Random.SobremSilentroom.0</c>），会回退到基础 id 的定数和名称，但本方法仍会返回每一个版本的原始成绩。
+	/// 需要“同一曲目只取最高成绩”的 B30/RKS 计算请使用 <see cref="GetSortedListForRks"/>。
+	/// </para>
 	/// </remarks>
 	/// <param name="constantMap">Map to get chart constant from.</param>
 	/// <param name="nameMap">Map to get name from.</param>
-	/// <returns></returns>
+	/// <returns>全部可计算 RKS 的成绩（包含同一曲目的不同版本）。</returns>
 	public IEnumerable<CompleteScore> GetCompleteScores(IReadOnlyDictionary<ChartConstantKey, float> constantMap, IReadOnlyDictionary<string, string> nameMap)
 	{
+		IReadOnlyDictionary<ChartConstantKey, float> constants = constantMap as VariantConstantMap
+			?? new VariantConstantMap(constantMap);
+		IReadOnlyDictionary<string, string> names = nameMap as VariantNameMap
+			?? new VariantNameMap(nameMap);
+
 		return this.Records
-			.Where(x => constantMap.ContainsKey(new(x.Id, x.Difficulty)))
-			.Select(x => new CompleteScore(x, constantMap, nameMap));
+			.Where(x => constants.ContainsKey(new(x.Id, x.Difficulty)))
+			.Select(x => new CompleteScore(x, constants, names));
 	}
 	/// <summary>
 	/// Sorts the records and returns the phis and the RKS.
 	/// Note: this is for game version > 3.11.0
 	/// </summary>
+	/// <remarks>
+	/// 同一曲目（去掉末尾数字版本后缀后）的同一难度只保留 RKS 最高的一条成绩，
+	/// 与游戏内 Random 变体取最高成绩的逻辑一致。需要查看全部变体成绩时请使用
+	/// <see cref="GetCompleteScores"/>。
+	/// </remarks>
 	/// <returns>A tuple containing the sorted list of scores and the RKS.
 	/// Note: The Phis are the top 3 scores, however it will not be padded if there are less than 3 scores.</returns>
 	public (List<CompleteScore> Phis, List<CompleteScore> OtherScores, double Rks) GetSortedListForRks(IReadOnlyDictionary<ChartConstantKey, float> constantMap, IReadOnlyDictionary<string, string> nameMap)
 	{
-		List<CompleteScore> sorted = this.GetCompleteScores(constantMap, nameMap).ToList();
+		List<CompleteScore> sorted = DeduplicateVariants(this.GetCompleteScores(constantMap, nameMap));
 		sorted.Sort();
 
 		List<CompleteScore> phi3 = sorted
@@ -67,21 +84,52 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 
 		return (phi3, sorted, rks);
 	}
+
+	/// <summary>
+	/// 同一曲目（去掉末尾数字版本后缀后）的同一难度只保留 RKS 最高的一条成绩。
+	/// </summary>
+	private static List<CompleteScore> DeduplicateVariants(IEnumerable<CompleteScore> scores)
+	{
+		Dictionary<(string BaseId, Difficulty Difficulty), CompleteScore> best = [];
+		foreach (CompleteScore score in scores)
+		{
+			string baseId = SongIdUtility.TryGetBaseId(score.Score.Id, out string stripped)
+				? stripped
+				: score.Score.Id;
+			(string, Difficulty) key = (baseId, score.Score.Difficulty);
+
+			if (!best.TryGetValue(key, out CompleteScore current)
+				|| score.Rks > current.Rks
+				|| (score.Rks == current.Rks && score.Score.Score > current.Score.Score))
+			{
+				best[key] = score;
+			}
+		}
+
+		return [.. best.Values];
+	}
 	/// <summary>
 	/// Sorts the records, merges the phi scores, and returns the sorted list and the RKS.
 	/// Note: this is for game version > 3.11.0
 	/// </summary>
-	/// <returns>A tuple containing the sorted list of scores and the RKS.
-	/// Note: The first 0 ~ 3 scores are phi scores, it will be 
-	/// padded using <see cref="CompleteScore.Default"/> if there are less than 3 scores.</returns>
+	/// <remarks>
+	/// 返回列表的前 3 项是 Phi（不足 3 个时用 <see cref="CompleteScore.Default"/> 补齐），
+	/// 之后是去掉 Phi 后的其余成绩，因此同一成绩不会在列表中出现两次。
+	/// </remarks>
+	/// <returns>A tuple containing the sorted list of scores and the RKS.</returns>
 	public (List<CompleteScore> Scores, double Rks) GetSortedListForRksMerged(IReadOnlyDictionary<ChartConstantKey, float> constantMap, IReadOnlyDictionary<string, string> nameMap)
 	{
-		(List<CompleteScore>? phis, List<CompleteScore>? scores, double rks) = this.GetSortedListForRks(constantMap, nameMap);
+		(List<CompleteScore> phis, List<CompleteScore> scores, double rks) = this.GetSortedListForRks(constantMap, nameMap);
+
+		HashSet<(string Id, Difficulty Difficulty)> phiKeys = [.. phis.Select(x => (x.Score.Id, x.Score.Difficulty))];
+		scores.RemoveAll(x => phiKeys.Contains((x.Score.Id, x.Score.Difficulty)));
+
 		while (phis.Count < 3)
 		{
 			phis.Add(CompleteScore.Default);
 		}
 		scores.InsertRange(0, phis);
+
 		return (scores, rks);
 	}
 

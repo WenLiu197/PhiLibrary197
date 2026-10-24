@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
@@ -7,7 +7,7 @@
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>preview</LangVersion>
+		<LangVersion>14.0</LangVersion>
 
 		<AssemblyVersion>0.2.0</AssemblyVersion>
 		
@@ -35,6 +35,12 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 			<PackagePath>.</PackagePath>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Data\info.tsv" LogicalName="PhiLibrary197.Data.info.tsv" />
+		<EmbeddedResource Include="Data\difficulty.tsv" LogicalName="PhiLibrary197.Data.difficulty.tsv" />
+		<None Update="Data\README.md" Pack="true" PackagePath="Data\README.md" />
 	</ItemGroup>
 
 	<UsingTask TaskName="ReadReleaseNotes" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
