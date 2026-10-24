@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
-namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Scores;
 
 /// <summary>
 /// Key used to look up chart constant, which is used to calculate rks. Consists of song id and difficulty.

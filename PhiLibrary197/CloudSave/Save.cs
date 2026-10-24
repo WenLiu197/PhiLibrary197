@@ -1,5 +1,5 @@
-﻿using PhiLibrary197.CloudSave.HttpModels;
-using PhiLibrary197.CloudSave.Login;
+using PhiLibrary197.CloudSave.HttpModels;
+using PhiLibrary197.Authentication;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -153,7 +153,7 @@ public class Save : IDisposable
 	public static bool IsSemanticallyValidToken(string sessionToken)
 	{
 		return sessionToken.Length == 25 &&
-			sessionToken.All(char.IsLetterOrDigit);
+			sessionToken.All(char.IsAsciiLetterOrDigit);
 	}
 
 	private static string BuildQueryString(string url, ICollection<KeyValuePair<string, string>> queries)
@@ -267,7 +267,12 @@ public class Save : IDisposable
 	/// <param name="ct">The cancellation token to cancel the operation.</param>
 	/// <returns>An array of <see cref="byte"/> of zip's raw data.</returns>
 	public Task<byte[]> GetSaveZipAsync(SimplifiedSaveInfo obj, CancellationToken ct = default)
-		=> this.GetRawAddressAsync(obj.GameSave.Url.EnsureNotNull(obj.ToString()), ct);
+	{
+		string? url = obj.GameSave.Url;
+		if (url is null)
+			throw new InvalidOperationException("The save has no game file URL.");
+		return this.GetRawAddressAsync(url, ct);
+	}
 	/// <summary>
 	/// Decrypt using Phigros' key and iv.
 	/// </summary>
@@ -355,6 +360,9 @@ public class Save : IDisposable
 	/// <returns>A <see cref="SaveContext"/> object containing the save data.</returns>
 	public async Task<SaveContext> GetSaveContextAsync(SaveInfo rawSave, CancellationToken ct = default)
 	{
+		if (rawSave.GameFile?.Url is null)
+			throw new InvalidOperationException($"Save '{rawSave.ObjectId}' has no game file URL.");
+
 		SimplifiedSaveInfo simplifiedSave = rawSave.Simplify();
 		byte[] rawZip = await this.GetSaveZipAsync(simplifiedSave, ct);
 

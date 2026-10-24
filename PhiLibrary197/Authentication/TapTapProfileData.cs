@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
-namespace PhiLibrary197.CloudSave.Login;
+namespace PhiLibrary197.Authentication;
 
 /// <summary>
 /// Profile data gotten from <see cref="TapTapHelper.GetProfile(TapTapTokenData.TokenData, int, bool, CancellationToken)"/>.

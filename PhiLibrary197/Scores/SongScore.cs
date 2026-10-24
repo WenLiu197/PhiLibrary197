@@ -1,6 +1,6 @@
-﻿using System.Numerics;
+using System.Numerics;
 
-namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Scores;
 
 /// <summary>
 /// Score with version-independent properties (no chart constant, name, and RKS)

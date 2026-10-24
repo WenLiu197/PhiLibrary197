@@ -1,4 +1,4 @@
-﻿namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Scores;
 
 /// <summary>
 /// A more excel friendly form of the score.

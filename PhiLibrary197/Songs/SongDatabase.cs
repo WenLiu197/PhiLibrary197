@@ -1,8 +1,9 @@
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using PhiLibrary197.Scores;
 
-namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Songs;
 
 /// <summary>
 /// 单曲完整信息，由 difficulty.tsv 与 info.tsv 按曲目 id 前缀合并而成。
@@ -45,6 +46,23 @@ public sealed record SongEntry(
 	/// </summary>
 	public float? GetConstant(Difficulty difficulty)
 		=> this.Constants.TryGetValue(difficulty, out float c) ? c : null;
+
+	/// <summary>
+	/// 取指定难度的谱师。
+	/// </summary>
+	/// <param name="difficulty">目标难度，支持 EZ/HD/IN/AT/Legacy/SP。</param>
+	/// <returns>对应谱师；该难度不存在或未知枚举值返回 <see langword="null"/>。</returns>
+	public string? GetCharter(Difficulty difficulty)
+		=> difficulty switch
+		{
+			Difficulty.EZ => this.EzCharter,
+			Difficulty.HD => this.HdCharter,
+			Difficulty.IN => this.InCharter,
+			Difficulty.AT => this.AtCharter,
+			Difficulty.Legacy => this.LegacyCharter,
+			Difficulty.SP => this.SpCharter,
+			_ => null,
+		};
 }
 
 /// <summary>
@@ -62,6 +80,7 @@ public sealed class SongDatabase
 	private const string DifficultyResourceName = "PhiLibrary197.Data.difficulty.tsv";
 
 	private readonly Dictionary<string, SongEntry> _byId;
+	private IReadOnlyList<SongEntry>? _songs;
 
 	private SongDatabase(Dictionary<string, SongEntry> byId)
 	{
@@ -224,7 +243,7 @@ public sealed class SongDatabase
 	/// <summary>
 	/// 全部曲目，按完整 id 排序。这里只包含基础曲目（<c>.0</c>），不包含 Random 等数字版本变体。
 	/// </summary>
-	public IReadOnlyList<SongEntry> Songs => this._byId.Values.OrderBy(x => x.Id).ToArray();
+	public IReadOnlyList<SongEntry> Songs => this._songs ??= this._byId.Values.OrderBy(x => x.Id).ToArray();
 
 	/// <summary>
 	/// 曲目数量（只计基础曲目）。
@@ -259,11 +278,11 @@ public sealed class SongDatabase
 	}
 
 	/// <summary>
-	/// 按显示名搜索（不区分大小写），返回所有显示名匹配的基础曲目。
+	/// 按完整显示名查找（不区分大小写），返回所有显示名完全匹配的基础曲目。
 	/// </summary>
-	/// <param name="name">显示名关键字。</param>
+	/// <param name="name">完整显示名。</param>
 	/// <returns>匹配的曲目集合（可能为空）。</returns>
-	public IEnumerable<SongEntry> FindByName(string name)
+	public IEnumerable<SongEntry> FindByFullName(string name)
 		=> this._byId.Values.Where(x => x.Name?.Equals(name, StringComparison.OrdinalIgnoreCase) == true);
 
 	/// <summary>

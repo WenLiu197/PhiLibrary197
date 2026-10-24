@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace PhiLibrary197.CloudSave.HttpModels;
 
@@ -7,17 +7,24 @@ namespace PhiLibrary197.CloudSave.HttpModels;
 /// </summary>
 public struct SaveInfoContainer
 {
+	private List<SaveInfo>? _results;
+
 	/// <summary>
 	/// Player's <see cref="SaveInfo"/>s.
+	/// 缺失或为 <see langword="null"/> 时返回空列表。
 	/// </summary>
 	[JsonPropertyName("results")]
-	public List<SaveInfo> Results { get; set; }
+	public List<SaveInfo> Results
+	{
+		get => this._results ?? [];
+		set => this._results = value ?? [];
+	}
 
 	/// <summary>
 	/// Gets a list of simplified saves converted from <see cref="SaveInfo"/>s in this container.
 	/// </summary>
 	/// <returns>A <see cref="List{T}"/> of <see cref="SimplifiedSaveInfo"/>s containing simplified save info.</returns>
-	public readonly List<SimplifiedSaveInfo> GetParsedSaves()
+	public List<SimplifiedSaveInfo> GetParsedSaves()
 	{
 		List<SimplifiedSaveInfo> saves = [];
 		foreach (SaveInfo item in this.Results) saves.Add(item.Simplify());

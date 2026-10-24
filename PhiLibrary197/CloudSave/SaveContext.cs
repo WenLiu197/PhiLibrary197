@@ -1,4 +1,5 @@
-﻿using PhiLibrary197.CloudSave.HttpModels;
+using PhiLibrary197.CloudSave.HttpModels;
+using PhiLibrary197.Scores;
 using System.IO.Compression;
 
 namespace PhiLibrary197.CloudSave;
@@ -121,6 +122,8 @@ public class SaveContext
 			using Stream stream = item.Open();
 			byte[] decompressed = new byte[item.Length];
 			await stream.ReadExactlyAsync(decompressed, ct);
+			if (decompressed.Length == 0)
+				throw new InvalidDataException($"Save entry '{item.Name}' is empty.");
 			decryptedEntries.Add(item.Name, new(decompressed[0], await decryptor.Invoke(decompressed[1..], ct)));
 		}
 
@@ -239,6 +242,7 @@ public class SaveContext
 			summary.Serialize(writer, out _);
 		}
 		this.RawSummary = stream.ToArray();
+		this.OriginalCloudObject.Summary = Convert.ToBase64String(this.RawSummary);
 	}
 	/// <summary>
 	/// Saves the player's game record to this context.

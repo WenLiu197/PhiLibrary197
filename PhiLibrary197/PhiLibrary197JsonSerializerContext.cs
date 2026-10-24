@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using PhiLibrary197.CloudSave;
 using PhiLibrary197.CloudSave.HttpModels;
-using PhiLibrary197.CloudSave.Login;
+using PhiLibrary197.Authentication;
 using PhiLibrary197.LocalSave;
 
 namespace PhiLibrary197;

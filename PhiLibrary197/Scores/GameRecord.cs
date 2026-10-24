@@ -1,6 +1,6 @@
 using PhiLibrary197;
 
-namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Scores;
 
 /// <summary>
 /// A container containing save records.
@@ -208,7 +208,7 @@ public class GameRecord : IPhigrosCustomSerialization<GameRecord>
 			}
 			writer.Write(difficultyExistFlag);
 			writer.Write(fullComboFlag);
-			foreach (SongScore score in group)
+			foreach (SongScore score in group.OrderBy(x => x.Difficulty))
 			{
 				writer.Write(score.Score);
 				writer.Write(score.Accuracy);

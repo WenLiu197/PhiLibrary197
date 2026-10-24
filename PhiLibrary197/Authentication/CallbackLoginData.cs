@@ -1,4 +1,4 @@
-﻿namespace PhiLibrary197.CloudSave.Login;
+namespace PhiLibrary197.Authentication;
 
 /// <summary>
 /// Data used to store login information for callback login.

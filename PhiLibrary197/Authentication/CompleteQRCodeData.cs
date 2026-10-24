@@ -1,4 +1,4 @@
-﻿namespace PhiLibrary197.CloudSave.Login;
+namespace PhiLibrary197.Authentication;
 
 /// <summary>
 /// A completed collection of <see cref="PartialTapTapQRCodeData"/>.

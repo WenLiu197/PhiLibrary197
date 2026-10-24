@@ -1,11 +1,11 @@
-# 内置曲目数据说明
+# 内置数据说明
 
 ## 宇宙免责声明
 
-> 本目录下的 `info.tsv` 与 `difficulty.tsv` 是从 Phigros 游戏安装包中还原的**曲目元数据**，仅用于存档解析、曲目查询与 RKS 计算等互操作用途。
+> 本目录下的 `info.tsv`、`difficulty.tsv` 与 `tips.tsv` 是从 Phigros 游戏安装包中还原的**曲目与 Tips 文本数据**，仅用于存档解析、曲目查询与 RKS 计算等互操作用途。
 >
 > - Phigros 游戏本体、曲目、曲绘、音频及相关数据的版权归 **Pigeon Games（鸽游）** 及各自权利人所有。
-> - 本仓库的**代码**以 GPL-3.0 发布；本目录的数据**不包含**游戏图片、音频、谱面等资源，仅包含曲名、曲师、画师、谱师、定数等文本信息。
+> - 本仓库的**代码**以 GPL-3.0 发布；本目录的数据**不包含**游戏图片、音频、谱面等资源，仅包含曲名、曲师、画师、谱师、定数、Tips 等文本信息。
 > - 本项目与 Pigeon Games 无任何隶属或合作关系。
 > - 若权利人认为本目录数据不宜随代码分发，请通过仓库 Issue 联系，我们会在后续版本移除或调整。
 >
@@ -21,13 +21,14 @@
 | Unity 版本 | `2022.3.62f2` |
 | 提取日期 | `2026-10-24` |
 | 曲目数量 | `327` |
+| Tips 数量（简中） | `191` |
 | 数据版本 | `2026.10.24`（见 `SongDatabase.BuiltInDataVersion`） |
 
 > 其中 `WhatdoyouwantmorethanaHappyending...` 的 EZ 定数为 `0.5`，低于普通曲目的最低定数；已按原值保留，解析时不能假设所有定数都 `>= 1.0`。
 
 ## 提取方式
 
-游戏没有以 TSV 形式直接存放这两个表；数据来自 `assets/bin/Data/data.unity3d` 中 `path_id = 50` 的 `SongInfo` MonoBehaviour 表。解析脚本与中间结果保存在本地 `PhiApk/` 工作目录（不纳入 Git）。
+游戏没有以 TSV 形式直接存放这些表；曲目数据来自 `assets/bin/Data/data.unity3d` 中 `path_id = 50` 的 `SongInfo` MonoBehaviour 表，Tips 来自 `path_id = 52` 的 `TipsProvider`。解析脚本与中间结果保存在本地 `PhiApk/` 工作目录（不纳入 Git）。
 
 ## 文件格式
 
@@ -42,6 +43,17 @@
 - 第一列不带 `.0` 后缀；`SongDatabase` 会补 `.0`。
 - 无 AT 谱的曲目省略 AT 列；无 Legacy/SP 谱的曲目省略后续列。
 - 列数可能为 7、8、9 或 10，与社区表格式兼容。
+
+### tips.tsv
+
+每行：
+
+```text
+index	text
+```
+
+- 简体中文，表头 `index / text`，0 基序号。
+- 共 191 条；`TipProvider.GetTip()` 用 `Random.Shared.Next` 随机取一条。
 
 ### difficulty.tsv
 
@@ -59,4 +71,3 @@
 - 内置数据随 NuGet 包版本发布，更新游戏版本时重新生成并更新 `BuiltInDataVersion`。
 - 调用方仍可用 `SongDatabase.LoadFromFile(difficultyTsvPath, infoTsvPath)` 提供自己的表，优先级由调用方决定。
 - 与旧社区表的差异（例如 48 首定数变化）以本目录的最新 APK 数据为准。
-

@@ -1,4 +1,4 @@
-﻿using System.Buffers;
+using System.Buffers;
 using System.Text;
 
 namespace PhiLibrary197.CloudSave;
@@ -59,7 +59,7 @@ public class GameKey : IPhigrosCustomSerialization<GameKey>
 			byte[] stringArray = ArrayPool<byte>.Shared.Rent(stringLength);
 			try
 			{
-				reader.Read(stringArray, 0, stringLength);
+				reader.ReadExactly(stringArray.AsSpan(0, stringLength));
 				string key = Encoding.UTF8.GetString(stringArray, 0, stringLength);
 				dict.Add(key, GameKeyFlag.FromReader(reader, 0));
 			}

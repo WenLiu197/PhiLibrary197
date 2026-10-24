@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Globalization;
 
-namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.Scores;
 
 /// <summary>
 /// 曲目 id 的工具方法。Phigros 的曲目 id 形如 <c>Glaciaxion.SunsetRay.0</c>，

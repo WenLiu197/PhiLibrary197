@@ -1,4 +1,6 @@
-﻿namespace PhiLibrary197.CloudSave;
+using PhiLibrary197.Scores;
+
+namespace PhiLibrary197.CloudSave;
 
 /// <summary>
 /// Difficulty unlock flag, used to store the unlock state of each difficulty of a song. 
