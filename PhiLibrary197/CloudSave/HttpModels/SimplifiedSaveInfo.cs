@@ -1,4 +1,4 @@
-﻿namespace PhiLibrary197.CloudSave.HttpModels;
+namespace PhiLibrary197.CloudSave.HttpModels;
 
 /// <summary>
 /// The simplified save info, trimmed down just for the basic (common) information 
@@ -22,6 +22,14 @@ public class SimplifiedSaveInfo
 	/// Player's summary in base64 format.
 	/// </summary>
 	public required string Summary { get; set; }
+	/// <summary>
+	/// The display name of the save, if available.
+	/// </summary>
+	public string? Name { get; init; }
+	/// <summary>
+	/// The cloud object id of the save, if available.
+	/// </summary>
+	public string? ObjectId { get; init; }
 }
 /// <summary>
 /// A container containing the URL of object.

@@ -6,17 +6,43 @@ namespace PhiLibrary197.Authentication;
 /// </summary>
 public class RequestException : Exception
 {
-	internal enum FailingType
+	/// <summary>
+	/// The kind of failure reported by the login endpoint.
+	/// </summary>
+	public enum FailingType
 	{
+		/// <summary>
+		/// The user has not finished the authorization yet.
+		/// </summary>
 		Pending,
+		/// <summary>
+		/// The user denied the authorization.
+		/// </summary>
 		Denied,
+		/// <summary>
+		/// The server is waiting for the user to act.
+		/// </summary>
 		Waiting,
+		/// <summary>
+		/// No failure code was returned.
+		/// </summary>
 		None,
+		/// <summary>
+		/// The failure code is unknown.
+		/// </summary>
 		Unknown
 	}
 
-	internal FailingType Failing { get; set; }
-	internal HttpStatusCode HttpStatus { get; init; }
+	/// <summary>
+	/// The parsed failure kind, useful for callers that need to distinguish pending/denied states.
+	/// </summary>
+	public FailingType Failing { get; }
+
+	/// <summary>
+	/// The HTTP status code returned by the server.
+	/// </summary>
+	public HttpStatusCode HttpStatus { get; }
+
 	internal RequestException(string message, HttpStatusCode code, FailingType type)
 		: base(message)
 	{

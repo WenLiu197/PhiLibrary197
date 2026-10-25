@@ -104,6 +104,49 @@ public class SaveContext
 	/// <returns>A task that represents the asynchronous operation. The task result contains the created <see cref="SaveContext"/> instance.</returns>
 	public static async Task<SaveContext> FromZipAsync(byte[] rawZip, SaveInfo originalData, CipherFunction decryptor, CancellationToken ct = default) =>
 		await FromZipAsync(new MemoryStream(rawZip), originalData, decryptor, ct);
+
+	/// <summary>
+	/// Creates a new instance of the <see cref="SaveContext"/> class from a zip buffer without cloud metadata.
+	/// </summary>
+	/// <remarks>
+	/// 适用于只有 zip、没有云端 <see cref="SaveInfo"/> 的场景。由于没有原始 summary，
+	/// <see cref="ReadSummary"/> 不可用，但 gameRecord、settings、progress 等条目仍可读取。
+	/// </remarks>
+	/// <param name="rawZip">Zip buffer containing encrypted entries.</param>
+	/// <param name="decryptor">A function to decrypt the raw data entries.</param>
+	/// <param name="ct">The cancellation token to cancel the operation.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains the created <see cref="SaveContext"/> instance.</returns>
+	public static Task<SaveContext> FromZipAsync(byte[] rawZip, CipherFunction decryptor, CancellationToken ct = default)
+		=> FromZipAsync(rawZip, CreateEmptySaveInfo(), decryptor, ct);
+
+	/// <summary>
+	/// Creates a new instance of the <see cref="SaveContext"/> class from a zip stream without cloud metadata.
+	/// </summary>
+	/// <remarks>
+	/// 适用于只有 zip、没有云端 <see cref="SaveInfo"/> 的场景。由于没有原始 summary，
+	/// <see cref="ReadSummary"/> 不可用，但 gameRecord、settings、progress 等条目仍可读取。
+	/// </remarks>
+	/// <param name="rawZip">Zip stream containing encrypted entries.</param>
+	/// <param name="decryptor">A function to decrypt the raw data entries.</param>
+	/// <param name="ct">The cancellation token to cancel the operation.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains the created <see cref="SaveContext"/> instance.</returns>
+	public static Task<SaveContext> FromZipAsync(Stream rawZip, CipherFunction decryptor, CancellationToken ct = default)
+		=> FromZipAsync(rawZip, CreateEmptySaveInfo(), decryptor, ct);
+
+	private static SaveInfo CreateEmptySaveInfo()
+	{
+		DateTime now = default;
+		return new SaveInfo
+		{
+			CreatedAt = now,
+			ModifiedAt = new TapTapSaveTime { Type = "Date", Time = now },
+			Name = string.Empty,
+			ObjectId = string.Empty,
+			Summary = string.Empty,
+			UpdatedAt = now,
+			User = new TapTapUserInfo { Type = "Pointer", ClassName = "_User", ObjectId = string.Empty },
+		};
+	}
 	/// <summary>
 	/// Creates a new instance of the <see cref="SaveContext"/> class by reading and decrypting the provided zip data. 
 	/// </summary>

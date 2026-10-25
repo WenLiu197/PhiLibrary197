@@ -73,7 +73,9 @@ public class SaveInfo
 			},
 			CreationDate = this.CreatedAt,
 			ModificationTime = this.UpdatedAt,
-			Summary = this.Summary
+			Summary = this.Summary,
+			Name = this.Name,
+			ObjectId = this.ObjectId,
 		};
 	}
 }

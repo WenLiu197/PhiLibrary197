@@ -66,11 +66,36 @@ public static class ScoreHelper
 	/// <param name="tsvPath">Path to the difficulty.tsv file.</param>
 	/// <returns>A mapping from <see cref="ChartConstantKey"/> to chart constant.</returns>
 	public static Dictionary<ChartConstantKey, float> LoadConstantTable(string tsvPath)
+		=> LoadConstantTable(File.ReadLines(tsvPath));
+
+	/// <summary>
+	/// Loads a chart constant table from a <c>difficulty.tsv</c> text reader.
+	/// </summary>
+	/// <remarks>
+	/// The reader is not disposed by this method, so the caller keeps ownership.
+	/// </remarks>
+	/// <param name="reader">Text reader containing difficulty.tsv content.</param>
+	/// <returns>A mapping from <see cref="ChartConstantKey"/> to chart constant.</returns>
+	public static Dictionary<ChartConstantKey, float> LoadConstantTable(TextReader reader)
+		=> LoadConstantTable(ReadLines(reader));
+
+	/// <summary>
+	/// Loads a chart constant table from a <c>difficulty.tsv</c> stream.
+	/// </summary>
+	/// <remarks>
+	/// The stream is read as UTF-8 with BOM detection and is not disposed by this method.
+	/// </remarks>
+	/// <param name="stream">Stream containing difficulty.tsv content.</param>
+	/// <returns>A mapping from <see cref="ChartConstantKey"/> to chart constant.</returns>
+	public static Dictionary<ChartConstantKey, float> LoadConstantTable(Stream stream)
+		=> LoadConstantTable(ReadLines(stream));
+
+	private static Dictionary<ChartConstantKey, float> LoadConstantTable(IEnumerable<string> lines)
 	{
 		Dictionary<ChartConstantKey, float> map = [];
 		Difficulty[] difficulties = [Difficulty.EZ, Difficulty.HD, Difficulty.IN, Difficulty.AT];
 
-		foreach (string rawLine in File.ReadLines(tsvPath))
+		foreach (string rawLine in lines)
 		{
 			string line = rawLine.Trim();
 			if (line.Length == 0 || line.StartsWith('#') || line.StartsWith("//")) continue;
@@ -95,16 +120,41 @@ public static class ScoreHelper
 	/// <remarks>
 	/// info.tsv 每行第一列是曲目 id 前缀（如 <c>Glaciaxion.SunsetRay</c>），第二列是显示名
 	/// （如 <c>Glaciaxion</c>）；其余列（曲师/画师/谱师等元数据）本方法忽略。
-	/// 曲目名自动补 <c>.0</c> 后缀形成完整 id，与 <see cref="LoadConstantTable"/> 的键对齐。
+	/// 曲目名自动补 <c>.0</c> 后缀形成完整 id，与 <see cref="LoadConstantTable(string)"/> 的键对齐。
 	/// 空行、<c>#</c>/<c>//</c> 注释行、以及不足两列的行会被跳过。
 	/// </remarks>
 	/// <param name="tsvPath">info.tsv 文件路径。</param>
 	/// <returns>完整曲目 id 到显示名的映射。</returns>
 	public static Dictionary<string, string> LoadSongInfo(string tsvPath)
+		=> LoadSongInfo(File.ReadLines(tsvPath));
+
+	/// <summary>
+	/// 从 info.tsv 文本读取器加载歌名表。
+	/// </summary>
+	/// <remarks>
+	/// 读取器由调用方负责释放，本方法不会释放它。
+	/// </remarks>
+	/// <param name="reader">包含 info.tsv 内容的文本读取器。</param>
+	/// <returns>完整曲目 id 到显示名的映射。</returns>
+	public static Dictionary<string, string> LoadSongInfo(TextReader reader)
+		=> LoadSongInfo(ReadLines(reader));
+
+	/// <summary>
+	/// 从 info.tsv 数据流加载歌名表。
+	/// </summary>
+	/// <remarks>
+	/// 数据流按 UTF-8 读取并自动识别 BOM，本方法不会释放它。
+	/// </remarks>
+	/// <param name="stream">包含 info.tsv 内容的数据流。</param>
+	/// <returns>完整曲目 id 到显示名的映射。</returns>
+	public static Dictionary<string, string> LoadSongInfo(Stream stream)
+		=> LoadSongInfo(ReadLines(stream));
+
+	private static Dictionary<string, string> LoadSongInfo(IEnumerable<string> lines)
 	{
 		Dictionary<string, string> map = [];
 
-		foreach (string rawLine in File.ReadLines(tsvPath))
+		foreach (string rawLine in lines)
 		{
 			string line = rawLine.Trim();
 			if (line.Length == 0 || line.StartsWith('#') || line.StartsWith("//")) continue;
@@ -116,5 +166,19 @@ public static class ScoreHelper
 		}
 
 		return map;
+	}
+
+	private static IEnumerable<string> ReadLines(TextReader reader)
+	{
+		string? line;
+		while ((line = reader.ReadLine()) is not null)
+			yield return line;
+	}
+
+	private static IEnumerable<string> ReadLines(Stream stream)
+	{
+		using StreamReader reader = new(stream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true);
+		foreach (string line in ReadLines(reader))
+			yield return line;
 	}
 }
