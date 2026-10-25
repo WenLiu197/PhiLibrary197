@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <meta name="turbo-root" content="/PhiLibrary197">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846217236712">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846255593730">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -13,7 +13,7 @@
     <!-- Primary Meta Tags -->
     <title>本地存档</title>
     <meta name="title" content="本地存档">
-    <meta name="description" content="Phigros 本地存档位于 playerPrefsV2.xml，成绩以 键 = 密文值 的键值对存储。">
+    <meta name="description" content="Phigros 本地存档通常位于 playerPrefsV2.xml，成绩以 XML 键值对存储。值不是直接可读文本，需要先 URL 解码，再用 LocalSave 解密。">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://wenliu197.github.io/PhiLibrary197/02-本地存档/">
@@ -23,7 +23,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://wenliu197.github.io/PhiLibrary197/02-本地存档/">
     <meta property="og:title" content="本地存档">
-    <meta property="og:description" content="Phigros 本地存档位于 playerPrefsV2.xml，成绩以 键 = 密文值 的键值对存储。">
+    <meta property="og:description" content="Phigros 本地存档通常位于 playerPrefsV2.xml，成绩以 XML 键值对存储。值不是直接可读文本，需要先 URL 解码，再用 LocalSave 解密。">
     <meta property="og:site_name" content="PhiLibrary197">
     <meta property="og:locale" content="en_US">
 
@@ -31,19 +31,19 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://wenliu197.github.io/PhiLibrary197/02-本地存档/">
     <meta name="twitter:title" content="本地存档">
-    <meta name="twitter:description" content="Phigros 本地存档位于 playerPrefsV2.xml，成绩以 键 = 密文值 的键值对存储。">
+    <meta name="twitter:description" content="Phigros 本地存档通常位于 playerPrefsV2.xml，成绩以 XML 键值对存储。值不是直接可读文本，需要先 URL 解码，再用 LocalSave 解密。">
 
     <!-- Alternate Markdown -->
     <link rel="alternate" type="text/markdown" href="https://wenliu197.github.io/PhiLibrary197/02-本地存档.md">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.6.0.846217236712" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.6.0.846255593730" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846217236712" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846255593730" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -150,128 +150,31 @@
 
                 <!-- Page content  -->
 <h1 id="本地存档">本地存档</h1>
-<p>Phigros 本地存档位于 <code translate="no" v-pre>playerPrefsV2.xml</code>，成绩以 <code translate="no" v-pre>键 = 密文值</code> 的键值对存储。</p>
-<h2 id="解析流程">解析流程</h2>
-<ol>
-<li>从 <code translate="no" v-pre>playerPrefsV2.xml</code> 读取键值对字符串</li>
-<li>URL 解码（<code translate="no" v-pre>WebUtility.UrlDecode</code>）得到 Base64</li>
-<li><code translate="no" v-pre>LocalSave.DecryptLocalSaveStringNew</code> 解密得到明文字符串</li>
-<li>成绩值解析为 <code translate="no" v-pre>RawScore</code>（JSON），键解析出歌曲 id 与难度</li>
-</ol>
-<h2 id="解密">解密</h2>
-<div id="解密-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.LocalSave;
-using System.Net;
-
-string rawKey   = &quot;Cgw4SttKwRFIjb68TF8z5EC%2FLwVpK8KjKmjcm9T3M78%3D&quot;;
-string rawValue = &quot;eSB6QJlXU1vwHjVx7kcpb4%2Fjdk9o5j4Wiatn%2BjrJ%2BetI2KFMlPDyH8s7I8zM%2BqlW&quot;;
-
-string key   = LocalSave.DecryptLocalSaveStringNew(WebUtility.UrlDecode(rawKey));
-string value = LocalSave.DecryptLocalSaveStringNew(WebUtility.UrlDecode(rawValue));</code></pre>
+<p>Phigros 本地存档通常位于 <code translate="no" v-pre>playerPrefsV2.xml</code>，成绩以 XML 键值对存储。值不是直接可读文本，需要先 URL 解码，再用 <code translate="no" v-pre>LocalSave</code> 解密。</p>
+<h2 id="数据流">数据流</h2>
+<div id="数据流-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">playerPrefsV2.xml
+  -&gt; 读取 &lt;string name=&quot;...&quot; &gt;value&lt;/string&gt;
+  -&gt; WebUtility.UrlDecode
+  -&gt; LocalSaveApi.DecryptLocalSaveStringNew
+  -&gt; 键：songId + &quot;.Record.&quot; + difficulty
+  -&gt; 值：RawScore JSON
+  -&gt; RawScore.ToSongScore</code></pre>
 </doc-codeblock></div>
-<retype-table copy-text="| 重载 | 说明 |
-| --- | --- |
-| `DecryptLocalSaveStringNew(string base64EncryptedString)` | 输入 Base64 字符串 |
-| `DecryptLocalSaveStringNew(byte[] decodedCipherText)` | 输入解码后的字节 |">
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>重载</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code translate="no" v-pre>DecryptLocalSaveStringNew(string base64EncryptedString)</code></td>
-<td>输入 Base64 字符串</td>
-</tr>
-<tr>
-<td><code translate="no" v-pre>DecryptLocalSaveStringNew(byte[] decodedCipherText)</code></td>
-<td>输入解码后的字节</td>
-</tr>
-</tbody>
-</table>
-</div>
-</retype-table>
-<h2 id="解析成绩">解析成绩</h2>
-<p>解密后的值形如 <code translate="no" v-pre>{&quot;s&quot;:992580,&quot;a&quot;:99.17559051513672,&quot;c&quot;:1}</code>：</p>
-<div id="解析成绩-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">RawScore raw = RawScore.FromJson(value);
-Console.WriteLine($&quot;score={raw.Score}, acc={raw.Accuracy}, status={raw.Status}&quot;);</code></pre>
-</doc-codeblock></div>
-<p><code translate="no" v-pre>RawScore</code> 字段（JSON 键名）：</p>
-<retype-table copy-text="| 属性 | JSON 键 | 说明 |
-| --- | --- | --- |
-| `Score` | `s` | 分数（0 ~ 1,000,000） |
-| `Accuracy` | `a` | 准确率（0 ~ 100） |
-| `Status` | `c` | 原始状态（0 = 非 FC，1 = FC…） |">
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>属性</th>
-<th>JSON 键</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code translate="no" v-pre>Score</code></td>
-<td><code translate="no" v-pre>s</code></td>
-<td>分数（0 ~ 1,000,000）</td>
-</tr>
-<tr>
-<td><code translate="no" v-pre>Accuracy</code></td>
-<td><code translate="no" v-pre>a</code></td>
-<td>准确率（0 ~ 100）</td>
-</tr>
-<tr>
-<td><code translate="no" v-pre>Status</code></td>
-<td><code translate="no" v-pre>c</code></td>
-<td>原始状态（0 = 非 FC，1 = FC…）</td>
-</tr>
-</tbody>
-</table>
-</div>
-</retype-table>
-<p>解密后的键形如 <code translate="no" v-pre>MARENOL.LeaF.0.Record.HD</code>：前 3 段是歌曲 id（<code translate="no" v-pre>MARENOL.LeaF.0</code>），末段是难度（<code translate="no" v-pre>HD</code>）。</p>
-<h2 id="组装-songscore">组装 SongScore</h2>
-<div id="组装-songscore-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.CloudSave;
-
-string[] parts = key.Split('.');
-string songId  = string.Join(&quot;.&quot;, parts.Take(3));
-Difficulty diff = Enum.Parse&lt;Difficulty&gt;(parts[^1]);
-
-SongScore song = raw.ToSongScore(songId, diff);
-Console.WriteLine($&quot;{song.Id} {song.Difficulty}: {song.Score} pts, {song.Status}&quot;);</code></pre>
-</doc-codeblock></div>
-<h2 id="完整示例">完整示例</h2>
-<div id="完整示例-code-1" class="codeblock-wrapper"><doc-codeblock>
+<h2 id="解密单个字段">解密单个字段</h2>
+<div id="解密单个字段-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Net;
-using System.Xml.Linq;
-using PhiLibrary197.CloudSave;
-using PhiLibrary197.LocalSave;
+using LocalSaveApi = PhiLibrary197.LocalSave.LocalSave;
 
-XDocument doc = XDocument.Load(&quot;playerPrefsV2.xml&quot;);
-var map = doc.Descendants(&quot;string&quot;).ToDictionary(
-    e =&gt; e.Attribute(&quot;name&quot;)!.Value,
-    e =&gt; e.Value);
+string urlEncoded = &quot;eSB6QJlXU1vwHjVx7kcpb4%2Fjdk9o5j4Wiatn%2BjrJ%2BetI2KFMlPDyH8s7I8zM%2BqlW&quot;;
 
-List&lt;SongScore&gt; scores = [];
-foreach (var (k, v) in map)
-{
-    string decKey = LocalSave.DecryptLocalSaveStringNew(WebUtility.UrlDecode(k));
-    if (!decKey.Contains(&quot;.Record.&quot;)) continue; // 只取成绩项
-
-    string[] parts = decKey.Split('.');
-    string id = string.Join(&quot;.&quot;, parts.Take(3));
-    Difficulty diff = Enum.Parse&lt;Difficulty&gt;(parts[^1]);
-    scores.Add(RawScore.FromJson(
-        LocalSave.DecryptLocalSaveStringNew(WebUtility.UrlDecode(v)))
-        .ToSongScore(id, diff));
-}</code></pre>
+byte[] cipher = Convert.FromBase64String(WebUtility.UrlDecode(urlEncoded));
+string plain = LocalSaveApi.DecryptLocalSaveStringNew(cipher);</code></pre>
+</doc-codeblock></div>
+<p>也可以直接传 Base64 字符串：</p>
+<div id="解密单个字段-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using LocalSaveApi = PhiLibrary197.LocalSave.LocalSave;
+string plain = LocalSaveApi.DecryptLocalSaveStringNew(WebUtility.UrlDecode(urlEncoded));</code></pre>
 </doc-codeblock></div>
 <div class="flex mb-6">
     <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
@@ -287,10 +190,140 @@ foreach (var (k, v) in map)
         </div>
         <div class="pr-5 ml-3 w-full">
             <h5>Note</h5>
-<p><code translate="no" v-pre>DecryptLocalSaveStringNew</code> 是本库（v5 系）的方法名，上游更早版本为 <code translate="no" v-pre>DecryptSaveString</code>，以本库实际 API 为准。</p>
+<p><code translate="no" v-pre>LocalSave</code> 是类名，<code translate="no" v-pre>PhiLibrary197.LocalSave</code> 同时也是命名空间。实际写代码时可以用别名避免歧义：</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using LocalSaveApi = PhiLibrary197.LocalSave.LocalSave;
+string plain = LocalSaveApi.DecryptLocalSaveStringNew(...);</code></pre>
+</doc-codeblock></div>
         </div>
     </div>
 </div>
+<h2 id="解析-rawscore">解析 RawScore</h2>
+<p>解密后的值形如：</p>
+<div id="解析-rawscore-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-json"><code v-pre class="language-json">{&quot;s&quot;:992580,&quot;a&quot;:99.17559051513672,&quot;c&quot;:1}</code></pre>
+</doc-codeblock></div>
+<div id="解析-rawscore-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.LocalSave;
+
+RawScore raw = RawScore.FromJson(plain);
+Console.WriteLine($&quot;score={raw.Score}&quot;);
+Console.WriteLine($&quot;accuracy={raw.Accuracy}&quot;);
+Console.WriteLine($&quot;status={raw.Status}&quot;);</code></pre>
+</doc-codeblock></div>
+<p><code translate="no" v-pre>RawScore</code>：</p>
+<retype-table copy-text="| 属性 | JSON 键 | 说明 |
+| --- | --- | --- |
+| `Score` | `s` | 分数，0 ~ 1,000,000 |
+| `Accuracy` | `a` | 准确率，0 ~ 100 |
+| `Status` | `c` | 原始状态；FC/Phi 等由后续逻辑推导 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>属性</th>
+<th>JSON 键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Score</code></td>
+<td><code translate="no" v-pre>s</code></td>
+<td>分数，0 ~ 1,000,000</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Accuracy</code></td>
+<td><code translate="no" v-pre>a</code></td>
+<td>准确率，0 ~ 100</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Status</code></td>
+<td><code translate="no" v-pre>c</code></td>
+<td>原始状态；FC/Phi 等由后续逻辑推导</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h2 id="键的格式">键的格式</h2>
+<p>解密后的键通常形如：</p>
+<div id="键的格式-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">MARENOL.LeaF.0.Record.HD</code></pre>
+</doc-codeblock></div>
+<p>不要把歌曲 id 固定按 <code translate="no" v-pre>.</code> 分成 3 段；更稳妥的方式是找最后一个 <code translate="no" v-pre>.Record.</code>：</p>
+<div id="键的格式-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">int marker = decryptedKey.LastIndexOf(&quot;.Record.&quot;, StringComparison.Ordinal);
+if (marker &lt; 0) continue;
+
+string songId = decryptedKey[..marker];
+string difficultyText = decryptedKey[(marker + &quot;.Record.&quot;.Length)..];</code></pre>
+</doc-codeblock></div>
+<h2 id="完整可运行示例">完整可运行示例</h2>
+<p>下面代码会读取 <code translate="no" v-pre>playerPrefsV2.xml</code>，解密所有成绩并打印前 10 条。它对应示例项目里的 <a href="https://github.com/WenLiu197/PhiLibrary197/blob/master/samples/PhiLibrary197.Samples/LocalSaveExample.cs">LocalSaveExample.cs</a>。</p>
+<div id="完整可运行示例-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Net;
+using System.Xml.Linq;
+using PhiLibrary197.LocalSave;
+using PhiLibrary197.Scores;
+using LocalSaveApi = PhiLibrary197.LocalSave.LocalSave;
+
+string path = args.FirstOrDefault()
+    ?? Environment.GetEnvironmentVariable(&quot;PHIGROS_PREFS_PATH&quot;)
+    ?? throw new ArgumentException(&quot;请传入 playerPrefsV2.xml 路径，或设置 PHIGROS_PREFS_PATH&quot;);
+
+XDocument doc = XDocument.Load(path);
+List&lt;SongScore&gt; scores = [];
+
+foreach (XElement element in doc.Descendants(&quot;string&quot;))
+{
+    string? rawName = element.Attribute(&quot;name&quot;)?.Value;
+    if (string.IsNullOrEmpty(rawName))
+        continue;
+
+    string decryptedName = LocalSaveApi.DecryptLocalSaveStringNew(WebUtility.UrlDecode(rawName));
+    int marker = decryptedName.LastIndexOf(&quot;.Record.&quot;, StringComparison.Ordinal);
+    if (marker &lt; 0)
+        continue;
+
+    string songId = decryptedName[..marker];
+    string difficultyText = decryptedName[(marker + &quot;.Record.&quot;.Length)..];
+    if (!Enum.TryParse(difficultyText, ignoreCase: true, out Difficulty difficulty))
+        continue;
+
+    string decryptedValue = LocalSaveApi.DecryptLocalSaveStringNew(WebUtility.UrlDecode(element.Value));
+    RawScore raw = RawScore.FromJson(decryptedValue);
+    scores.Add(raw.ToSongScore(songId, difficulty));
+}
+
+Console.WriteLine($&quot;records: {scores.Count}&quot;);
+foreach (SongScore score in scores.Take(10))
+{
+    Console.WriteLine($&quot;{score.Id} [{score.Difficulty}] {score.Score} {score.Accuracy:F4}% {score.Status}&quot;);
+}</code></pre>
+</doc-codeblock></div>
+<p>运行：</p>
+<div id="完整可运行示例-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">dotnet run --project samples/PhiLibrary197.Samples -- local &quot;C:\path\to\playerPrefsV2.xml&quot;</code></pre>
+</doc-codeblock></div>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="解密后仍是乱码">解密后仍是乱码</h3>
+<p>确认输入已经过 URL 解码，并且传入的是 Base64 字节/字符串；不要对明文再解密一次。</p>
+<h3 id="只解析到一部分成绩">只解析到一部分成绩</h3>
+<p>先用 <code translate="no" v-pre>element.Attribute(&quot;name&quot;)</code> 过滤出真正的 <code translate="no" v-pre>&lt;string&gt;</code> 项，再判断键中是否包含 <code translate="no" v-pre>.Record.</code>。<code translate="no" v-pre>playerPrefsV2.xml</code> 还包含设置、用户信息等非成绩项。</p>
+<h3 id="缺少定数">缺少定数</h3>
+<p>本地存档只提供 <code translate="no" v-pre>SongScore</code>，没有曲目名和定数。用 <a href="../07-songdatabase/">SongDatabase</a> 或 <a href="../06-%E5%AE%9A%E6%95%B0%E8%A1%A8%E4%B8%8Erks/">定数表与 RKS</a> 补充。</p>
+<h3 id="想直接算-rks">想直接算 RKS</h3>
+<p>把解析出的 <code translate="no" v-pre>List&lt;SongScore&gt;</code> 放进 <code translate="no" v-pre>GameRecord</code>：</p>
+<div id="想直接算-rks-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.Scores;
+using PhiLibrary197.Songs;
+
+GameRecord record = new(scores, version: 1);
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
+var (phis, sorted, rks) = record.GetSortedListForRks(db.ToConstantMap(), db.ToNameMap());
+Console.WriteLine($&quot;RKS: {rks:F4}&quot;);</code></pre>
+</doc-codeblock></div>
 
                 
                 <!-- Required only on API pages -->

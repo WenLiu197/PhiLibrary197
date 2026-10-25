@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <meta name="turbo-root" content="/PhiLibrary197">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846217236712">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846255593730">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -13,7 +13,7 @@
     <!-- Primary Meta Tags -->
     <title>定数表与 RKS</title>
     <meta name="title" content="定数表与 RKS">
-    <meta name="description" content="Phigros 每张谱面（歌曲 id + 难度）有一个社区标定的定数（Chart Constant），如 Credits.Frums.0 的 IN 为 14.0。">
+    <meta name="description" content="Phigros 每张谱面有一个社区标定的定数（Chart Constant）。计算 RKS 时使用 (歌曲完整 id, 难度) 作为键：">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://wenliu197.github.io/PhiLibrary197/06-定数表与rks/">
@@ -23,7 +23,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://wenliu197.github.io/PhiLibrary197/06-定数表与rks/">
     <meta property="og:title" content="定数表与 RKS">
-    <meta property="og:description" content="Phigros 每张谱面（歌曲 id + 难度）有一个社区标定的定数（Chart Constant），如 Credits.Frums.0 的 IN 为 14.0。">
+    <meta property="og:description" content="Phigros 每张谱面有一个社区标定的定数（Chart Constant）。计算 RKS 时使用 (歌曲完整 id, 难度) 作为键：">
     <meta property="og:site_name" content="PhiLibrary197">
     <meta property="og:locale" content="en_US">
 
@@ -31,19 +31,19 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://wenliu197.github.io/PhiLibrary197/06-定数表与rks/">
     <meta name="twitter:title" content="定数表与 RKS">
-    <meta name="twitter:description" content="Phigros 每张谱面（歌曲 id + 难度）有一个社区标定的定数（Chart Constant），如 Credits.Frums.0 的 IN 为 14.0。">
+    <meta name="twitter:description" content="Phigros 每张谱面有一个社区标定的定数（Chart Constant）。计算 RKS 时使用 (歌曲完整 id, 难度) 作为键：">
 
     <!-- Alternate Markdown -->
     <link rel="alternate" type="text/markdown" href="https://wenliu197.github.io/PhiLibrary197/06-定数表与rks.md">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.6.0.846217236712" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.6.0.846255593730" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846217236712" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846255593730" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -150,82 +150,87 @@
 
                 <!-- Page content  -->
 <h1 id="定数表与-rks">定数表与 RKS</h1>
-<h2 id="概念">概念</h2>
-<p>Phigros 每张谱面（歌曲 id + 难度）有一个社区标定的<strong>定数（Chart Constant）</strong>，如 <code translate="no" v-pre>Credits.Frums.0</code> 的 IN 为 <code translate="no" v-pre>14.0</code>。</p>
-<p>RKS（Rating Score）计算公式：</p>
-<div id="概念-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-none"><code v-pre class="language-none">单曲 RKS = (acc &lt; 70) ? 0 : ((acc - 55) / 45)² × 定数
-总  RKS  = Σ(前3个Phi单曲RKS)/30 + Σ(前27个最高单曲RKS)/30</code></pre>
+<h2 id="定数">定数</h2>
+<p>Phigros 每张谱面有一个社区标定的<strong>定数（Chart Constant）</strong>。计算 RKS 时使用 <code translate="no" v-pre>(歌曲完整 id, 难度)</code> 作为键：</p>
+<div id="定数-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.Scores;
+
+ChartConstantKey key = new(&quot;Credits.Frums.0&quot;, Difficulty.IN);</code></pre>
 </doc-codeblock></div>
-<h2 id="chartconstantkey">ChartConstantKey</h2>
-<div id="chartconstantkey-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">public record struct ChartConstantKey(string SongId, Difficulty Difficulty);</code></pre>
+<p>单曲 RKS：</p>
+<div id="定数-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">acc &lt; 70  -&gt; 0
+否则      -&gt; ((acc - 55) / 45)^2 * 定数</code></pre>
 </doc-codeblock></div>
-<ul>
-<li><code translate="no" v-pre>SongId</code>：含数字后缀的完整 id，如 <code translate="no" v-pre>&quot;Stasis.Maozon.0&quot;</code></li>
-<li><code translate="no" v-pre>Difficulty</code>：难度枚举</li>
-</ul>
-<h2 id="加载定数表">加载定数表</h2>
-<div id="加载定数表-code-1" class="codeblock-wrapper"><doc-codeblock>
+<h2 id="加载定数表和歌名表">加载定数表和歌名表</h2>
+<p>最简单的方式是使用内置数据：</p>
+<div id="加载定数表和歌名表-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.Songs;
+
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
+
+Dictionary&lt;ChartConstantKey, float&gt; constants = db.ToConstantMap();
+Dictionary&lt;string, string&gt; names = db.ToNameMap();</code></pre>
+</doc-codeblock></div>
+<p>如果使用自己的 TSV：</p>
+<div id="加载定数表和歌名表-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197;
 
-// 一行加载：difficulty.tsv（曲目名\tEZ\tHD\tIN\tAT，列按存在情况可选）
-Dictionary&lt;ChartConstantKey, float&gt; constantMap = ScoreHelper.LoadConstantTable(@&quot;difficulty.tsv&quot;);</code></pre>
-</doc-codeblock></div>
-<p>内置容错：跳过注释/空行/脏行；数值解析失败跳过该列；曲名自动补 <code translate="no" v-pre>.0</code> 后缀。</p>
-<p>加载歌名表（info.tsv）：</p>
-<div id="加载定数表-code-2" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">// info.tsv（曲目名\t显示名\t曲师\t画师\t谱师...）
-Dictionary&lt;string, string&gt; nameMap = ScoreHelper.LoadSongInfo(@&quot;info.tsv&quot;);</code></pre>
-</doc-codeblock></div>
-<div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-tip"></div>
-    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-tip" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M7.90625 2.15625C4.50944 2.15625 2.15625 4.58563 2.15625 7.54688C2.15625 8.96138 2.76575 9.88281 3.57075 10.8589L3.87837 11.2226C4.19894 11.6021 4.554 12.0218 4.84581 12.4416C5.25406 13.0324 5.61775 13.7296 5.7385 14.5834C5.76728 14.8608 5.68746 15.1386 5.51579 15.3583C5.34413 15.5781 5.09399 15.7228 4.8179 15.7621C4.5418 15.8013 4.26124 15.7321 4.03512 15.5689C3.809 15.4056 3.65493 15.1612 3.60525 14.8867C3.54775 14.4814 3.37094 14.1004 3.07338 13.6692C2.8306 13.3302 2.57055 13.0039 2.29425 12.6917C2.1735 12.5479 2.04556 12.397 1.909 12.2317C1.00769 11.1406 0 9.72613 0 7.54688C0 3.32062 3.39681 0 7.90625 0C12.4157 0 15.8125 3.32062 15.8125 7.54688C15.8125 9.72613 14.8048 11.1406 13.9035 12.2317C13.7669 12.397 13.639 12.5479 13.5183 12.6903C13.2207 13.0424 12.9677 13.3414 12.7406 13.6692C12.4416 14.1004 12.2662 14.4814 12.2087 14.8867C12.1557 15.1584 12.0003 15.3994 11.7747 15.5598C11.5492 15.7202 11.2706 15.7879 10.9965 15.7488C10.7225 15.7096 10.474 15.5667 10.3023 15.3496C10.1306 15.1325 10.0489 14.8577 10.074 14.582C10.1948 13.7296 10.5584 13.0324 10.9667 12.4416C11.2585 12.0218 11.6136 11.6021 11.9341 11.2226C12.0419 11.0961 12.1454 10.9739 12.2403 10.8589C13.0468 9.88281 13.6562 8.96138 13.6562 7.54688C13.6562 4.58563 11.3031 2.15625 7.90625 2.15625ZM4.67188 17.25H11.1406C11.4266 17.25 11.7008 17.3636 11.903 17.5658C12.1052 17.768 12.2188 18.0422 12.2188 18.3281C12.2188 18.6141 12.1052 18.8883 11.903 19.0905C11.7008 19.2927 11.4266 19.4062 11.1406 19.4062H4.67188C4.38594 19.4062 4.11171 19.2927 3.90953 19.0905C3.70734 18.8883 3.59375 18.6141 3.59375 18.3281C3.59375 18.0422 3.70734 17.768 3.90953 17.5658C4.11171 17.3636 4.38594 17.25 4.67188 17.25ZM5.03125 21.9219C5.03125 21.6359 5.14484 21.3617 5.34703 21.1595C5.54921 20.9573 5.82344 20.8438 6.10938 20.8438H9.70312C9.98906 20.8438 10.2633 20.9573 10.4655 21.1595C10.6677 21.3617 10.7812 21.6359 10.7812 21.9219C10.7812 22.2078 10.6677 22.482 10.4655 22.6842C10.2633 22.8864 9.98906 23 9.70312 23H6.10938C5.82344 23 5.54921 22.8864 5.34703 22.6842C5.14484 22.482 5.03125 22.2078 5.03125 21.9219Z" />
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3 w-full">
-            <h5>Tip</h5>
-<p>两个表都建议用 <a href="../07-songdatabase/">SongDatabase</a> 统一加载——<code translate="no" v-pre>db.ToConstantMap()</code> / <code translate="no" v-pre>db.ToNameMap()</code> 直接产出上面两个字典，还能查曲目百科。
-也可以直接用 <code translate="no" v-pre>SongDatabase.LoadFromBuiltIn()</code>，用包内数据省去外部表。</p>
-        </div>
-    </div>
-</div>
-<h2 id="计算-rks">计算 RKS</h2>
-<div id="计算-rks-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">Save save = new(token, false);
-SaveContext ctx = await save.GetSaveContextAsync(0);
-GameRecord record = ctx.ReadGameRecord();
+Dictionary&lt;ChartConstantKey, float&gt; constants =
+    ScoreHelper.LoadConstantTable(&quot;difficulty.tsv&quot;);
 
-// 方式一：完整排序（推荐）
-var (phis, otherScores, rks) = record.GetSortedListForRks(constantMap, nameMap);
+Dictionary&lt;string, string&gt; names =
+    ScoreHelper.LoadSongInfo(&quot;info.tsv&quot;);</code></pre>
+</doc-codeblock></div>
+<p><code translate="no" v-pre>ScoreHelper</code> 还支持从内存/网络读取：</p>
+<div id="加载定数表和歌名表-code-3" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using TextReader reader = new StringReader(tsvText);
+var constants = ScoreHelper.LoadConstantTable(reader);
+
+using Stream stream = httpResponse.Content.ReadAsStream();
+var names = ScoreHelper.LoadSongInfo(stream);</code></pre>
+</doc-codeblock></div>
+<p>格式：</p>
+<div id="加载定数表和歌名表-code-4" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">difficulty.tsv: 曲目id前缀&lt;TAB&gt;EZ&lt;TAB&gt;HD&lt;TAB&gt;IN&lt;TAB&gt;[AT]
+info.tsv:       曲目id前缀&lt;TAB&gt;显示名&lt;TAB&gt;曲师&lt;TAB&gt;画师&lt;TAB&gt;谱师...</code></pre>
+</doc-codeblock></div>
+<p>解析规则：</p>
+<ul>
+<li>空行、<code translate="no" v-pre>#</code>/<code translate="no" v-pre>//</code> 注释行跳过；</li>
+<li>定数值无法解析时跳过该列；</li>
+<li>曲目前缀自动补 <code translate="no" v-pre>.0</code>；</li>
+<li>缺 AT 列时允许省略。</li>
+</ul>
+<h2 id="从-gamerecord-计算">从 GameRecord 计算</h2>
+<div id="从-gamerecord-计算-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.Scores;
+
+GameRecord record = context.ReadGameRecord();
+
+(List&lt;CompleteScore&gt; phis, List&lt;CompleteScore&gt; sorted, double rks) =
+    record.GetSortedListForRks(constants, names);
+
 Console.WriteLine($&quot;RKS: {rks:F4}&quot;);
-foreach (var phi in phis) Console.WriteLine($&quot;[Phi] {phi.NameOrDefault} {phi.Score.Difficulty}: {phi.Rks:F4}&quot;);
-
-// 方式二：合并排序（前 3 个是 Phi，不足补 Default 占位）
-var (scores, rks2) = record.GetSortedListForRksMerged(constantMap, nameMap);
-
-// 方式三：只取完整成绩（不排序）
-IEnumerable&lt;CompleteScore&gt; all = record.GetCompleteScores(constantMap, nameMap);</code></pre>
+Console.WriteLine($&quot;Phi count: {phis.Count}&quot;);</code></pre>
 </doc-codeblock></div>
-<h2 id="排序语义">排序语义</h2>
 <p><code translate="no" v-pre>GetSortedListForRks</code> 的行为：</p>
 <ol>
-<li>全部成绩转 <code translate="no" v-pre>CompleteScore</code> 并按 RKS 降序</li>
-<li><code translate="no" v-pre>Phis</code> = 状态为 <code translate="no" v-pre>ScoreStatus.Phi</code> 的前 3 个（不足 3 个<strong>不填充</strong>）</li>
-<li><code translate="no" v-pre>Rks = Σ(Phi.Rks)/30 + Σ(前27条.Rks)/30</code></li>
+<li>把所有可计算定数的成绩转成 <code translate="no" v-pre>CompleteScore</code>；</li>
+<li>同一基础曲目、同一难度只保留 RKS 最高的一条（Random 变体去重）；</li>
+<li>按 RKS 降序排序；</li>
+<li><code translate="no" v-pre>Phis</code> 取排序后状态为 <code translate="no" v-pre>Phi</code> 的前 3 条（不足 3 条不补）；</li>
+<li><code translate="no" v-pre>OtherScores</code> 是完整排序列表（包含 Phi）；</li>
+<li>RKS 按当前实现计算：</li>
 </ol>
-<p><code translate="no" v-pre>GetSortedListForRksMerged</code>：Phis 不足 3 个时用 <code translate="no" v-pre>CompleteScore.Default</code> 补齐并插入列表头部。</p>
-<h2 id="缺定数成绩的处理">缺定数成绩的处理</h2>
+<div id="从-gamerecord-计算-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">sum(Phis.Rks / 30) + sum(OtherScores.Take(27).Rks / 30)</code></pre>
+</doc-codeblock></div>
 <div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-info"></div>
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
     <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
         <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-info" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-primary" width="22" height="22" viewBox="0 0 24 24" role="presentation">
                 <g fill="currentColor"><g>
                     <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
                     <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
@@ -234,34 +239,86 @@ IEnumerable&lt;CompleteScore&gt; all = record.GetCompleteScores(constantMap, nam
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>Important</h5>
-<p><code translate="no" v-pre>GetCompleteScores</code> / <code translate="no" v-pre>GetSortedListForRks</code> / <code translate="no" v-pre>GetSortedListForRksMerged</code> 会<strong>自动跳过</strong>定数表查不到的成绩（Legacy/SP 难度、表未收录的新曲），不会抛异常，与游戏内 RKS 计算行为一致。
-若绕过上述方法直接访问 <code translate="no" v-pre>CompleteScore.ChartConstant</code> / <code translate="no" v-pre>.Rks</code>，缺定数时仍会抛 <code translate="no" v-pre>KeyNotFoundException</code>。</p>
+            <h5>Note</h5>
+<p>想要展示“B30”，通常直接取 <code translate="no" v-pre>sorted.Take(30)</code>；<code translate="no" v-pre>GetSortedListForRksMerged</code> 则是另一个“前 3 项补 Phi 占位”的展示结构。</p>
         </div>
     </div>
 </div>
-<h2 id="导出-excel-友好格式">导出 Excel 友好格式</h2>
-<div id="导出-excel-友好格式-code-1" class="codeblock-wrapper"><doc-codeblock>
-<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">var export = record.GetCompleteScores(constantMap, nameMap)
-    .Select(s =&gt; new ExportScore
-    {
-        ID = s.Score.Id,
-        Name = s.NameOrDefault,
-        Difficulty = s.Score.Difficulty.ToString(),
-        ChartConstant = s.ChartConstant,
-        Score = s.Score.Score,
-        Acc = s.Score.Accuracy,
-        RksGiven = s.Rks,
-        Status = s.Score.Status.ToString(),
-    });</code></pre>
+<h2 id="三种返回结构">三种返回结构</h2>
+<h3 id="完整排序推荐计算-rks">完整排序（推荐计算 RKS）</h3>
+<div id="完整排序推荐计算-rks-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">var (phis, sorted, rks) = record.GetSortedListForRks(constants, names);</code></pre>
 </doc-codeblock></div>
-<h2 id="常见坑">常见坑</h2>
-<ol>
-<li><strong>定数表必须真实</strong>：<code translate="no" v-pre>CompleteScore</code> 用定数排序，不要用 mock/假定数表，否则排序与 RKS 全错</li>
-<li><strong>表未更新的新曲</strong>：新曲目成绩会被自动跳过（RKS 不受影响），但成绩列表里看不到它——及时更新定数表</li>
-<li><strong>游戏内 RKS vs 计算 RKS</strong>：<code translate="no" v-pre>Summary.Rks</code> 是游戏内显示值（可能滞后），应以计算结果为准</li>
-<li><strong>难度枚举</strong>：EZ=0 / HD=1 / IN=2 / AT=3</li>
-</ol>
+<h3 id="合并显示前-3-项固定为-phi">合并显示（前 3 项固定为 Phi）</h3>
+<div id="合并显示前-3-项固定为-phi-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">var (scores, rks) = record.GetSortedListForRksMerged(constants, names);</code></pre>
+</doc-codeblock></div>
+<p>合并列表的前 3 项是 Phi；不足 3 个时用 <code translate="no" v-pre>CompleteScore.Default</code> 补齐。<code translate="no" v-pre>CompleteScore.Default</code> 只用于占位，不能拿它的定数/名字做真实展示。</p>
+<h3 id="所有可计算成绩">所有可计算成绩</h3>
+<div id="所有可计算成绩-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">IEnumerable&lt;CompleteScore&gt; all = record.GetCompleteScores(constants, names);</code></pre>
+</doc-codeblock></div>
+<p>包含同一曲目的多个 Random 变体，不排序、不去重。</p>
+<h2 id="完整可运行示例">完整可运行示例</h2>
+<p>不依赖云存档，直接用内置数据和合成成绩：</p>
+<div id="完整可运行示例-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.Scores;
+using PhiLibrary197.Songs;
+
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
+
+List&lt;SongScore&gt; records = [];
+foreach (SongEntry entry in db.Songs.Where(x =&gt; x.Constants.ContainsKey(Difficulty.IN)).Take(30))
+{
+    records.Add(new SongScore(
+        score: 1_000_000,
+        acc: 100f,
+        id: entry.Id,
+        difficulty: Difficulty.IN,
+        status: ScoreStatus.Phi));
+}
+
+GameRecord record = new(records, version: 1);
+var (phis, sorted, rks) = record.GetSortedListForRks(db.ToConstantMap(), db.ToNameMap());
+
+Console.WriteLine($&quot;RKS: {rks:F4}&quot;);
+foreach (CompleteScore score in sorted.Take(10))
+    Console.WriteLine($&quot;{score.NameOrDefault} [{score.Score.Difficulty}] {score.Rks:F4}&quot;);</code></pre>
+</doc-codeblock></div>
+<p>对应示例项目：</p>
+<div id="完整可运行示例-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">dotnet run --project samples/PhiLibrary197.Samples -- builtin</code></pre>
+</doc-codeblock></div>
+<h2 id="真实云存档">真实云存档</h2>
+<div id="真实云存档-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using PhiLibrary197.CloudSave;
+using PhiLibrary197.Songs;
+
+using Save save = new(token, isInternational: false);
+SaveContext context = await save.GetSaveContextAsync(0);
+GameRecord record = context.ReadGameRecord();
+
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
+var (phis, sorted, rks) = record.GetSortedListForRks(db.ToConstantMap(), db.ToNameMap());</code></pre>
+</doc-codeblock></div>
+<p>完整示例：<a href="https://github.com/WenLiu197/PhiLibrary197/blob/master/samples/PhiLibrary197.Samples/CloudSaveExample.cs">CloudSaveExample.cs</a></p>
+<h2 id="定数缺失">定数缺失</h2>
+<p><code translate="no" v-pre>GetCompleteScores</code> / <code translate="no" v-pre>GetSortedListForRks</code> / <code translate="no" v-pre>GetSortedListForRksMerged</code> 会跳过定数表查不到的成绩，不抛异常。常见原因：</p>
+<ul>
+<li>Legacy/SP 难度没有定数；</li>
+<li>新曲还没更新内置数据；</li>
+<li>自定义表缺少该曲目/难度。</li>
+</ul>
+<p>如果绕过这些方法直接访问 <code translate="no" v-pre>CompleteScore.ChartConstant</code> 或 <code translate="no" v-pre>Rks</code>，缺失时会抛 <code translate="no" v-pre>KeyNotFoundException</code>。</p>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="为什么要用内置-songdatabase">为什么要用内置 SongDatabase？</h3>
+<p><code translate="no" v-pre>SongDatabase.LoadFromBuiltIn()</code> 同时提供 327 首曲目的定数和歌名，避免自己维护两份表。需要自定义数据时，仍可用 <code translate="no" v-pre>LoadFromFile</code> 或 <code translate="no" v-pre>ScoreHelper</code>。</p>
+<h3 id="为什么-rks-和游戏里显示不一样">为什么 RKS 和游戏里显示不一样？</h3>
+<p><code translate="no" v-pre>Summary.Rks</code> 是游戏内显示值，可能滞后；应以 <code translate="no" v-pre>GetSortedListForRks</code> 计算值为准。</p>
+<h3 id="random-变体怎么算">Random 变体怎么算？</h3>
+<p><code translate="no" v-pre>GetSortedListForRks</code> 会按基础曲目 + 难度去重，保留 RKS 最高的一条；<code translate="no" v-pre>GetCompleteScores</code> 会保留所有变体。展示全部成绩用后者，算 B30/RKS 用前者。</p>
+<h3 id="怎么导出成绩">怎么导出成绩？</h3>
+<p>库只提供 <code translate="no" v-pre>ExportScore</code> 模型和 <code translate="no" v-pre>CompleteScore</code> 数据，不提供 TSV/CSV/Excel 输出。请按自己的列格式映射后输出；变体和排序策略由调用方决定。</p>
 
                 
                 <!-- Required only on API pages -->

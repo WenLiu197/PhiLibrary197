@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <meta name="turbo-root" content="/PhiLibrary197">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846217236712">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846255593730">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -13,7 +13,7 @@
     <!-- Primary Meta Tags -->
     <title>API 参考</title>
     <meta name="title" content="API 参考">
-    <meta name="description" content="按命名空间分类的完整 API 参考（微软 .NET 文档风格，每个类独立页面）。">
+    <meta name="description" content="本页是 1.0.0 的公开类型速查。逐成员说明可直接看 Visual Studio 的 XML 注释；完整可运行用法见各主题页和 示例项目。">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://wenliu197.github.io/PhiLibrary197/10-api参考/">
@@ -23,7 +23,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://wenliu197.github.io/PhiLibrary197/10-api参考/">
     <meta property="og:title" content="API 参考">
-    <meta property="og:description" content="按命名空间分类的完整 API 参考（微软 .NET 文档风格，每个类独立页面）。">
+    <meta property="og:description" content="本页是 1.0.0 的公开类型速查。逐成员说明可直接看 Visual Studio 的 XML 注释；完整可运行用法见各主题页和 示例项目。">
     <meta property="og:site_name" content="PhiLibrary197">
     <meta property="og:locale" content="en_US">
 
@@ -31,18 +31,19 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://wenliu197.github.io/PhiLibrary197/10-api参考/">
     <meta name="twitter:title" content="API 参考">
-    <meta name="twitter:description" content="按命名空间分类的完整 API 参考（微软 .NET 文档风格，每个类独立页面）。">
+    <meta name="twitter:description" content="本页是 1.0.0 的公开类型速查。逐成员说明可直接看 Visual Studio 的 XML 注释；完整可运行用法见各主题页和 示例项目。">
 
     <!-- Alternate Markdown -->
     <link rel="alternate" type="text/markdown" href="https://wenliu197.github.io/PhiLibrary197/10-api参考.md">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.6.0.846217236712" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.6.0.846255593730" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846255593730" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -149,66 +150,58 @@
 
                 <!-- Page content  -->
 <h1 id="api-参考">API 参考</h1>
-<p>按命名空间分类的完整 API 参考（微软 .NET 文档风格，每个类独立页面）。</p>
-<h2 id="philibrary197根命名空间">PhiLibrary197（根命名空间）</h2>
-<retype-table copy-text="| 类型 | 说明 |
+<p>本页是 1.0.0 的公开类型速查。逐成员说明可直接看 Visual Studio 的 XML 注释；完整可运行用法见各主题页和 <a href="../11-%E7%A4%BA%E4%BE%8B%E9%A1%B9%E7%9B%AE/">示例项目</a>。</p>
+<h2 id="philibrary197">PhiLibrary197</h2>
+<h3 id="scorehelper">ScoreHelper</h3>
+<p><code translate="no" v-pre>public static class ScoreHelper</code></p>
+<retype-table copy-text="| 方法 | 说明 |
 | --- | --- |
-| [ScoreHelper](api/PhiLibrary197/ScoreHelper.md) | 成绩状态判定、定数表/歌名表加载 |
-| [PhiLibrary197JsonSerializerContext](api/PhiLibrary197/PhiLibrary197JsonSerializerContext.md) | JSON 源生成序列化上下文 |
-| [IPhigrosCustomSerialization\&lt;TSelf\&gt;](api/PhiLibrary197/IPhigrosCustomSerialization.md) | 自定义二进制序列化接口 |
-| [DebugArgumentNullException](api/PhiLibrary197/DebugArgumentNullException.md) | 带调试信息的空引用异常 |
-| [MaxValueArgumentOutOfRangeException](api/PhiLibrary197/MaxValueArgumentOutOfRangeException.md) | 越界参数异常 |">
+| `ParseStatus(RawScore record)` | 从本地原始成绩推导 `ScoreStatus` |
+| `ParseStatus(int score, double accuracy, bool isFc)` | 从原始值推导状态 |
+| `DifficultyStringToIndex(string diff)` | `&quot;EZ&quot;/&quot;HD&quot;/&quot;IN&quot;/&quot;AT&quot;` → 索引；未知值抛异常 |
+| `LoadConstantTable(string)` / `(TextReader)` / `(Stream)` | 加载 difficulty.tsv |
+| `LoadSongInfo(string)` / `(TextReader)` / `(Stream)` | 加载 info.tsv |">
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
 <tr>
-<th>类型</th>
+<th>方法</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="../api/philibrary197/scorehelper/">ScoreHelper</a></td>
-<td>成绩状态判定、定数表/歌名表加载</td>
+<td><code translate="no" v-pre>ParseStatus(RawScore record)</code></td>
+<td>从本地原始成绩推导 <code translate="no" v-pre>ScoreStatus</code></td>
 </tr>
 <tr>
-<td><a href="../api/philibrary197/philibrary197jsonserializercontext/">PhiLibrary197JsonSerializerContext</a></td>
-<td>JSON 源生成序列化上下文</td>
+<td><code translate="no" v-pre>ParseStatus(int score, double accuracy, bool isFc)</code></td>
+<td>从原始值推导状态</td>
 </tr>
 <tr>
-<td><a href="../api/philibrary197/iphigroscustomserialization/">IPhigrosCustomSerialization&lt;TSelf&gt;</a></td>
-<td>自定义二进制序列化接口</td>
+<td><code translate="no" v-pre>DifficultyStringToIndex(string diff)</code></td>
+<td><code translate="no" v-pre>&quot;EZ&quot;/&quot;HD&quot;/&quot;IN&quot;/&quot;AT&quot;</code> → 索引；未知值抛异常</td>
 </tr>
 <tr>
-<td><a href="../api/philibrary197/debugargumentnullexception/">DebugArgumentNullException</a></td>
-<td>带调试信息的空引用异常</td>
+<td><code translate="no" v-pre>LoadConstantTable(string)</code> / <code translate="no" v-pre>(TextReader)</code> / <code translate="no" v-pre>(Stream)</code></td>
+<td>加载 difficulty.tsv</td>
 </tr>
 <tr>
-<td><a href="../api/philibrary197/maxvalueargumentoutofrangeexception/">MaxValueArgumentOutOfRangeException</a></td>
-<td>越界参数异常</td>
+<td><code translate="no" v-pre>LoadSongInfo(string)</code> / <code translate="no" v-pre>(TextReader)</code> / <code translate="no" v-pre>(Stream)</code></td>
+<td>加载 info.tsv</td>
 </tr>
 </tbody>
 </table>
 </div>
 </retype-table>
-<h2 id="philibrary197cloudsave">PhiLibrary197.CloudSave</h2>
+<h3 id="philibrary197jsonserializercontext">PhiLibrary197JsonSerializerContext</h3>
+<p><code translate="no" v-pre>public partial class PhiLibrary197JsonSerializerContext : JsonSerializerContext</code></p>
+<p>源生成 JSON 上下文。注册了 <code translate="no" v-pre>SaveInfoContainer</code>、<code translate="no" v-pre>SaveInfo</code>、<code translate="no" v-pre>RawScore</code>、<code translate="no" v-pre>LCCombinedAuthData</code>、<code translate="no" v-pre>TapTapProfileData</code>、<code translate="no" v-pre>TapTapTokenData</code>、<code translate="no" v-pre>PartialTapTapQRCodeData</code>、<code translate="no" v-pre>JsonNode</code>。</p>
+<h3 id="异常">异常</h3>
 <retype-table copy-text="| 类型 | 说明 |
 | --- | --- |
-| [Save](api/CloudSave/Save.md) | 云存档访问入口 |
-| [SaveContext](api/CloudSave/SaveContext.md) | 解密后的存档上下文（读取/修改/回写） |
-| [GameRecord](api/CloudSave/GameRecord.md) | 成绩容器 + RKS 计算 |
-| [SongScore](api/CloudSave/SongScore.md) | 单曲成绩 |
-| [CompleteScore](api/CloudSave/CompleteScore.md) | 完整成绩（含定数/RKS） |
-| [ChartConstantKey](api/CloudSave/ChartConstantKey.md) | 定数查找键 |
-| [Summary](api/CloudSave/Summary.md) / [PlayCountSummary](api/CloudSave/PlayCountSummary.md) | 游玩统计 |
-| [Challenge](api/CloudSave/Challenge.md) | 挑战码 |
-| [Money](api/CloudSave/Money.md) | 货币 |
-| [GameProgress](api/CloudSave/GameProgress.md) | 解锁进度（含 Node2/3/4） |
-| [GameSettings](api/CloudSave/GameSettings.md) / [GameUserInfo](api/CloudSave/GameUserInfo.md) | 设置与用户信息 |
-| [GameKey](api/CloudSave/GameKey.md) / [GameKeyFlag](api/CloudSave/GameKeyFlag.md) | Key 数据 |
-| [ExportScore](api/CloudSave/ExportScore.md) | Excel 友好导出模型 |
-| [SongDatabase](api/CloudSave/SongDatabase.md) / [SongEntry](api/CloudSave/SongEntry.md) | 曲目数据库 |
-| [枚举](api/CloudSave/enums.md) | 全部枚举汇总 |">
+| `DebugArgumentNullException` | 内部空引用，带调试信息 |
+| `MaxValueArgumentOutOfRangeException` | 索引越界 |">
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
@@ -219,77 +212,472 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../api/cloudsave/save/">Save</a></td>
-<td>云存档访问入口</td>
+<td><code translate="no" v-pre>DebugArgumentNullException</code></td>
+<td>内部空引用，带调试信息</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/savecontext/">SaveContext</a></td>
-<td>解密后的存档上下文（读取/修改/回写）</td>
+<td><code translate="no" v-pre>MaxValueArgumentOutOfRangeException</code></td>
+<td>索引越界</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h2 id="philibrary197authentication">PhiLibrary197.Authentication</h2>
+<h3 id="taptaphelper">TapTapHelper</h3>
+<p><code translate="no" v-pre>public static class TapTapHelper</code></p>
+<retype-table copy-text="| 成员 | 说明 |
+| --- | --- |
+| `Proxy` | 自定义 TapTap HTTP 请求委托 |
+| `RequestLoginQrCode(...)` | 请求 QRCode 设备码 |
+| `CheckQRCodeResult(...)` | 兼容入口；非成功返回 `null` |
+| `CheckQRCodeResultDetailed(...)` | 返回 `TapTapQrCodeResult`，区分 pending/denied/expired |
+| `GenerateCallbackLoginUrl(...)` | 生成 OAuth 回调登录数据 |
+| `StartCallbackLogin(...)` | 启动 localhost 回调服务器，返回 `TapTapCallbackServer` |
+| `HandleCallbackLogin(login, code, ...)` | 用 code 换 token（不校验 state） |
+| `HandleCallbackLogin(login, code, state, ...)` | 校验 state 后换 token |
+| `GetProfile(token, ...)` | 获取 TapTap 用户资料 |
+| `GetAccountUrl/GetCodeUrl/GetTokenUrl/GetProfileUrl(...)` | 端点地址 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>成员</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Proxy</code></td>
+<td>自定义 TapTap HTTP 请求委托</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/gamerecord/">GameRecord</a></td>
-<td>成绩容器 + RKS 计算</td>
+<td><code translate="no" v-pre>RequestLoginQrCode(...)</code></td>
+<td>请求 QRCode 设备码</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/songscore/">SongScore</a></td>
-<td>单曲成绩</td>
+<td><code translate="no" v-pre>CheckQRCodeResult(...)</code></td>
+<td>兼容入口；非成功返回 <code translate="no" v-pre>null</code></td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/completescore/">CompleteScore</a></td>
-<td>完整成绩（含定数/RKS）</td>
+<td><code translate="no" v-pre>CheckQRCodeResultDetailed(...)</code></td>
+<td>返回 <code translate="no" v-pre>TapTapQrCodeResult</code>，区分 pending/denied/expired</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/chartconstantkey/">ChartConstantKey</a></td>
-<td>定数查找键</td>
+<td><code translate="no" v-pre>GenerateCallbackLoginUrl(...)</code></td>
+<td>生成 OAuth 回调登录数据</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/summary/">Summary</a> / <a href="../api/cloudsave/playcountsummary/">PlayCountSummary</a></td>
-<td>游玩统计</td>
+<td><code translate="no" v-pre>StartCallbackLogin(...)</code></td>
+<td>启动 localhost 回调服务器，返回 <code translate="no" v-pre>TapTapCallbackServer</code></td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/challenge/">Challenge</a></td>
+<td><code translate="no" v-pre>HandleCallbackLogin(login, code, ...)</code></td>
+<td>用 code 换 token（不校验 state）</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>HandleCallbackLogin(login, code, state, ...)</code></td>
+<td>校验 state 后换 token</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetProfile(token, ...)</code></td>
+<td>获取 TapTap 用户资料</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetAccountUrl/GetCodeUrl/GetTokenUrl/GetProfileUrl(...)</code></td>
+<td>端点地址</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="taptapqrcodelogin">TapTapQrCodeLogin</h3>
+<p><code translate="no" v-pre>public sealed class TapTapQrCodeLogin</code></p>
+<retype-table copy-text="| 成员 | 说明 |
+| --- | --- |
+| `CreateAsync(permissions, useChinaEndpoint, ct)` | 请求新的 QRCode 登录 |
+| `QrCode` | `CompleteQRCodeData` |
+| `Url` | 二维码/登录 URL |
+| `ExpiresInSeconds` | 有效期 |
+| `PollAsync(ct)` | 单次轮询，返回 `TapTapQrCodeResult` |
+| `WaitForTokenAsync(ct)` | 自动轮询直到成功/拒绝/过期 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>成员</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>CreateAsync(permissions, useChinaEndpoint, ct)</code></td>
+<td>请求新的 QRCode 登录</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>QrCode</code></td>
+<td><code translate="no" v-pre>CompleteQRCodeData</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Url</code></td>
+<td>二维码/登录 URL</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ExpiresInSeconds</code></td>
+<td>有效期</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PollAsync(ct)</code></td>
+<td>单次轮询，返回 <code translate="no" v-pre>TapTapQrCodeResult</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>WaitForTokenAsync(ct)</code></td>
+<td>自动轮询直到成功/拒绝/过期</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="taptapcallbackserver">TapTapCallbackServer</h3>
+<p><code translate="no" v-pre>public sealed class TapTapCallbackServer : IDisposable</code></p>
+<retype-table copy-text="| 成员 | 说明 |
+| --- | --- |
+| `Start(port, useChinaEndpoint, path, permissions)` | 启动 localhost 回调服务器 |
+| `Port` / `CallbackUrl` / `BeginUrl` | 实际端口和 URL |
+| `LoginData` | `CallbackLoginData` |
+| `WaitForCallbackAsync(ct)` | 等待并校验回调，返回 code/state |
+| `WaitForTokenAsync(ct)` | 等待回调并直接换 token |
+| `Dispose()` | 停止监听 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>成员</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Start(port, useChinaEndpoint, path, permissions)</code></td>
+<td>启动 localhost 回调服务器</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Port</code> / <code translate="no" v-pre>CallbackUrl</code> / <code translate="no" v-pre>BeginUrl</code></td>
+<td>实际端口和 URL</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>LoginData</code></td>
+<td><code translate="no" v-pre>CallbackLoginData</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>WaitForCallbackAsync(ct)</code></td>
+<td>等待并校验回调，返回 code/state</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>WaitForTokenAsync(ct)</code></td>
+<td>等待回调并直接换 token</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Dispose()</code></td>
+<td>停止监听</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="lchelper">LCHelper</h3>
+<p><code translate="no" v-pre>public static class LCHelper</code></p>
+<retype-table copy-text="| 成员 | 说明 |
+| --- | --- |
+| `LoginWithAuthData(data, ...)` | 登录 LeanCloud，返回原始 JSON |
+| `LoginAndGetToken(data, ...)` | 登录并返回 session token |
+| `GetMD5HashHexString` | 可替换的 MD5 实现 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>成员</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>LoginWithAuthData(data, ...)</code></td>
+<td>登录 LeanCloud，返回原始 JSON</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>LoginAndGetToken(data, ...)</code></td>
+<td>登录并返回 session token</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetMD5HashHexString</code></td>
+<td>可替换的 MD5 实现</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="登录模型">登录模型</h3>
+<retype-table copy-text="| 类型 | 关键成员 |
+| --- | --- |
+| `TapTapTokenData` | `Data.TokenData`：`Kid`、`Token`、`TokenType`、`MacKey`、`MacAlgorithm`、`Scope` |
+| `TapTapProfileData` | `Data.ProfileData`：`OpenId`、`UnionId`、`Name`、`Gender`、`Avatar`、`Bio` |
+| `LCCombinedAuthData` | `Kid`、`Token`、`TokenType`、`MacKey`、`MacAlgorithm`、`OpenID`、`Name`、`Avatar`、`UnionID` |
+| `CompleteQRCodeData` | `DeviceID`、`DeviceCode`、`ExpiresInSeconds`、`Url`、`Interval` |
+| `PartialTapTapQRCodeData` | 设备码原始响应 |
+| `CallbackLoginData` | `BeginUrl`、`CodeVerifier`、`RedirectUrl`、`State`、`CodeChallenge`、`Scope` |
+| `TapTapQrCodeResult` | `Status`、`Token` |
+| `TapTapCallbackResult` | `Code`、`State` |
+| `RequestException` | `Failing`、`HttpStatus` |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>关键成员</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>TapTapTokenData</code></td>
+<td><code translate="no" v-pre>Data.TokenData</code>：<code translate="no" v-pre>Kid</code>、<code translate="no" v-pre>Token</code>、<code translate="no" v-pre>TokenType</code>、<code translate="no" v-pre>MacKey</code>、<code translate="no" v-pre>MacAlgorithm</code>、<code translate="no" v-pre>Scope</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TapTapProfileData</code></td>
+<td><code translate="no" v-pre>Data.ProfileData</code>：<code translate="no" v-pre>OpenId</code>、<code translate="no" v-pre>UnionId</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>Gender</code>、<code translate="no" v-pre>Avatar</code>、<code translate="no" v-pre>Bio</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>LCCombinedAuthData</code></td>
+<td><code translate="no" v-pre>Kid</code>、<code translate="no" v-pre>Token</code>、<code translate="no" v-pre>TokenType</code>、<code translate="no" v-pre>MacKey</code>、<code translate="no" v-pre>MacAlgorithm</code>、<code translate="no" v-pre>OpenID</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>Avatar</code>、<code translate="no" v-pre>UnionID</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>CompleteQRCodeData</code></td>
+<td><code translate="no" v-pre>DeviceID</code>、<code translate="no" v-pre>DeviceCode</code>、<code translate="no" v-pre>ExpiresInSeconds</code>、<code translate="no" v-pre>Url</code>、<code translate="no" v-pre>Interval</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PartialTapTapQRCodeData</code></td>
+<td>设备码原始响应</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>CallbackLoginData</code></td>
+<td><code translate="no" v-pre>BeginUrl</code>、<code translate="no" v-pre>CodeVerifier</code>、<code translate="no" v-pre>RedirectUrl</code>、<code translate="no" v-pre>State</code>、<code translate="no" v-pre>CodeChallenge</code>、<code translate="no" v-pre>Scope</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TapTapQrCodeResult</code></td>
+<td><code translate="no" v-pre>Status</code>、<code translate="no" v-pre>Token</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>TapTapCallbackResult</code></td>
+<td><code translate="no" v-pre>Code</code>、<code translate="no" v-pre>State</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>RequestException</code></td>
+<td><code translate="no" v-pre>Failing</code>、<code translate="no" v-pre>HttpStatus</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="枚举">枚举</h3>
+<p><code translate="no" v-pre>TapTapQrCodeStatus</code></p>
+<div id="枚举-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Pending, Waiting, SlowDown, Denied, Expired, Success, Unknown</code></pre>
+</doc-codeblock></div>
+<p><code translate="no" v-pre>RequestException.FailingType</code></p>
+<div id="枚举-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">Pending, Denied, Waiting, SlowDown, Expired, None, Unknown</code></pre>
+</doc-codeblock></div>
+<h2 id="philibrary197cloudsave">PhiLibrary197.CloudSave</h2>
+<h3 id="save">Save</h3>
+<p><code translate="no" v-pre>public class Save : IDisposable</code></p>
+<retype-table copy-text="| 成员 | 说明 |
+| --- | --- |
+| `new Save(sessionToken, isInternational)` | 创建实例；token 25 位字母数字 |
+| `SharedClient` | 静态共享 `HttpClient` |
+| `RequestHandler` | 请求拦截 |
+| `Decryptor` / `Encryptor` | AES 委托 |
+| `IsSemanticallyValidToken(string)` | 格式校验 |
+| `GetSaveInfoFromCloudAsync(queries, ct)` | 查询存档列表 |
+| `GetSaveZipAsync(PhiCloudObj/SimplifiedSaveInfo, ct)` | 下载原始 zip |
+| `GetSaveContextAsync(int index, ...)` | 按索引下载并解密 |
+| `GetSaveContextAsync(SaveInfo, ct)` | 按 `SaveInfo` 下载并解密 |
+| `GetRawAddressAsync(address, ct)` | GET 任意地址 |
+| `GetPlayerInfoAsync(ct)` / `GetUserObjectId()` | 玩家信息 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>成员</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>new Save(sessionToken, isInternational)</code></td>
+<td>创建实例；token 25 位字母数字</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SharedClient</code></td>
+<td>静态共享 <code translate="no" v-pre>HttpClient</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>RequestHandler</code></td>
+<td>请求拦截</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Decryptor</code> / <code translate="no" v-pre>Encryptor</code></td>
+<td>AES 委托</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>IsSemanticallyValidToken(string)</code></td>
+<td>格式校验</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetSaveInfoFromCloudAsync(queries, ct)</code></td>
+<td>查询存档列表</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetSaveZipAsync(PhiCloudObj/SimplifiedSaveInfo, ct)</code></td>
+<td>下载原始 zip</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetSaveContextAsync(int index, ...)</code></td>
+<td>按索引下载并解密</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetSaveContextAsync(SaveInfo, ct)</code></td>
+<td>按 <code translate="no" v-pre>SaveInfo</code> 下载并解密</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetRawAddressAsync(address, ct)</code></td>
+<td>GET 任意地址</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GetPlayerInfoAsync(ct)</code> / <code translate="no" v-pre>GetUserObjectId()</code></td>
+<td>玩家信息</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="savecontext">SaveContext</h3>
+<p><code translate="no" v-pre>public class SaveContext</code></p>
+<retype-table copy-text="| 成员 | 说明 |
+| --- | --- |
+| `FromZipAsync(byte[]/Stream, SaveInfo, CipherFunction, ct)` | 带云端元数据构造 |
+| `FromZipAsync(byte[]/Stream, CipherFunction, ct)` | 无 `SaveInfo`；`ReadSummary` 不可用 |
+| `ReadSummary/GameRecord/GameSettings/GameProgress/GameKey/GameUserInfo()` | 读取条目 |
+| `SaveSummary/SaveGameRecord/...` | 更新内存条目 |
+| `SaveToStreamAsync(Stream, CipherFunction, ct)` | 输出新 zip |
+| `SaveToZipAsync(ZipArchive, CipherFunction, ct)` | 写入现有 zip |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>成员</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>FromZipAsync(byte[]/Stream, SaveInfo, CipherFunction, ct)</code></td>
+<td>带云端元数据构造</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>FromZipAsync(byte[]/Stream, CipherFunction, ct)</code></td>
+<td>无 <code translate="no" v-pre>SaveInfo</code>；<code translate="no" v-pre>ReadSummary</code> 不可用</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ReadSummary/GameRecord/GameSettings/GameProgress/GameKey/GameUserInfo()</code></td>
+<td>读取条目</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SaveSummary/SaveGameRecord/...</code></td>
+<td>更新内存条目</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SaveToStreamAsync(Stream, CipherFunction, ct)</code></td>
+<td>输出新 zip</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SaveToZipAsync(ZipArchive, CipherFunction, ct)</code></td>
+<td>写入现有 zip</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h3 id="云存档模型">云存档模型</h3>
+<retype-table copy-text="| 类型 | 说明 |
+| --- | --- |
+| `Summary` | 游戏统计、挑战码、显示 RKS |
+| `PlayCountSummary` | 通关/FC/Phi 计数 |
+| `Challenge` | 挑战码 |
+| `Money` | 大数货币 |
+| `GameProgress` | 解锁进度与 Node2/3/4 |
+| `GameSettings` | 设置 |
+| `GameUserInfo` | 用户信息 |
+| `GameKey` / `GameKeyFlag` | Key 数据 |
+| 枚举 | `ChallengeRank`、`DifficultyUnlockFlag`、`RandomVersionFlag`、`SongRecordFlag`、`Chapter8UnlockFlag`、`TakumiUnlockFlag`、`GameKeyFlagType` |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Summary</code></td>
+<td>游戏统计、挑战码、显示 RKS</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PlayCountSummary</code></td>
+<td>通关/FC/Phi 计数</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>Challenge</code></td>
 <td>挑战码</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/money/">Money</a></td>
-<td>货币</td>
+<td><code translate="no" v-pre>Money</code></td>
+<td>大数货币</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/gameprogress/">GameProgress</a></td>
-<td>解锁进度（含 Node2/3/4）</td>
+<td><code translate="no" v-pre>GameProgress</code></td>
+<td>解锁进度与 Node2/3/4</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/gamesettings/">GameSettings</a> / <a href="../api/cloudsave/gameuserinfo/">GameUserInfo</a></td>
-<td>设置与用户信息</td>
+<td><code translate="no" v-pre>GameSettings</code></td>
+<td>设置</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/gamekey/">GameKey</a> / <a href="../api/cloudsave/gamekeyflag/">GameKeyFlag</a></td>
+<td><code translate="no" v-pre>GameUserInfo</code></td>
+<td>用户信息</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GameKey</code> / <code translate="no" v-pre>GameKeyFlag</code></td>
 <td>Key 数据</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/exportscore/">ExportScore</a></td>
-<td>Excel 友好导出模型</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/songdatabase/">SongDatabase</a> / <a href="../api/cloudsave/songentry/">SongEntry</a></td>
-<td>曲目数据库</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/enums/">枚举</a></td>
-<td>全部枚举汇总</td>
+<td>枚举</td>
+<td><code translate="no" v-pre>ChallengeRank</code>、<code translate="no" v-pre>DifficultyUnlockFlag</code>、<code translate="no" v-pre>RandomVersionFlag</code>、<code translate="no" v-pre>SongRecordFlag</code>、<code translate="no" v-pre>Chapter8UnlockFlag</code>、<code translate="no" v-pre>TakumiUnlockFlag</code>、<code translate="no" v-pre>GameKeyFlagType</code></td>
 </tr>
 </tbody>
 </table>
 </div>
 </retype-table>
-<h3 id="httpmodels-子命名空间">HttpModels 子命名空间</h3>
+<h3 id="httpmodels">HttpModels</h3>
 <retype-table copy-text="| 类型 | 说明 |
 | --- | --- |
-| [SaveInfoContainer](api/CloudSave/HttpModels/SaveInfoContainer.md) | 存档列表容器 |
-| [SaveInfo](api/CloudSave/HttpModels/SaveInfo.md) / [GameFile](api/CloudSave/HttpModels/GameFile.md) | 存档信息 |
-| [GameFileMetaData](api/CloudSave/HttpModels/GameFileMetaData.md) / [TapTapSaveTime](api/CloudSave/HttpModels/TapTapSaveTime.md) / [TapTapUserInfo](api/CloudSave/HttpModels/TapTapUserInfo.md) | 存档元数据 |
-| [PlayerInfo](api/CloudSave/HttpModels/PlayerInfo.md) | 玩家信息 |
-| [SimplifiedSaveInfo](api/CloudSave/HttpModels/SimplifiedSaveInfo.md) / [PhiCloudObj](api/CloudSave/HttpModels/PhiCloudObj.md) | 简化存档 |">
+| `SaveInfoContainer` | 存档列表；`Results` 默认空列表 |
+| `SaveInfo` | 存档元数据；`GameFile` 可空 |
+| `GameFile` / `GameFileMetaData` | 云文件信息 |
+| `TapTapSaveTime` / `TapTapUserInfo` | 时间与用户 |
+| `PlayerInfo` | 玩家信息 |
+| `SimplifiedSaveInfo` | `GameSave`、时间、`Summary`、`Name`、`ObjectId` |
+| `PhiCloudObj` | 简化文件引用 |">
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
@@ -300,75 +688,32 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../api/cloudsave/httpmodels/saveinfocontainer/">SaveInfoContainer</a></td>
-<td>存档列表容器</td>
+<td><code translate="no" v-pre>SaveInfoContainer</code></td>
+<td>存档列表；<code translate="no" v-pre>Results</code> 默认空列表</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/httpmodels/saveinfo/">SaveInfo</a> / <a href="../api/cloudsave/httpmodels/gamefile/">GameFile</a></td>
-<td>存档信息</td>
+<td><code translate="no" v-pre>SaveInfo</code></td>
+<td>存档元数据；<code translate="no" v-pre>GameFile</code> 可空</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/httpmodels/gamefilemetadata/">GameFileMetaData</a> / <a href="../api/cloudsave/httpmodels/taptapsavetime/">TapTapSaveTime</a> / <a href="../api/cloudsave/httpmodels/taptapuserinfo/">TapTapUserInfo</a></td>
-<td>存档元数据</td>
+<td><code translate="no" v-pre>GameFile</code> / <code translate="no" v-pre>GameFileMetaData</code></td>
+<td>云文件信息</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/httpmodels/playerinfo/">PlayerInfo</a></td>
+<td><code translate="no" v-pre>TapTapSaveTime</code> / <code translate="no" v-pre>TapTapUserInfo</code></td>
+<td>时间与用户</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PlayerInfo</code></td>
 <td>玩家信息</td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/httpmodels/simplifiedsaveinfo/">SimplifiedSaveInfo</a> / <a href="../api/cloudsave/httpmodels/phicloudobj/">PhiCloudObj</a></td>
-<td>简化存档</td>
-</tr>
-</tbody>
-</table>
-</div>
-</retype-table>
-<h3 id="login-子命名空间">Login 子命名空间</h3>
-<retype-table copy-text="| 类型 | 说明 |
-| --- | --- |
-| [LCHelper](api/CloudSave/Login/LCHelper.md) | LeanCloud 登录 |
-| [TapTapHelper](api/CloudSave/Login/TapTapHelper.md) | TapTap 登录 |
-| [LCCombinedAuthData](api/CloudSave/Login/LCCombinedAuthData.md) | 组合登录数据 |
-| [TapTapTokenData](api/CloudSave/Login/TapTapTokenData.md) / [TapTapProfileData](api/CloudSave/Login/TapTapProfileData.md) | token 与资料 |
-| [PartialTapTapQRCodeData](api/CloudSave/Login/PartialTapTapQRCodeData.md) / [CompleteQRCodeData](api/CloudSave/Login/CompleteQRCodeData.md) | 扫码登录数据 |
-| [CallbackLoginData](api/CloudSave/Login/CallbackLoginData.md) | 回调登录数据 |
-| [RequestException](api/CloudSave/Login/RequestException.md) | 登录请求异常 |">
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../api/cloudsave/login/lchelper/">LCHelper</a></td>
-<td>LeanCloud 登录</td>
+<td><code translate="no" v-pre>SimplifiedSaveInfo</code></td>
+<td><code translate="no" v-pre>GameSave</code>、时间、<code translate="no" v-pre>Summary</code>、<code translate="no" v-pre>Name</code>、<code translate="no" v-pre>ObjectId</code></td>
 </tr>
 <tr>
-<td><a href="../api/cloudsave/login/taptaphelper/">TapTapHelper</a></td>
-<td>TapTap 登录</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/login/lccombinedauthdata/">LCCombinedAuthData</a></td>
-<td>组合登录数据</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/login/taptaptokendata/">TapTapTokenData</a> / <a href="../api/cloudsave/login/taptapprofiledata/">TapTapProfileData</a></td>
-<td>token 与资料</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/login/partialtaptapqrcodedata/">PartialTapTapQRCodeData</a> / <a href="../api/cloudsave/login/completeqrcodedata/">CompleteQRCodeData</a></td>
-<td>扫码登录数据</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/login/callbacklogindata/">CallbackLoginData</a></td>
-<td>回调登录数据</td>
-</tr>
-<tr>
-<td><a href="../api/cloudsave/login/requestexception/">RequestException</a></td>
-<td>登录请求异常</td>
+<td><code translate="no" v-pre>PhiCloudObj</code></td>
+<td>简化文件引用</td>
 </tr>
 </tbody>
 </table>
@@ -377,8 +722,8 @@
 <h2 id="philibrary197localsave">PhiLibrary197.LocalSave</h2>
 <retype-table copy-text="| 类型 | 说明 |
 | --- | --- |
-| [LocalSave](api/LocalSave/LocalSave.md) | 本地存档解密 |
-| [RawScore](api/LocalSave/RawScore.md) | 本地成绩解析 |">
+| `LocalSave` | `DecryptLocalSaveStringNew(string/byte[])` |
+| `RawScore` | `Score`、`Accuracy`、`Status`、`FromJson`、`ToSongScore` |">
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
@@ -389,12 +734,186 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../api/localsave/">LocalSave</a></td>
-<td>本地存档解密</td>
+<td><code translate="no" v-pre>LocalSave</code></td>
+<td><code translate="no" v-pre>DecryptLocalSaveStringNew(string/byte[])</code></td>
 </tr>
 <tr>
-<td><a href="../api/localsave/rawscore/">RawScore</a></td>
-<td>本地成绩解析</td>
+<td><code translate="no" v-pre>RawScore</code></td>
+<td><code translate="no" v-pre>Score</code>、<code translate="no" v-pre>Accuracy</code>、<code translate="no" v-pre>Status</code>、<code translate="no" v-pre>FromJson</code>、<code translate="no" v-pre>ToSongScore</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<div class="flex mb-6">
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
+    <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-primary" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3 w-full">
+            <h5>Note</h5>
+<p><code translate="no" v-pre>LocalSave</code> 类与 <code translate="no" v-pre>PhiLibrary197.LocalSave</code> 命名空间同名，建议用 <code translate="no" v-pre>using LocalSaveApi = PhiLibrary197.LocalSave.LocalSave;</code> 避免歧义。</p>
+        </div>
+    </div>
+</div>
+<h2 id="philibrary197scores">PhiLibrary197.Scores</h2>
+<retype-table copy-text="| 类型 | 说明 |
+| --- | --- |
+| `Difficulty` | `EZ/HD/IN/AT/Legacy/SP` |
+| `ScoreStatus` | `Bugged/NotFc/Fc/Phi/Vu/S/A/B/C/False` |
+| `SongScore` | 单曲原始成绩 |
+| `CompleteScore` | 成绩 + 定数 + 名称 + RKS |
+| `GameRecord` | 成绩容器与 RKS 计算 |
+| `ChartConstantKey` | `(SongId, Difficulty)` |
+| `ExportScore` | Excel 友好模型，不负责输出 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>Difficulty</code></td>
+<td><code translate="no" v-pre>EZ/HD/IN/AT/Legacy/SP</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ScoreStatus</code></td>
+<td><code translate="no" v-pre>Bugged/NotFc/Fc/Phi/Vu/S/A/B/C/False</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SongScore</code></td>
+<td>单曲原始成绩</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>CompleteScore</code></td>
+<td>成绩 + 定数 + 名称 + RKS</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GameRecord</code></td>
+<td>成绩容器与 RKS 计算</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ChartConstantKey</code></td>
+<td><code translate="no" v-pre>(SongId, Difficulty)</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>ExportScore</code></td>
+<td>Excel 友好模型，不负责输出</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<p><code translate="no" v-pre>GameRecord</code>：</p>
+<div id="philibrary197scores-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">IEnumerable&lt;CompleteScore&gt; GetCompleteScores(...);
+(List&lt;CompleteScore&gt; Phis, List&lt;CompleteScore&gt; OtherScores, double Rks)
+    GetSortedListForRks(...);
+(List&lt;CompleteScore&gt; Scores, double Rks) GetSortedListForRksMerged(...);</code></pre>
+</doc-codeblock></div>
+<h2 id="philibrary197songs">PhiLibrary197.Songs</h2>
+<retype-table copy-text="| 类型 | 说明 |
+| --- | --- |
+| `SongDatabase` | 内置/文件/Reader/Stream 加载曲目数据 |
+| `SongEntry` | 曲目信息、变体 `BaseId`/`IsVariant`、`GetConstant`、`GetCharter` |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>SongDatabase</code></td>
+<td>内置/文件/Reader/Stream 加载曲目数据</td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>SongEntry</code></td>
+<td>曲目信息、变体 <code translate="no" v-pre>BaseId</code>/<code translate="no" v-pre>IsVariant</code>、<code translate="no" v-pre>GetConstant</code>、<code translate="no" v-pre>GetCharter</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<p><code translate="no" v-pre>SongDatabase</code>：</p>
+<div id="philibrary197songs-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">LoadFromBuiltIn();
+LoadFromFile(string difficultyPath, string infoPath);
+LoadFromFile(TextReader difficulty, TextReader info);
+LoadFromFile(Stream difficulty, Stream info);
+Count; Songs; GetSong(id); FindByFullName(name);
+ToConstantMap(); ToNameMap();</code></pre>
+</doc-codeblock></div>
+<h2 id="philibrary197tips">PhiLibrary197.Tips</h2>
+<retype-table copy-text="| 类型 | 说明 |
+| --- | --- |
+| `TipProvider` | `public static string GetTip()`，随机返回一条内置简中 Tip |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>TipProvider</code></td>
+<td><code translate="no" v-pre>public static string GetTip()</code>，随机返回一条内置简中 Tip</td>
+</tr>
+</tbody>
+</table>
+</div>
+</retype-table>
+<h2 id="已移除重命名">已移除/重命名</h2>
+<p>1.0.0 对旧文档中的这些名字做了破坏性调整：</p>
+<retype-table copy-text="| 旧 | 新 |
+| --- | --- |
+| `PhiLibrary197.CloudSave.Login` | `PhiLibrary197.Authentication` |
+| `PhiLibrary197.CloudSave.SongDatabase/SongEntry` | `PhiLibrary197.Songs` |
+| `PhiLibrary197.CloudSave.GameRecord/SongScore/...` | `PhiLibrary197.Scores` |
+| `FindByName` | `FindByFullName` |
+| `GameKey.Flags` 之类的旧描述 | 以当前 XML 注释为准 |">
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>旧</th>
+<th>新</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code translate="no" v-pre>PhiLibrary197.CloudSave.Login</code></td>
+<td><code translate="no" v-pre>PhiLibrary197.Authentication</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PhiLibrary197.CloudSave.SongDatabase/SongEntry</code></td>
+<td><code translate="no" v-pre>PhiLibrary197.Songs</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>PhiLibrary197.CloudSave.GameRecord/SongScore/...</code></td>
+<td><code translate="no" v-pre>PhiLibrary197.Scores</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>FindByName</code></td>
+<td><code translate="no" v-pre>FindByFullName</code></td>
+</tr>
+<tr>
+<td><code translate="no" v-pre>GameKey.Flags</code> 之类的旧描述</td>
+<td>以当前 XML 注释为准</td>
 </tr>
 </tbody>
 </table>
@@ -409,20 +928,20 @@
             
                 <nav id="retype-nextprev" class="print:hidden flex mt-14">
                     <div class="w-1/2">
-                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../09-许可证与发布/">
+                        <a class="px-5 py-4 h-full flex items-center break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-l-lg transition-colors duration-150 relative hover:z-5" href="../12-更新记录/">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                             <span>
                                 <span class="block text-xs font-normal text-base-text-muted">Previous</span>
-                                <span class="block mt-1">许可证与发布</span>
+                                <span class="block mt-1">更新记录</span>
                             </span>
                         </a>
                     </div>
             
                     <div class="w-1/2">
-                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../api/cloudsave/httpmodels/gamefile/">
+                        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-normal font-medium text-body-link border border-base-border hover:border-base-border-hover rounded-r-lg transition-colors duration-150 relative hover:z-5" href="../11-示例项目/">
                             <span>
                                 <span class="block text-xs font-normal text-right text-base-text-muted">Next</span>
-                                <span class="block mt-1">Game​File</span>
+                                <span class="block mt-1">示例项目</span>
                             </span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
                         </a>
@@ -466,6 +985,6 @@
 
     <div id="retype-overlay-target"></div>
 
-        <script data-cfasync="false">window.__DOCS__ = { "title": "API 参考", level: 1, icon: "file", hasPrism: false, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/10-api参考.md" }</script>
+        <script data-cfasync="false">window.__DOCS__ = { "title": "API 参考", level: 1, icon: "file", hasPrism: true, hasInstagram: false, hasMermaid: false, hasMath: false, tocDepth: 23, "md": "/10-api参考.md" }</script>
 </body>
 </html>

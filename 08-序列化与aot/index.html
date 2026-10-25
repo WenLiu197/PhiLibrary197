@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <meta name="turbo-root" content="/PhiLibrary197">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846217236712">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="4.6.0.846255593730">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 4.6.0">
@@ -13,7 +13,7 @@
     <!-- Primary Meta Tags -->
     <title>序列化与 AOT</title>
     <meta name="title" content="序列化与 AOT">
-    <meta name="description" content="本库全部 JSON 序列化使用 System.Text.Json 源生成器，不依赖反射，Native AOT 下可直接使用。">
+    <meta name="description" content="库内所有 JSON 序列化都使用 System.Text.Json 源生成器，不依赖反射；内置曲目数据和 Tips 是嵌入资源，不依赖当前目录。因此 Native AOT、单文件、trimming 都可以直接使用。">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://wenliu197.github.io/PhiLibrary197/08-序列化与aot/">
@@ -23,7 +23,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://wenliu197.github.io/PhiLibrary197/08-序列化与aot/">
     <meta property="og:title" content="序列化与 AOT">
-    <meta property="og:description" content="本库全部 JSON 序列化使用 System.Text.Json 源生成器，不依赖反射，Native AOT 下可直接使用。">
+    <meta property="og:description" content="库内所有 JSON 序列化都使用 System.Text.Json 源生成器，不依赖反射；内置曲目数据和 Tips 是嵌入资源，不依赖当前目录。因此 Native AOT、单文件、trimming 都可以直接使用。">
     <meta property="og:site_name" content="PhiLibrary197">
     <meta property="og:locale" content="en_US">
 
@@ -31,19 +31,19 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://wenliu197.github.io/PhiLibrary197/08-序列化与aot/">
     <meta name="twitter:title" content="序列化与 AOT">
-    <meta name="twitter:description" content="本库全部 JSON 序列化使用 System.Text.Json 源生成器，不依赖反射，Native AOT 下可直接使用。">
+    <meta name="twitter:description" content="库内所有 JSON 序列化都使用 System.Text.Json 源生成器，不依赖反射；内置曲目数据和 Tips 是嵌入资源，不依赖当前目录。因此 Native AOT、单文件、trimming 都可以直接使用。">
 
     <!-- Alternate Markdown -->
     <link rel="alternate" type="text/markdown" href="https://wenliu197.github.io/PhiLibrary197/08-序列化与aot.md">
 
     <script data-cfasync="false">(function(){var cl=document.documentElement.classList,ls=localStorage.getItem("retype_scheme"),hd=cl.contains("dark"),hl=cl.contains("light"),wm=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;if(ls==="dark"||(!ls&&wm&&!hd&&!hl)){cl.remove("light");cl.add("dark")}else if(ls==="light"||(!ls&&!wm&&!hd&&!hl)){cl.remove("dark");cl.add("light")}})();</script>
 
-    <link href="../resources/css/retype.css?v=4.6.0.846217236712" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=4.6.0.846255593730" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=4.6.0" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846217236712" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846217236712" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=4.6.0.846255593730" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=4.6.0.846255593730" defer></script>
 </head>
 <body>
     <div id="retype-app" class="relative text-base antialiased text-base-text bg-base-bg font-body">
@@ -150,61 +150,86 @@
 
                 <!-- Page content  -->
 <h1 id="序列化与-aot">序列化与 AOT</h1>
-<p>本库全部 JSON 序列化使用 <strong>System.Text.Json 源生成器</strong>，不依赖反射，Native AOT 下可直接使用。</p>
-<h2 id="序列化上下文">序列化上下文</h2>
-<div id="序列化上下文-code-1" class="codeblock-wrapper"><doc-codeblock>
+<p>库内所有 JSON 序列化都使用 <strong>System.Text.Json 源生成器</strong>，不依赖反射；内置曲目数据和 Tips 是嵌入资源，不依赖当前目录。因此 Native AOT、单文件、trimming 都可以直接使用。</p>
+<h2 id="源生成上下文">源生成上下文</h2>
+<div id="源生成上下文-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-csharp"><code v-pre class="language-csharp">// PhiLibrary197 命名空间
 public partial class PhiLibrary197JsonSerializerContext : JsonSerializerContext</code></pre>
 </doc-codeblock></div>
-<p>注册类型：<code translate="no" v-pre>SaveInfoContainer</code>、<code translate="no" v-pre>SaveInfo</code>、<code translate="no" v-pre>RawScore</code>、<code translate="no" v-pre>LCCombinedAuthData</code>、<code translate="no" v-pre>TapTapProfileData</code>、<code translate="no" v-pre>TapTapTokenData</code>、<code translate="no" v-pre>PartialTapTapQRCodeData</code>、<code translate="no" v-pre>JsonNode</code>。</p>
-<p>源生成配置与库内部一致：<code translate="no" v-pre>AllowTrailingCommas</code>、<code translate="no" v-pre>PropertyNameCaseInsensitive</code>、<code translate="no" v-pre>IncludeFields</code>。</p>
-<h2 id="在自己代码中使用">在自己代码中使用</h2>
-<div id="在自己代码中使用-code-1" class="codeblock-wrapper"><doc-codeblock>
+<p>注册类型：</p>
+<ul>
+<li><code translate="no" v-pre>SaveInfoContainer</code></li>
+<li><code translate="no" v-pre>SaveInfo</code></li>
+<li><code translate="no" v-pre>RawScore</code></li>
+<li><code translate="no" v-pre>LCCombinedAuthData</code></li>
+<li><code translate="no" v-pre>TapTapProfileData</code></li>
+<li><code translate="no" v-pre>TapTapTokenData</code></li>
+<li><code translate="no" v-pre>PartialTapTapQRCodeData</code></li>
+<li><code translate="no" v-pre>JsonNode</code></li>
+</ul>
+<p>配置与库内部一致：</p>
+<div id="源生成上下文-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">AllowTrailingCommas = true
+PropertyNameCaseInsensitive = true
+IncludeFields = true</code></pre>
+</doc-codeblock></div>
+<h2 id="正确用法">正确用法</h2>
+<div id="正确用法-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Text.Json;
 using PhiLibrary197;
-using PhiLibrary197.CloudSave.HttpModels;
 using PhiLibrary197.LocalSave;
+using PhiLibrary197.Scores;
 
-// 反序列化
-SaveInfoContainer container = JsonSerializer.Deserialize(
-    json, PhiLibrary197JsonSerializerContext.Default.SaveInfoContainer);
+RawScore score = new()
+{
+    Score = 1_000_000,
+    Accuracy = 100f,
+    Status = ScoreStatus.Phi,
+};
 
-RawScore raw = JsonSerializer.Deserialize(
-    json, PhiLibrary197JsonSerializerContext.Default.RawScore);
-
-// 序列化
 string json = JsonSerializer.Serialize(
-    container, PhiLibrary197JsonSerializerContext.Default.SaveInfoContainer);
+    score,
+    PhiLibrary197JsonSerializerContext.Default.RawScore);
 
-// 序列化为 JsonNode（拼请求体等）
-JsonNode node = JsonSerializer.SerializeToNode(
-    authData, PhiLibrary197JsonSerializerContext.Default.LCCombinedAuthData);</code></pre>
+RawScore roundTrip = JsonSerializer.Deserialize(
+    json,
+    PhiLibrary197JsonSerializerContext.Default.RawScore);
+
+Console.WriteLine(json);
+Console.WriteLine(roundTrip.Score);</code></pre>
 </doc-codeblock></div>
 <div class="flex mb-6">
-    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-primary"></div>
+    <div class="shrink-0 w-1.5 rounded-tl-lg rounded-bl-lg bg-callout-warning"></div>
     <div class="flex w-full py-4 border border-l-0 rounded-tr-lg rounded-br-lg doc-callout bg-callout-base-bg border-callout-base-border" role="alert">
         <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-primary" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+            <svg xmlns="http://www.w3.org/2000/svg" class="block text-callout-warning" width="22" height="22" viewBox="0 0 24 24" role="presentation">
                 <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
+                    <path d="M22.48 15.59L14.01 1.45A2.968 2.968 0 0012.16.09c-.78-.19-1.58-.07-2.27.35-.41.25-.76.6-1.01 1.01v.01L.4 15.6c-.83 1.43-.33 3.27 1.1 4.1.45.26.95.4 1.48.4h16.95c.8-.01 1.55-.33 2.11-.9.56-.57.87-1.33.86-2.13a3.04 3.04 0 00-.42-1.48zm-1.87 2.21c-.19.19-.44.3-.69.3H2.99c-.17 0-.34-.05-.49-.13a.992.992 0 01-.37-1.35L10.6 2.48c.08-.14.2-.25.34-.33a.992.992 0 011.37.33l8.46 14.13c.09.15.13.32.13.49 0 .26-.1.51-.29.7z"></path>
+                    <path d="M11.45 12.1c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .56.45 1 1 1zM11.46 14.1c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
                 </g></g>
             </svg>
         </div>
         <div class="pr-5 ml-3 w-full">
-            <h5>Note</h5>
-<p><code translate="no" v-pre>SaveInfo</code> 的成员类型（<code translate="no" v-pre>GameFile</code> 等）与嵌套类型（<code translate="no" v-pre>TokenData</code> 等）会自动生成元数据，无需单独注册。</p>
+            <h5>Warning</h5>
+<p>不要使用 <code translate="no" v-pre>JsonSerializer.Serialize(obj)</code> / <code translate="no" v-pre>JsonSerializer.Deserialize&lt;T&gt;(json)</code> 的无参重载。它们会走反射，AOT 下产生 IL2026/IL3050 警告，运行时也可能失败。</p>
         </div>
     </div>
 </div>
-<h2 id="自定义类型的源生成">自定义类型的源生成</h2>
-<div id="自定义类型的源生成-code-1" class="codeblock-wrapper"><doc-codeblock>
+<h2 id="自定义类型">自定义类型</h2>
+<p>自己的类型需要自己的 source-gen context：</p>
+<div id="自定义类型-code-1" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Text.Json.Serialization;
+using PhiLibrary197.CloudSave.HttpModels;
 
-[JsonSerializable(typeof(YourModel))]
-[JsonSerializable(typeof(PhiLibrary197.CloudSave.SaveInfo))]  // 也可注册库类型
-public partial class MyJsonContext : JsonSerializerContext { }</code></pre>
+[JsonSerializable(typeof(MyModel))]
+[JsonSerializable(typeof(SaveInfo))]
+public partial class MyJsonContext : JsonSerializerContext
+{
+}</code></pre>
+</doc-codeblock></div>
+<p>使用：</p>
+<div id="自定义类型-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">string json = JsonSerializer.Serialize(model, MyJsonContext.Default.MyModel);</code></pre>
 </doc-codeblock></div>
 <h2 id="aot-发布">AOT 发布</h2>
 <div id="aot-发布-code-1" class="codeblock-wrapper"><doc-codeblock>
@@ -215,14 +240,63 @@ public partial class MyJsonContext : JsonSerializerContext { }</code></pre>
 <div id="aot-发布-code-2" class="codeblock-wrapper"><doc-codeblock>
 <pre translate="no" class="language-bash"><code v-pre class="language-bash">dotnet publish -c Release -r win-x64 --self-contained -p:PublishAot=true</code></pre>
 </doc-codeblock></div>
-<p>库已标记 <code translate="no" v-pre>IsAotCompatible</code>，构建时即会暴露任何 AOT 不兼容警告（IL 系列），保证零反射残留。</p>
+<p>单文件 + trim：</p>
+<div id="aot-发布-code-3" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">dotnet publish -c Release -r win-x64 `
+  -p:PublishSingleFile=true `
+  -p:SelfContained=true `
+  -p:PublishTrimmed=true</code></pre>
+</doc-codeblock></div>
+<p><code translate="no" v-pre>PhiLibrary197</code> 已标记 <code translate="no" v-pre>IsAotCompatible</code>，构建时会显示 AOT 兼容警告。</p>
+<h2 id="完整可运行示例">完整可运行示例</h2>
+<div id="完整可运行示例-code-1" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-csharp"><code v-pre class="language-csharp">using System.Text.Json;
+using PhiLibrary197;
+using PhiLibrary197.LocalSave;
+
+RawScore score = new()
+{
+    Score = 1_000_000,
+    Accuracy = 100f,
+    Status = PhiLibrary197.Scores.ScoreStatus.Phi,
+};
+
+string json = JsonSerializer.Serialize(
+    score,
+    PhiLibrary197JsonSerializerContext.Default.RawScore);
+
+Console.WriteLine(json);
+
+RawScore roundTrip = JsonSerializer.Deserialize(
+    json,
+    PhiLibrary197JsonSerializerContext.Default.RawScore);
+
+Console.WriteLine($&quot;round-trip: {roundTrip.Score}, {roundTrip.Accuracy}, {roundTrip.Status}&quot;);</code></pre>
+</doc-codeblock></div>
+<p>运行：</p>
+<div id="完整可运行示例-code-2" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-bash"><code v-pre class="language-bash">dotnet run --project samples/PhiLibrary197.Samples -- json</code></pre>
+</doc-codeblock></div>
+<p>输出：</p>
+<div id="完整可运行示例-code-3" class="codeblock-wrapper"><doc-codeblock>
+<pre translate="no" class="language-none"><code v-pre class="language-none">{&quot;s&quot;:1000000,&quot;a&quot;:100,&quot;c&quot;:2}
+round-trip: 1000000, 100, Phi</code></pre>
+</doc-codeblock></div>
 <h2 id="注意事项">注意事项</h2>
-<ol>
-<li><strong>不要使用 <code translate="no" v-pre>JsonSerializer.Deserialize&lt;T&gt;(json)</code> 无参重载</strong>——默认反射，AOT 下报 IL2026/IL3050 警告</li>
-<li><strong>私有别名属性</strong>（<code translate="no" v-pre>TokenData</code> 的 <code translate="no" v-pre>token</code>/<code translate="no" v-pre>tokenType</code>/<code translate="no" v-pre>macKey</code>/<code translate="no" v-pre>macAlgorithm</code> 键）：与上游行为一致，源生成默认忽略私有属性</li>
-<li><strong>未注册类型</strong>：库内部泛型反序列化遇未注册类型会抛 <code translate="no" v-pre>InvalidOperationException</code>（fail-fast，正常使用不会触发）</li>
-<li><strong>WASM / AOT 混合</strong>：<code translate="no" v-pre>Save.Decryptor</code>/<code translate="no" v-pre>Encryptor</code>、<code translate="no" v-pre>LCHelper.GetMD5HashHexString</code> 的委托注入在 AOT 下同样有效</li>
-</ol>
+<h3 id="私有别名属性">私有别名属性</h3>
+<p><code translate="no" v-pre>TapTapTokenData.TokenData</code> 中有 <code translate="no" v-pre>token</code>/<code translate="no" v-pre>tokenType</code>/<code translate="no" v-pre>macKey</code>/<code translate="no" v-pre>macAlgorithm</code> 的私有别名。源生成默认忽略私有属性，这是与上游一致的行为；如果服务端只返回别名，需要自己适配。</p>
+<h3 id="未注册类型">未注册类型</h3>
+<p>库内部泛型反序列化遇到未注册类型会抛 <code translate="no" v-pre>InvalidOperationException</code>（fail-fast）。正常使用公开 API 不会触发。</p>
+<h3 id="委托注入">委托注入</h3>
+<p><code translate="no" v-pre>Save.Decryptor</code>/<code translate="no" v-pre>Encryptor</code>、<code translate="no" v-pre>LCHelper.GetMD5HashHexString</code>、<code translate="no" v-pre>TapTapHelper.Proxy</code> 都是委托注入，AOT 下同样可用。</p>
+<h3 id="嵌入资源">嵌入资源</h3>
+<p><code translate="no" v-pre>SongDatabase.LoadFromBuiltIn()</code> 和 <code translate="no" v-pre>TipProvider.GetTip()</code> 读取程序集资源，不依赖 <code translate="no" v-pre>AppContext.BaseDirectory</code> 或当前工作目录；发布时不要把资源误裁剪掉。库的 <code translate="no" v-pre>.csproj</code> 已设置 <code translate="no" v-pre>EmbeddedResource</code>，正常引用 NuGet 不需要额外配置。</p>
+<h2 id="相关文档">相关文档</h2>
+<ul>
+<li><a href="../01-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">安装与配置</a></li>
+<li><a href="../11-%E7%A4%BA%E4%BE%8B%E9%A1%B9%E7%9B%AE/">示例项目</a></li>
+<li><a href="../03-%E4%BA%91%E5%AD%98%E6%A1%A3/">云存档</a></li>
+</ul>
 
                 
                 <!-- Required only on API pages -->
