@@ -47,6 +47,12 @@ public class TapTapProfileData
 		/// </summary>
 		[JsonPropertyName("avatar")]
 		public string Avatar { get; set; }
+
+		/// <summary>
+		/// The user's bio / description, if the endpoint returns one.
+		/// </summary>
+		[JsonPropertyName("bio")]
+		public string? Bio { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	}
 }
