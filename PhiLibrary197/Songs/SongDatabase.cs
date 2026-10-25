@@ -40,6 +40,22 @@ public sealed record SongEntry(
 	/// </summary>
 	public string? SpCharter { get; init; }
 
+	private string? _baseId;
+
+	/// <summary>
+	/// 基础曲目 id。普通曲目等于 <see cref="Id"/>；Random 等数字版本变体指向基础曲目的 <c>.0</c> 条目。
+	/// </summary>
+	public string BaseId
+	{
+		get => this._baseId ?? this.Id;
+		init => this._baseId = value;
+	}
+
+	/// <summary>
+	/// 当前条目是否为带数字版本后缀的变体。
+	/// </summary>
+	public bool IsVariant => !string.Equals(this.Id, this.BaseId, StringComparison.Ordinal);
+
 	/// <summary>
 	/// 取指定难度的定数，表中不存在该难度时返回 <see langword="null"/>。
 	/// <see cref="Difficulty.Legacy"/> 与 <see cref="Difficulty.SP"/> 没有定数，始终返回 <see langword="null"/>。
@@ -104,6 +120,40 @@ public sealed class SongDatabase
 		return BuildFromLines(
 			File.ReadLines(difficultyTsvPath),
 			File.ReadLines(infoTsvPath));
+	}
+
+	/// <summary>
+	/// 从两个 TSV 文本读取器加载曲目数据库。
+	/// </summary>
+	/// <remarks>
+	/// 两个 <see cref="TextReader"/> 的所有权仍归调用方，本方法不会释放它们。
+	/// 适用于从网络、内存或压缩包中直接读取表格。
+	/// </remarks>
+	/// <param name="difficultyReader">difficulty.tsv 的文本读取器。</param>
+	/// <param name="infoReader">info.tsv 的文本读取器。</param>
+	/// <returns>构建好的 <see cref="SongDatabase"/>。</returns>
+	public static SongDatabase LoadFromFile(TextReader difficultyReader, TextReader infoReader)
+	{
+		return BuildFromLines(
+			ReadLines(difficultyReader),
+			ReadLines(infoReader));
+	}
+
+	/// <summary>
+	/// 从两个 TSV 数据流加载曲目数据库。
+	/// </summary>
+	/// <remarks>
+	/// 两个 <see cref="Stream"/> 不会被本方法释放，调用方可以自行管理生命周期。
+	/// 读取使用 UTF-8，并自动识别 BOM。
+	/// </remarks>
+	/// <param name="difficultyStream">difficulty.tsv 的数据流。</param>
+	/// <param name="infoStream">info.tsv 的数据流。</param>
+	/// <returns>构建好的 <see cref="SongDatabase"/>。</returns>
+	public static SongDatabase LoadFromFile(Stream difficultyStream, Stream infoStream)
+	{
+		return BuildFromLines(
+			ReadLines(difficultyStream),
+			ReadLines(infoStream));
 	}
 
 	/// <summary>
@@ -172,11 +222,17 @@ public sealed class SongDatabase
 		=> assembly.GetManifestResourceStream(name)
 			?? throw new InvalidOperationException($"Embedded resource '{name}' was not found in '{assembly.GetName().Name}'.");
 
-	private static IEnumerable<string> ReadLines(Stream stream)
+	private static IEnumerable<string> ReadLines(TextReader reader)
 	{
-		using StreamReader reader = new(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
 		string? line;
 		while ((line = reader.ReadLine()) is not null)
+			yield return line;
+	}
+
+	private static IEnumerable<string> ReadLines(Stream stream)
+	{
+		using StreamReader reader = new(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true);
+		foreach (string line in ReadLines(reader))
 			yield return line;
 	}
 
@@ -256,7 +312,8 @@ public sealed class SongDatabase
 	/// <remarks>
 	/// 接受完整 id、不带 <c>.0</c> 后缀的前缀，以及带数字版本后缀的变体 id。
 	/// 变体 id（如 <c>Random.SobremSilentroom.3</c>）会回退到同曲目的基础条目，
-	/// 返回的 <see cref="SongEntry.Id"/> 为请求的变体 id，其余字段与基础条目一致。
+	/// 返回的 <see cref="SongEntry.Id"/> 为请求的变体 id，<see cref="SongEntry.BaseId"/>
+	/// 为基础条目的完整 id，其余字段与基础条目一致。
 	/// </remarks>
 	/// <param name="id">完整 id、id 前缀或变体 id。</param>
 	/// <returns>匹配的曲目，不存在返回 <see langword="null"/>。</returns>
@@ -271,7 +328,7 @@ public sealed class SongDatabase
 		if (SongIdUtility.TryGetBaseId(id, out string baseId)
 			&& this._byId.TryGetValue(baseId + ".0", out entry))
 		{
-			return entry with { Id = id };
+			return entry with { Id = id, BaseId = entry.Id };
 		}
 
 		return null;
@@ -286,7 +343,7 @@ public sealed class SongDatabase
 		=> this._byId.Values.Where(x => x.Name?.Equals(name, StringComparison.OrdinalIgnoreCase) == true);
 
 	/// <summary>
-	/// 导出定数表（与 <see cref="ScoreHelper.LoadConstantTable"/> 同构），供 <see cref="GameRecord.GetSortedListForRks(IReadOnlyDictionary{ChartConstantKey, float}, IReadOnlyDictionary{string, string})"/> 使用。
+	/// 导出定数表（与 <see cref="ScoreHelper.LoadConstantTable(string)"/> 同构），供 <see cref="GameRecord.GetSortedListForRks(IReadOnlyDictionary{ChartConstantKey, float}, IReadOnlyDictionary{string, string})"/> 使用。
 	/// 只包含基础曲目的定数；带数字版本后缀的成绩由 <see cref="GameRecord"/> 在计算时回退到基础 id。
 	/// </summary>
 	public Dictionary<ChartConstantKey, float> ToConstantMap()
@@ -301,7 +358,7 @@ public sealed class SongDatabase
 	}
 
 	/// <summary>
-	/// 导出歌名表（与 <see cref="ScoreHelper.LoadSongInfo"/> 同构），供 <see cref="GameRecord.GetSortedListForRks(IReadOnlyDictionary{ChartConstantKey, float}, IReadOnlyDictionary{string, string})"/> 使用。
+	/// 导出歌名表（与 <see cref="ScoreHelper.LoadSongInfo(string)"/> 同构），供 <see cref="GameRecord.GetSortedListForRks(IReadOnlyDictionary{ChartConstantKey, float}, IReadOnlyDictionary{string, string})"/> 使用。
 	/// 显示名为 <see langword="null"/> 的曲目不纳入（RKS 输出会回退显示 id）。
 	/// 只包含基础曲目的名称；带数字版本后缀的成绩由 <see cref="GameRecord"/> 在计算时回退到基础 id。
 	/// </summary>
