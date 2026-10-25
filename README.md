@@ -11,7 +11,7 @@ dotnet add package PhiLibrary197
 ```
 
 目标框架：`net10.0`
-当前版本：`0.3.0`
+当前版本：`1.0.0`
 
 ## 快速开始
 

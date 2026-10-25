@@ -1,4 +1,4 @@
-# 0.3.0
+# 1.0.0
 - **破坏性重构**：按职责拆分命名空间
   - `PhiLibrary197.CloudSave.Login` → `PhiLibrary197.Authentication`
   - 成绩模型 → `PhiLibrary197.Scores`

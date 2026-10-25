@@ -18,7 +18,8 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '11.0.x'
+          dotnet-quality: 'preview'
 
       # GeneratePackageOnBuild=true produces the package into output/bin/Release
       - name: Build and pack
