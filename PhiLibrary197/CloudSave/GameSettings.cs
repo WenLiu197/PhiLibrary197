@@ -1,4 +1,4 @@
-﻿namespace PhiLibrary197.CloudSave;
+namespace PhiLibrary197.CloudSave;
 
 /// <summary>
 /// The user's settings in game.
@@ -130,7 +130,7 @@ public class GameSettings : IPhigrosCustomSerialization<GameSettings>
 	{
 		objectVersion = this.Version;
 
-		writer.WritePackedBools(this.ChordSupport, this.FcApIndicatorOn, this.EnableHitSound, this.LowResolutionModeOn);
+		UtilityExtension.WritePackedBools(writer, this.ChordSupport, this.FcApIndicatorOn, this.EnableHitSound, this.LowResolutionModeOn);
 		writer.Write(this.DeviceName);
 		writer.Write(this.BackgroundBrightness);
 		writer.Write(this.MusicVolume);

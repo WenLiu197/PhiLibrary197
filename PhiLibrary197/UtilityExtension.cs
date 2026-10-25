@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -42,6 +42,20 @@ internal static class UtilityExtension
 		return (value & (1u << index)) != 0;
 	}
 
+	internal static void WritePackedBools(BinaryWriter writer, params bool[] values)
+	{
+		if (values.Length > 8)
+			throw new ArgumentOutOfRangeException(nameof(values), "Cannot write more than 8 bools in a single byte.");
+
+		byte value = 0;
+		for (int i = 0; i < values.Length; i++)
+		{
+			value |= (byte)((values[i] ? 1 : 0) << i);
+		}
+
+		writer.Write(value);
+	}
+
 	extension(SocketsHttpHandler self)
 	{
 		internal static SocketsHttpHandler CreateFromLifeTime(TimeSpan pooledConnectionLifetime)
@@ -55,19 +69,6 @@ internal static class UtilityExtension
 
 	extension(BinaryWriter self)
 	{
-		internal void WritePackedBools(params ReadOnlySpan<bool> values)
-		{
-			if (values.Length > 8)
-				throw new ArgumentOutOfRangeException(nameof(values), "Cannot write more than 8 bools in a single byte.");
-
-			byte value = 0;
-			for (int i = 0; i < values.Length; i++)
-			{
-				value |= (byte)((values[i] ? 1 : 0) << i);
-			}
-
-			self.Write(value);
-		}
 		internal unsafe void WriteEnum<TEnum>(TEnum value) where TEnum : unmanaged, Enum
 		{
 			Span<byte> buffer = stackalloc byte[sizeof(TEnum)];

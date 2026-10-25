@@ -117,7 +117,7 @@ public class GameProgress : IPhigrosCustomSerialization<GameProgress>
 	{
 		objectVersion = this.Version;
 
-		writer.WritePackedBools(this.IsFirstRun, this.LegacyChapterFinished, this.AlreadyShowCollectionTip, this.AlreadyShowAutoUnlockINTip);
+		UtilityExtension.WritePackedBools(writer, this.IsFirstRun, this.LegacyChapterFinished, this.AlreadyShowCollectionTip, this.AlreadyShowAutoUnlockINTip);
 		writer.Write(this.GameCompleted);
 		writer.Write7BitEncodedInt(this.SongUpdateInfo);
 		this.ChallengeModeRank.Serialize(writer, out _);
