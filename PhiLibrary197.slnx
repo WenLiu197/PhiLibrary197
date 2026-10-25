@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="PhiLibrary197/PhiLibrary197.csproj" />
+  <Project Path="samples/PhiLibrary197.Samples/PhiLibrary197.Samples.csproj" />
   <Folder Name="/Solution Items/">
     <File Path=".gitattributes" />
     <File Path=".gitignore" />

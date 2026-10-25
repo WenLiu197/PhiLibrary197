@@ -4,93 +4,207 @@ icon: database
 order: 40
 ---
 
-`SongDatabase` 将 `difficulty.tsv`（定数）与 `info.tsv`（歌名/曲师/画师/谱师）按曲目 id 前缀**合并**为统一数据库，用于曲目信息查询与 RKS 计算。
+`SongDatabase` 把 `difficulty.tsv`（定数）和 `info.tsv`（歌名、曲师、画师、谱师）合并成统一的曲目数据库。库内已经嵌入一份 **327 首**的简体中文数据，开箱即用。
 
 ## 加载
 
-现在有两种方式：
+### 内置数据（推荐）
 
 ```csharp
-using PhiLibrary197.CloudSave;
+using PhiLibrary197.Songs;
 
-// 方式一：使用包内内置的曲目数据，不需要任何外部文件
 SongDatabase db = SongDatabase.LoadFromBuiltIn();
-
-// 方式二：使用自己的 difficulty.tsv / info.tsv
-SongDatabase db2 = SongDatabase.LoadFromFile("difficulty.tsv", "info.tsv");
+Console.WriteLine(db.Count);                       // 327
+Console.WriteLine(SongDatabase.BuiltInDataVersion); // 2026.10.24
 ```
 
-`LoadFromBuiltIn()` 的数据随程序集嵌入，不读写文件，适用于 Native AOT、单文件发布和只读环境；数据版本见 `SongDatabase.BuiltInDataVersion`。旧的 `Load(...)` 仍可用，但已标记为过时，建议改用 `LoadFromFile(...)`。
+内置数据随程序集嵌入，不读写文件，适用于 AOT、单文件和只读环境。
 
-两表以曲目 id 前缀为键做**并集**合并：任一表存在的曲目都收录，缺失字段为 `null`（引用类型）或空表（定数）。容错规则与 `LoadConstantTable` 一致（跳过注释/脏行，曲名自动补 `.0` 后缀）。
+### 文件 / 内存 / 网络
+
+```csharp
+using PhiLibrary197.Songs;
+
+// 文件
+SongDatabase fromFile = SongDatabase.LoadFromFile("difficulty.tsv", "info.tsv");
+
+// TextReader（例如自己从 HTTP 响应读取）
+using StringReader difficulty = new(difficultyTsvText);
+using StringReader info = new(infoTsvText);
+SongDatabase fromReaders = SongDatabase.LoadFromFile(difficulty, info);
+
+// Stream（HTTP 响应、压缩包条目等）
+using Stream difficultyStream = await httpResponse.Content.ReadAsStreamAsync();
+using Stream infoStream = await httpResponse2.Content.ReadAsStreamAsync();
+SongDatabase fromStreams = SongDatabase.LoadFromFile(difficultyStream, infoStream);
+```
+
+`LoadFromFile` 的 TextReader/Stream 重载不会释放调用方传入的读取器/数据流；调用方自己 `using`。
+
+旧方法 `Load(...)` 已标记 `[Obsolete]`，请改用 `LoadFromFile(...)`。
 
 ## 查询
 
 ```csharp
-// 全部曲目（按完整 id 排序）
-IReadOnlyList<SongEntry> all = db.Songs;
-Console.WriteLine($"曲目总数: {db.Count}");
+using PhiLibrary197.Scores;
+using PhiLibrary197.Songs;
 
-// 按 id 查询（完整 id 或前缀均可）
-SongEntry stasis = db.GetSong("Stasis.Maozon")!;
-Console.WriteLine($"{stasis.Name} | 曲师 {stasis.Composer} | 画师 {stasis.Illustrator}");
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
 
-// Random 等带数字版本后缀的变体：回退到基础曲目，但保留请求的变体 id
-SongEntry variant = db.GetSong("Random.SobremSilentroom.3")!;
-Console.WriteLine($"{variant.Id} | {variant.Name} | IN {variant.GetConstant(Difficulty.IN)}");
+SongEntry? song = db.GetSong("Glaciaxion.SunsetRay");
+Console.WriteLine(song?.Name);
+Console.WriteLine(song?.Composer);
+Console.WriteLine(song?.Illustrator);
+Console.WriteLine(song?.GetConstant(Difficulty.IN));
+Console.WriteLine(song?.GetCharter(Difficulty.IN));
+```
 
-// 按显示名搜索（不区分大小写）
-foreach (var hit in db.FindByName("Chronostasis"))
+`GetSong` 接受：
+
+- 完整 id：`Glaciaxion.SunsetRay.0`
+- 不带 `.0` 的前缀：`Glaciaxion.SunsetRay`
+- 数字版本变体：`Random.SobremSilentroom.3`
+
+变体查询会回退到基础条目，但保留请求的 `Id`：
+
+```csharp
+SongEntry? variant = db.GetSong("Random.SobremSilentroom.3");
+Console.WriteLine(variant?.Id);        // Random.SobremSilentroom.3
+Console.WriteLine(variant?.BaseId);    // Random.SobremSilentroom.0
+Console.WriteLine(variant?.IsVariant); // True
+```
+
+普通曲目：
+
+```csharp
+SongEntry? normal = db.GetSong("Glaciaxion.SunsetRay");
+Console.WriteLine(normal?.BaseId == normal?.Id); // True
+Console.WriteLine(normal?.IsVariant);            // False
+```
+
+### 按显示名查找
+
+```csharp
+foreach (SongEntry hit in db.FindByFullName("Glaciaxion"))
     Console.WriteLine(hit.Id);
 ```
+
+`FindByFullName` 是**完整显示名**、不区分大小写的匹配；不支持模糊搜索。需要模糊匹配时自己对 `db.Songs` 做 LINQ。
+
+### 全部曲目
+
+```csharp
+IReadOnlyList<SongEntry> all = db.Songs;
+```
+
+`Songs` 只包含基础曲目（完整 `.0` id），不包含 Random 等数字变体；按完整 id 排序。
 
 ## SongEntry
 
 ```csharp
 public sealed record SongEntry(
-    string Id,                       // 完整 id，如 "Glaciaxion.SunsetRay.0"
-    string? Name,                    // 显示名（info 第 2 列）
-    string? Composer,                // 曲师（info 第 3 列）
-    string? Illustrator,             // 曲绘画师（info 第 4 列）
-    string? EzCharter,               // EZ 谱师
-    string? HdCharter,               // HD 谱师
-    string? InCharter,               // IN 谱师
-    string? AtCharter,               // AT 谱师
-    IReadOnlyDictionary<Difficulty, float> Constants)  // 各难度定数
+    string Id,
+    string? Name,
+    string? Composer,
+    string? Illustrator,
+    string? EzCharter,
+    string? HdCharter,
+    string? InCharter,
+    string? AtCharter,
+    IReadOnlyDictionary<Difficulty, float> Constants)
 {
-    string? LegacyCharter { get; init; }  // Legacy 谱师（info 第 9 列）
-    string? SpCharter { get; init; }      // SP 谱师（info 第 10 列）
-    float? GetConstant(Difficulty difficulty);  // 查指定难度定数，缺失返回 null
+    public string? LegacyCharter { get; init; }
+    public string? SpCharter { get; init; }
+
+    public string BaseId { get; }
+    public bool IsVariant { get; }
+
+    public float? GetConstant(Difficulty difficulty);
+    public string? GetCharter(Difficulty difficulty);
 }
 ```
 
-> [!NOTE]
-> info.tsv 后列（画师、谱师）按列存在情况解析，老曲没有的字段为 `null`。无 AT 谱的曲目 `AtCharter` 为 `null`；Legacy/SP 不参与 RKS 计算，也没有定数，仅用于查询。
+说明：
+
+- `Name`/`Composer`/`Illustrator` 可能为 `null`，取决于 info.tsv 是否有对应列；
+- `LegacyCharter`/`SpCharter` 是查询字段，Legacy/SP 没有定数；
+- `GetConstant` 缺失返回 `null`；
+- `GetCharter` 支持 EZ/HD/IN/AT/Legacy/SP。
 
 ## 与 RKS 集成
 
 ```csharp
-// 直接导出两个表，喂给 GetSortedListForRks
-var constantMap = db.ToConstantMap();
-var nameMap     = db.ToNameMap();
+using PhiLibrary197.CloudSave;
+using PhiLibrary197.Scores;
+using PhiLibrary197.Songs;
 
-var (phis, other, rks) = (await save.GetSaveContextAsync(0))
-    .ReadGameRecord()
-    .GetSortedListForRks(constantMap, nameMap);
+using Save save = new(token, isInternational: false);
+SaveContext context = await save.GetSaveContextAsync(0);
+GameRecord record = context.ReadGameRecord();
+
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
+var (phis, sorted, rks) = record.GetSortedListForRks(
+    db.ToConstantMap(),
+    db.ToNameMap());
+
+Console.WriteLine($"RKS: {rks:F4}");
 ```
 
-> [!NOTE]
-> `GetSortedListForRks` 会对同一曲目、同一难度的数字版本变体（如 `Random.SobremSilentroom.1` ~ `.5`）去重，只保留 RKS 最高的一条，与游戏内“取最高成绩”一致。需要查看全部变体成绩时使用 `GetCompleteScores`。
+`ToConstantMap()` / `ToNameMap()` 只导出基础曲目的数据；变体成绩计算时会自动回退到基础 id。
 
-## 完整示例：按成绩展示曲目信息
+## 完整可运行示例
 
 ```csharp
-SongDatabase db = SongDatabase.LoadFromBuiltIn();
-var (_, other, rks) = record.GetSortedListForRks(db.ToConstantMap(), db.ToNameMap());
+using PhiLibrary197.Scores;
+using PhiLibrary197.Songs;
+using PhiLibrary197.Tips;
 
-foreach (var s in other.Take(10))
-{
-    SongEntry song = db.GetSong(s.Score.Id)!;
-    Console.WriteLine($"{s.NameOrDefault} — {song.Composer} — IN定数 {song.GetConstant(Difficulty.IN)} — RKS {s.Rks:F4}");
-}
+SongDatabase db = SongDatabase.LoadFromBuiltIn();
+
+Console.WriteLine($"songs: {db.Count}");
+Console.WriteLine($"version: {SongDatabase.BuiltInDataVersion}");
+
+SongEntry song = db.GetSong("Glaciaxion.SunsetRay")
+    ?? throw new InvalidOperationException("song not found");
+
+Console.WriteLine($"{song.Name} / {song.Composer} / {song.Illustrator}");
+Console.WriteLine($"IN: {song.GetConstant(Difficulty.IN)} by {song.GetCharter(Difficulty.IN)}");
+
+SongEntry variant = db.GetSong("Random.SobremSilentroom.3")
+    ?? throw new InvalidOperationException("variant not found");
+
+Console.WriteLine($"{variant.Id} -> {variant.BaseId}, {variant.IsVariant}");
+Console.WriteLine(TipProvider.GetTip());
 ```
+
+运行：
+
+```bash
+dotnet run --project samples/PhiLibrary197.Samples -- builtin
+```
+
+## 数据来源与更新
+
+内置数据来自 `Phigros.apk` 的 Unity 数据，提取方式、APK 哈希、数据版本和免责声明见：
+
+- [Data/README.md](https://github.com/WenLiu197/PhiLibrary197/blob/master/PhiLibrary197/Data/README.md)
+
+数据更新后需要同步更新 `SongDatabase.BuiltInDataVersion`。
+
+## 常见问题
+
+### 为什么 `GetSong` 返回 null？
+
+检查 id 是否拼写正确。`GetSong` 不做模糊搜索；可以先用 `FindByFullName` 或 `db.Songs` 枚举确认真实 id。
+
+### 变体为什么没有独立定数？
+
+游戏内 Random 等变体共用基础曲目的定数和谱师；`SongDatabase` 对变体返回基础元数据，`BaseId` 指向基础 `.0` id。
+
+### 变体会不会被 RKS 重复计算？
+
+不会。`GetSortedListForRks` 会按基础曲目 + 难度去重，只保留 RKS 最高的一条；`GetCompleteScores` 会保留所有变体，供你自己展示。
+
+### 数据里有 Legacy/SP 吗？
+
+有。它们只用于查询；没有定数，不计入 RKS。

@@ -1,3 +1,26 @@
+# 0.3.0
+- **破坏性重构**：按职责拆分命名空间
+  - `PhiLibrary197.CloudSave.Login` → `PhiLibrary197.Authentication`
+  - 成绩模型 → `PhiLibrary197.Scores`
+  - `SongDatabase` / `SongEntry` → `PhiLibrary197.Songs`
+  - 新增 `PhiLibrary197.Tips`
+- 新增 `SongDatabase.LoadFromBuiltIn()`：内置 327 首曲目的定数与曲目信息，数据版本 `2026.10.24`
+- 新增 `SongEntry.BaseId` / `IsVariant`，统一 Random 等数字版本变体
+- 新增 `TipProvider.GetTip()`：191 条内置简体中文 Tips
+- `SongDatabase` / `ScoreHelper` 新增 `TextReader` / `Stream` 输入重载
+- 新增 TapTap QRCode 登录预制：`TapTapQrCodeLogin`、`TapTapQrCodeStatus`、`CheckQRCodeResultDetailed`
+- 新增 TapTap 回调登录预制：`TapTapCallbackServer`、`TapTapHelper.StartCallbackLogin`
+- `HandleCallbackLogin` 新增校验 OAuth `state` 的重载
+- `RequestException` 公开 `FailingType`、`Failing`、`HttpStatus`
+- 新增 `SlowDown` / `Expired` 登录状态
+- `SaveContext` 新增无 `SaveInfo` 的 zip 构造重载
+- `SimplifiedSaveInfo` 新增 `Name` / `ObjectId`
+- `TapTapProfileData.ProfileData` 新增可选 `Bio`
+- `FindByName` 重命名为 `FindByFullName`
+- 文档重写并新增可运行的 `samples/PhiLibrary197.Samples`
+
+<RELEASE_NOTE_END>
+
 # 0.2.0
 - 新增 `SongDatabase`：合并 difficulty.tsv（定数）与 info.tsv（歌名/曲师/画师/谱师）的曲目数据库
 - 新增 `ScoreHelper.LoadConstantTable`：difficulty.tsv 定数表加载（容错解析）
