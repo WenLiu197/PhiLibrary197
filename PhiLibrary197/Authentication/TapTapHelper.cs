@@ -224,6 +224,24 @@ public static class TapTapHelper
 	/// <exception cref="Exception">Received unknown response</exception>
 	public static async Task<TapTapTokenData?> CheckQRCodeResult(CompleteQRCodeData qrCodeData, bool useChinaEndpoint = true, CancellationToken ct = default)
 	{
+		TapTapQrCodeResult result = await CheckQRCodeResultDetailed(qrCodeData, useChinaEndpoint, ct);
+		return result.Status == TapTapQrCodeStatus.Success ? result.Token : null;
+	}
+
+	/// <summary>
+	/// Check the QRCode login state without collapsing pending/denied/expired into <see langword="null"/>.
+	/// </summary>
+	/// <remarks>
+	/// 此方法适合自己实现轮询的调用方：可以区分等待授权、拒绝授权、二维码过期等状态。
+	/// 成功时 <see cref="TapTapQrCodeResult.Token"/> 非空；其余状态 Token 为 <see langword="null"/>。
+	/// </remarks>
+	/// <param name="qrCodeData">The completed QRCode data from <see cref="RequestLoginQrCode(string[], bool, CancellationToken)"/>.</param>
+	/// <param name="useChinaEndpoint">Use China endpoints to login or not.</param>
+	/// <param name="ct">The cancellation token to cancel the operation.</param>
+	/// <returns>The QRCode login status and, on success, the token data.</returns>
+	/// <exception cref="Exception">Received unknown response</exception>
+	public static async Task<TapTapQrCodeResult> CheckQRCodeResultDetailed(CompleteQRCodeData qrCodeData, bool useChinaEndpoint = true, CancellationToken ct = default)
+	{
 		Dictionary<string, string> data = new()
 		{
 			{ "grant_type", "device_token" },
@@ -237,16 +255,20 @@ public static class TapTapHelper
 		try
 		{
 			TapTapTokenData token = await Request<TapTapTokenData>(GetTokenUrl(useChinaEndpoint), HttpMethod.Post, useChinaEndpoint, data: data, ct: ct);
-			return token;
+			return new(TapTapQrCodeStatus.Success, token);
 		}
 		catch (RequestException ex)
 		{
-			if (ex.Failing == FailingType.None) // shouldnt happen
-				return null;
-			else if (ex.Failing == FailingType.Unknown)
-				throw;
-
-			return null;
+			return ex.Failing switch
+			{
+				FailingType.Pending => new(TapTapQrCodeStatus.Pending, null),
+				FailingType.Waiting => new(TapTapQrCodeStatus.Waiting, null),
+				FailingType.SlowDown => new(TapTapQrCodeStatus.SlowDown, null),
+				FailingType.Denied => new(TapTapQrCodeStatus.Denied, null),
+				FailingType.Expired => new(TapTapQrCodeStatus.Expired, null),
+				FailingType.None => new(TapTapQrCodeStatus.Unknown, null),
+				_ => throw new InvalidOperationException($"Unexpected QR login failure state: {ex.Failing}"),
+			};
 		}
 	}
 	/// <summary>
@@ -360,7 +382,9 @@ public static class TapTapHelper
 		{
 			"authorization_pending" => FailingType.Pending,
 			"authorization_waiting" => FailingType.Waiting,
+			"slow_down" => FailingType.SlowDown,
 			"access_denied" => FailingType.Denied,
+			"expired_token" => FailingType.Expired,
 			"" => FailingType.None,
 			_ => FailingType.Unknown
 		};

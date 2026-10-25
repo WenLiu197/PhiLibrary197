@@ -24,6 +24,14 @@ public class RequestException : Exception
 		/// </summary>
 		Waiting,
 		/// <summary>
+		/// The client should slow down its polling interval.
+		/// </summary>
+		SlowDown,
+		/// <summary>
+		/// The device code or authorization request has expired.
+		/// </summary>
+		Expired,
+		/// <summary>
 		/// No failure code was returned.
 		/// </summary>
 		None,
