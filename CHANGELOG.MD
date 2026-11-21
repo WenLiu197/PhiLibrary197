@@ -1,3 +1,14 @@
+# 2.0.0
+- **破坏性升级**：目标框架从 `net10.0` 迁移到 `net11.0`
+- 语言版本升级到 C# 15，不再支持 .NET 10
+- 使用 C# 15 `field` 关键字简化 `SongEntry.BaseId` 的 backing field
+- 使用 C# 15 集合表达式容量参数优化 `SongDatabase` 字典初始化
+- 新增 `SongDatabase` 扩展索引器：`db["Glaciaxion.SunsetRay"]`
+- `SaveContext.FromZipAsync(byte[], ...)` 使用 .NET 11 `ReadOnlyMemoryStream`
+- 示例项目、文档和发布 workflow 全部对齐 .NET 11
+
+<RELEASE_NOTE_END>
+
 # 1.0.0
 - **破坏性重构**：按职责拆分命名空间
   - `PhiLibrary197.CloudSave.Login` → `PhiLibrary197.Authentication`

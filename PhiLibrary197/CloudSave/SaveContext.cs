@@ -102,8 +102,11 @@ public class SaveContext
 	/// <param name="decryptor">A function to decrypt the raw data entries.</param>
 	/// <param name="ct">The cancellation token to cancel the operation.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the created <see cref="SaveContext"/> instance.</returns>
-	public static async Task<SaveContext> FromZipAsync(byte[] rawZip, SaveInfo originalData, CipherFunction decryptor, CancellationToken ct = default) =>
-		await FromZipAsync(new MemoryStream(rawZip), originalData, decryptor, ct);
+	public static async Task<SaveContext> FromZipAsync(byte[] rawZip, SaveInfo originalData, CipherFunction decryptor, CancellationToken ct = default)
+	{
+		using ReadOnlyMemoryStream stream = new(rawZip);
+		return await FromZipAsync(stream, originalData, decryptor, ct);
+	}
 
 	/// <summary>
 	/// Creates a new instance of the <see cref="SaveContext"/> class from a zip buffer without cloud metadata.

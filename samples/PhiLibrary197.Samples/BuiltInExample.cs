@@ -13,7 +13,8 @@ public static class BuiltInExample
         Console.WriteLine($"songs: {db.Count}");
         Console.WriteLine($"data version: {SongDatabase.BuiltInDataVersion}");
 
-        SongEntry? song = db.GetSong("Glaciaxion.SunsetRay");
+        // C# 15 扩展索引器，等价于 db.GetSong(...)
+        SongEntry? song = db["Glaciaxion.SunsetRay"];
         if (song is null)
         {
             Console.WriteLine("song not found");

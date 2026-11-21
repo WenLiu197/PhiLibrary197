@@ -57,6 +57,9 @@ Console.WriteLine(song?.Composer);
 Console.WriteLine(song?.Illustrator);
 Console.WriteLine(song?.GetConstant(Difficulty.IN));
 Console.WriteLine(song?.GetCharter(Difficulty.IN));
+
+// C# 15 扩展索引器，等价于 GetSong
+SongEntry? shortcut = db["Glaciaxion.SunsetRay"];
 ```
 
 `GetSong` 接受：

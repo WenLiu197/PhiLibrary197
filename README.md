@@ -10,8 +10,8 @@ PhiLibrary197 是一个 C# 实现的 Phigros 数据访问库，支持本地存�
 dotnet add package PhiLibrary197
 ```
 
-目标框架：`net10.0`
-当前版本：`1.0.0`
+目标框架：`net11.0`
+当前版本：`2.0.0`
 
 ## 快速开始
 

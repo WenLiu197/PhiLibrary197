@@ -4,7 +4,7 @@ icon: book
 order: 10
 ---
 
-本页是 1.0.0 的公开类型速查。逐成员说明可直接看 Visual Studio 的 XML 注释；完整可运行用法见各主题页和 [示例项目](11-示例项目.md)。
+本页是 2.0.0 的公开类型速查。逐成员说明可直接看 Visual Studio 的 XML 注释；完整可运行用法见各主题页和 [示例项目](11-示例项目.md)。
 
 ## PhiLibrary197
 
@@ -222,6 +222,7 @@ LoadFromFile(TextReader difficulty, TextReader info);
 LoadFromFile(Stream difficulty, Stream info);
 Count; Songs; GetSong(id); FindByFullName(name);
 ToConstantMap(); ToNameMap();
+db["song.id"]; // C# 15 扩展索引器，等价于 GetSong
 ```
 
 ## PhiLibrary197.Tips
@@ -232,7 +233,7 @@ ToConstantMap(); ToNameMap();
 
 ## 已移除/重命名
 
-1.0.0 对旧文档中的这些名字做了破坏性调整：
+2.0.0 对旧文档中的这些名字做了破坏性调整：
 
 | 旧 | 新 |
 | --- | --- |

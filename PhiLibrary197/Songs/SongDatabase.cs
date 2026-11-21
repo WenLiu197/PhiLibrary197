@@ -40,15 +40,13 @@ public sealed record SongEntry(
 	/// </summary>
 	public string? SpCharter { get; init; }
 
-	private string? _baseId;
-
 	/// <summary>
 	/// 基础曲目 id。普通曲目等于 <see cref="Id"/>；Random 等数字版本变体指向基础曲目的 <c>.0</c> 条目。
 	/// </summary>
 	public string BaseId
 	{
-		get => this._baseId ?? this.Id;
-		init => this._baseId = value;
+		get => field ?? this.Id;
+		init => field = value;
 	}
 
 	/// <summary>
@@ -194,7 +192,7 @@ public sealed class SongDatabase
 		Dictionary<string, SongInfoRow> infos = ParseInfoRows(infoLines);
 		Dictionary<string, Dictionary<Difficulty, float>> constants = ParseConstantRows(difficultyLines);
 
-		Dictionary<string, SongEntry> byId = [];
+		Dictionary<string, SongEntry> byId = [with(capacity: infos.Count + constants.Count)];
 		foreach (string prefix in infos.Keys.Union(constants.Keys))
 		{
 			string id = prefix + ".0";
